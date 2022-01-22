@@ -1,0 +1,6 @@
+---
+title: "Data Science Notes"
+
+---
+
+Welcome to the main page for Data Science 201!  These notes were used as the main reading material for the class DS 201: Introduction to Data Science at the University of Scranton.  

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Introduction to using R: basic commands and functions</title>
+
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Lectures</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="newlab2.html">Lab2</a>
+</li>
+<li>
+  <a href="newlab4.html">Lab4</a>
+</li>
+<li>
+  <a href="newlab5.html">Lab5</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Introduction to using R: basic commands and functions</h1>
+
+</div>
+
+
+<div id="searching" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Searching</h1>
+<p>In this section, we will introduce some well known built in functions. Like any other developed programming language, the R lexicon contains thousands of words for various functions. We’ll cover a select few in what follows, but it would be overbearing and unproductive to try providing an exhaustive list. Finding the correct function when programming will often involve reading  or a trip to . Certainly, you’ve spent years of training on search engines looking for all sorts of things. This skill (and it is, indeed, a skill) will come in handy for when you would like to find the correct function for a task.</p>
+<p>By documentation, we mean that R, along with all other popular programming languages, has written explanations for how their commands actually work. In R, documentation is available online at the <a href="www.cran.r-project.org">Comprehensive R Archive Network</a> (CRAN). A common first place to look is <a href="www.stackexchange.com">Stack Exchange</a>. Here, fellow frustrated programmers post questions concerning all types of languages. Often, it makes sense to include your language in whatever type of query you plug into a search engine (e.g. search “how to sort a list R” rather than “how to sort a list”).</p>
+<p>A convention for these notes will be the posting of questions marked with a <strong>Q:</strong>. Sometimes these questions will be answered, and other times you’ll be left to figure things out on your own.</p>
+<blockquote>
+<p><strong>Q:</strong> Suppose you want to multiply two numbers on R. By any means necessary, find the correct symbol.</p>
+</blockquote>
+<p>The answer here is pretty simple: multiplication is denoted by the "*" symbol. Here, and in many times in the future, we are going to show code (presented in gray blocks), along with the output of code given in . Typewriter font is essentially a way to communicate that was is being written in notes can be directly copied to a programming language (sometimes urls are also written in typewriter font). So, to demonstrate multiplication in R, we may write, for example</p>
+<pre class="r"><code>#Comment for R code.  Comments give explanations #about what is going on with code, 
+#but are not actually used in compiling (running) a program.
+#Lots of helpful commenting is common practice for good programmers.
+
+4*5</code></pre>
+<pre><code>## [1] 20</code></pre>
+<p>For another example, let’s look at randomly generated numbers, a concept that we will run into quite often. To draw a single random number, we use</p>
+<pre class="r"><code>runif(1)</code></pre>
+<pre><code>## [1] 0.6375225</code></pre>
+<blockquote>
+<p><strong>Q:</strong> If I ran  again, should I expect to produce the same number again?</p>
+</blockquote>
+<p>Is this number truly random? Not quite. Programming languages often use pseudorandom numbers, which are actually produced in a deterministic fashion. There are plenty of ways to make such numbers, but a common method involves “modding out” by large prime numbers. There are several “randomness” tests that exist to check whether the behavior of pseudorandom numbers is similar to that of truly random numbers. We won’t go into such details, and for the sake of this class, feel free to act like the random numbers you generate are really random.</p>
+<blockquote>
+<p><strong>Q:</strong> I would like to generate 100 numbers, randomly chosen between 3 and 5. What should I do?</p>
+</blockquote>
+<p>In this case, R makes things quite easy. The  function actually has three arguments. The first gives you the number of random numbers to generate. The second and third give you a range of the lower and upper numbers from which you choose uniformly.</p>
+<pre class="r"><code>runif(10, 3, 5)</code></pre>
+<pre><code>##  [1] 3.410314 3.625337 4.414432 3.651803 3.268997 3.331552 3.616778 4.637545
+##  [9] 4.036260 3.431658</code></pre>
+<p>If you move your cursor over a function, it will give you arguments. Sometimes you can omit arguments, and R will just provide . What appear to be the default values of ?</p>
+<blockquote>
+<p><strong>Q:</strong> By hovering your cursor over runif, can you tell whether an argument can be omitted, and what default value will be inserted for omitted arguments?</p>
+</blockquote>
+<div id="the-console-and-r-scripts." class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> The console and R scripts.</h2>
+<p>Suppose we’d like to compute the product 23845*92834. There are two ways to do this (well, three, I suppose, if you have a pen, paper, and some patience…). First, we can use the  and simply type what we want.</p>
+<blockquote>
+<p><strong>Q:</strong> Compute the product 23845*92834 using the command line.</p>
+</blockquote>
+<p>We can also evaluate by opening a  file and running the code. To do so, open a new file () and type your product in the first line. Then highlight the code you wish to run and click the ``Run" button just above your script. Using an R script is a very good idea for (at least) two reasons.</p>
+<blockquote>
+<p><strong>Q:</strong> Find the product by using an R-script. Save the file as . Open the file to make sure all’s well, and run the script again.</p>
+</blockquote>
+</div>
+<div id="exploring-basic-functions" class="section level2" number="1.2">
+<h2 number="1.2"><span class="header-section-number">1.2</span> Exploring basic functions</h2>
+<p>R can function as a scientific calculator. This is akin to saying that a nuclear bomb can function as a bug zapper. The operators for addition, subtraction, multiplication, and division are given by</p>
+<p>The PEMDAS order of operations applies, although if you’re in doubt, adding additional parentheses is the way to go.</p>
+<blockquote>
+<p><strong>Q:</strong> Twitter sometimes generates controversy (actually, when does it ?) by asking people to evaluate 6/2*(1+2). What does R give? What different responses do you think are often provided? By using parentheses, how should the expression be written to remove any ambiguity? Also, what happens when you type in 6/2(1+2)?</p>
+</blockquote>
+<p>The response from R is:</p>
+<pre class="r"><code>6/2*(1+2)</code></pre>
+<pre><code>## [1] 9</code></pre>
+<p>We can expect that some people are thinking that the expression should be evaluated as</p>
+<pre class="r"><code>(6/2)*(1+2)</code></pre>
+<pre><code>## [1] 9</code></pre>
+<p>There’s likely other people who believe that the expression should instead be</p>
+<pre class="r"><code>6/(2*(1+2))</code></pre>
+<pre><code>## [1] 1</code></pre>
+<p>The important point here is that parentheses clear any ambiguity regarding PEMDAS. When in doubt, err on the side of more clarity.</p>
+</div>
+<div id="variables-and-class-types" class="section level2" number="1.3">
+<h2 number="1.3"><span class="header-section-number">1.3</span> Variables and class types</h2>
+<p>If you want to save a value for later, we can use a . For instance, let</p>
+<pre class="r"><code>A = (6/2)*(1+2)</code></pre>
+<p>There are two things to note here. First, observe how no response is returned when you run this in an R script. This is because we are simply creating a new variable, rather than commanding to print a value. Second, note how the variable  is now stored in the  on the upper right corner of RStudio. You’ll see the variable  along with its value `9’. Rather than typing the the entire expression again, we can simply evaluate</p>
+<pre class="r"><code>A</code></pre>
+<pre><code>## [1] 9</code></pre>
+<blockquote>
+<p><strong>Q:</strong> R actually has a special expression  which is used for object assignment.<br />
+Test this and create the same variable of A using this assigment. Throughout these notes, we will most often use  for variable assignment (what’s a very basic argument for why  is preferable to ), but there are in fact cases where the two commands will give you different responses (this won’t arise in our class, however).</p>
+</blockquote>
+<pre class="r"><code>A &lt;- (6/2)*(1+2)
+A</code></pre>
+<pre><code>## [1] 9</code></pre>
+<p>Variables can span a vast collection of different types of . The type of object can be found with .</p>
+<blockquote>
+<p><strong>Q:</strong> What kind of object is ?</p>
+</blockquote>
+<pre class="r"><code>str(A)</code></pre>
+<pre><code>##  num 9</code></pre>
+<p>This tells you that you’re dealing with a  variable, with a value of 9. For another class of objects, consider  (often called  in other languages), which is basically text valued variables. Here’s a popular “Hello World” program</p>
+<pre class="r"><code>s = &#39;Hello World&#39;
+s</code></pre>
+<pre><code>## [1] &quot;Hello World&quot;</code></pre>
+<p>The variable  has object type</p>
+<pre class="r"><code>str(s)</code></pre>
+<pre><code>##  chr &quot;Hello World&quot;</code></pre>
+<p>We can also look at lists of numbers, called . These are written using  and then plugging in whatever number you want. This is an ordered list, so  is not the same as </p>
+<pre class="r"><code>v = c(6,4,7,3,8)
+str(v)</code></pre>
+<pre><code>##  num [1:5] 6 4 7 3 8</code></pre>
+<p>This is a vector of length 5, with all numeric values. We can also plug in characters for each entry.</p>
+<pre class="r"><code>v = c(&#39;The&#39;,&#39;rain&#39;,&#39;in&#39;,&#39;Spain&#39;)
+str(v)</code></pre>
+<pre><code>##  chr [1:4] &quot;The&quot; &quot;rain&quot; &quot;in&quot; &quot;Spain&quot;</code></pre>
+<blockquote>
+<p><strong>Q:</strong> What happens if we ‘mix’ characters and numbers?</p>
+</blockquote>
+<pre class="r"><code>v = c(3,&#39;rain&#39;,&#39;in&#39;,&#39;Spain&#39;)
+str(v)</code></pre>
+<pre><code>##  chr [1:4] &quot;3&quot; &quot;rain&quot; &quot;in&quot; &quot;Spain&quot;</code></pre>
+<p>When mixing, R will convert everything to characters. It makes sense after some thought. It’s fairly easy to convert a string to a number again. It would be nonsensical, however, going the other way around and defining everything as a number.</p>
+<p>If you’d like to call on a certain index in a vector, use square brackets. Like humans almost always do, R begins counting at 1. This is not an obvious statement! Many languages, such as Python begin counting at 0, and translating between the two is often filled with ‘off by 1’ errors.</p>
+<pre class="r"><code>v = c(&#39;The&#39;,&#39;rain&#39;,&#39;in&#39;,&#39;Spain&#39;)
+
+v[2]</code></pre>
+<pre><code>## [1] &quot;rain&quot;</code></pre>
+<p>It’s possible to call on several indices at once. You can use a colon to call on a sequence of values</p>
+<pre class="r"><code>v = c(&#39;The&#39;,&#39;rain&#39;,&#39;in&#39;,&#39;Spain&#39;)
+
+v[1:3]</code></pre>
+<pre><code>## [1] &quot;The&quot;  &quot;rain&quot; &quot;in&quot;</code></pre>
+<p>Or you can simpy call in the index values using another vector</p>
+<pre class="r"><code>v = c(&#39;The&#39;,&#39;rain&#39;,&#39;in&#39;,&#39;Spain&#39;)
+
+v[c(1,3,4)]</code></pre>
+<pre><code>## [1] &quot;The&quot;   &quot;in&quot;    &quot;Spain&quot;</code></pre>
+<p>Let’s now give a moment to discuss assigning multiple variables. We’ll start with a simple example: &gt; <strong>Q:</strong> What do each of these programs evaluate?</p>
+<pre class="r"><code>a = 5
+b = 4
+b = a
+
+print(b)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>a &lt;- -5
+b &lt;- -4
+b &lt; - a</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>print(b)</code></pre>
+<pre><code>## [1] -4</code></pre>
+<p>Note the space in the second program! We’ve broken up the  symbol into the two symbols  (less than) and - (negative sign). So  is actually asking a yes or no type question: Is  less than ? Since <span class="math inline">\(b = -4 &lt; 5 = -(-5) = -a\)</span>, then answer is “Yes”, or in terms of R,  or simply . This yes/no question didn’t actually reassign , so when we run , it simply returns it initial value of -4.</p>
+</div>
+<div id="sorting" class="section level2" number="1.4">
+<h2 number="1.4"><span class="header-section-number">1.4</span> Sorting</h2>
+<p>We can also apply functions to variables. Functions use parentheses to take in variables.  It is a very, very common mistake to call on functions with brackets, or call a vector index with parentheses.</p>
+<p>Consider the vector</p>
+<pre class="r"><code>v = c(3,6,4,6,1)</code></pre>
+<p>What function should you apply to sort the vector?</p>
+<pre class="r"><code>sort(v)</code></pre>
+<pre><code>## [1] 1 3 4 6 6</code></pre>
+<blockquote>
+<p><strong>Q:</strong> How does R sort text?</p>
+</blockquote>
+<pre class="r"><code>v = c(&#39;The&#39;,&#39;rain&#39;,&#39;in&#39;,&#39;Spain&#39;)
+
+sort(v)</code></pre>
+<pre><code>## [1] &quot;in&quot;    &quot;rain&quot;  &quot;Spain&quot; &quot;The&quot;</code></pre>
+<p>Sorting is done alphabetically.</p>
+<blockquote>
+<p><strong>Q:</strong> What if we want to sort backwards?</p>
+</blockquote>
+<pre class="r"><code>v = c(3,6,4,6,1)
+sort(v, decreasing= TRUE)</code></pre>
+<pre><code>## [1] 6 6 4 3 1</code></pre>
+<p>What, then, is the default value of  in ?</p>
+</div>
+<div id="zero-infinity-and-everything-in-between" class="section level2" number="1.5">
+<h2 number="1.5"><span class="header-section-number">1.5</span> Zero, infinity, and everything in between</h2>
+<p>It’s important to remember that while computers often have the upper hand with calculating expressions, once in awhile they produce an answer that we humans can immediately identify as not exactly correctly. For example, you should know from trigonometry that <span class="math inline">\(\sin(\pi) = 0\)</span> (you  remember the unit circle, right?). However, when we ask R to evaluate this expression, we obtain</p>
+<pre class="r"><code>sin(pi)</code></pre>
+<pre><code>## [1] 1.224647e-16</code></pre>
+<p>The “e-16” that we see in our answer means <span class="math inline">\(10^{-16}\)</span>. This is an extremely small number, but not quite the correct value of zero that we know is the exact answer. The issue here isn’t so much that we’re interested in measuring something with 16 digits of accuracy. These kinds of demands on precision are quite rare. Rather, problems may arise when dealing with things like , which we’ll run into shortly. By this, we might say something along the lines of “if an expression is equal to 0, then run some snippet of code”. If the expression we evaluate is very small, but not exactly 0, we would not run the code snippet. In general, be cautious about expecting precise answers, especially when evaluating with continuous functions like sines, exponentials, and logarithms.</p>
+<p>Sometimes we’ll deal with , denoted in mathematics as <span class="math inline">\(\infty\)</span>, and expressed in R as . As you may have learned in calculus, infinity isn’t exactly a , but more of a . Nevertheless, we can still treat <span class="math inline">\(\infty\)</span> as a number when dealing with calculations which are intuitive. For instance, it’s reasonable to say things like <span class="math inline">\(\infty +1 = \infty\)</span>. If there are infinitely many balls, and we remove or add some balls, then we should still have infinitely many balls, right? Other cases aren’t so obvious: what if we remove infinitely many balls? Do we still have infinitely many left? In ambiguous cases like these, we simply shrug our shoulders and say “Who knows?”. In R, expressing such an  (<span class="math inline">\(0/0, \infty-\infty\)</span>, etc.) is given by  (read as “not a number”). &gt; <strong>Q:</strong> What do each of the following commands do?</p>
+<pre class="r"><code>2/0</code></pre>
+<pre><code>## [1] Inf</code></pre>
+<pre class="r"><code>-1/0</code></pre>
+<pre><code>## [1] -Inf</code></pre>
+<pre class="r"><code>0/0</code></pre>
+<pre><code>## [1] NaN</code></pre>
+<pre class="r"><code>Inf/Inf</code></pre>
+<pre><code>## [1] NaN</code></pre>
+<pre class="r"><code>Inf+1</code></pre>
+<pre><code>## [1] Inf</code></pre>
+<pre class="r"><code>Inf-1</code></pre>
+<pre><code>## [1] Inf</code></pre>
+<pre class="r"><code>Inf+Inf</code></pre>
+<pre><code>## [1] Inf</code></pre>
+<pre class="r"><code>Inf-Inf</code></pre>
+<pre><code>## [1] NaN</code></pre>
+<pre class="r"><code>Inf*Inf</code></pre>
+<pre><code>## [1] Inf</code></pre>
+</div>
+<div id="booleans" class="section level2" number="1.6">
+<h2 number="1.6"><span class="header-section-number">1.6</span> Booleans</h2>
+<p>An operator which gives a value of  or  (1 or 0) is called a . Here are Booleans for comparing two numbers</p>
+<pre class="r"><code>#Here we are assigning the value of 4 to the variable &#39;a&#39;
+a = 4
+
+#And then the value of 5 to &#39;b&#39;
+b = 5
+
+#And 5 to &#39;c&#39;
+c = 5
+
+#Here are some Boolean statements (which are essentially yes/no questions)
+
+#Is a equal to b?
+a == b</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>#Is a not equal to b?
+a != b</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>#Is a less than b?
+a&lt; b</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>#Is b less than b?
+b &gt; b</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>#Is c less than or equal to (not greater than) b?
+c &lt;= b</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>#Is c greater than or equal to (not greater than) a?
+c &gt;= a</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

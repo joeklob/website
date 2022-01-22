@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>If only for a while: an introduction to programming in R</title>
+
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Lectures</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="newlab2.html">Lab2</a>
+</li>
+<li>
+  <a href="newlab4.html">Lab4</a>
+</li>
+<li>
+  <a href="newlab5.html">Lab5</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore"><em>If only for a while</em>: an introduction to programming in R</h1>
+
+</div>
+
+
+<p>In the last section, we focused on what many would (mistakenly) consider the meat of a good data science class: pretty figures. That’s all well and good, but oftentimes it’s necessary to work with data at the ground level. Doing so requires asking some questions from . For instance, do I want to cycle through all the elements of my dataset? Or am I only considering those elements that pass a certain condition? Maybe I keep want to keep looking until a particular condition is fulfilled. Putting these logical constraints in a programmable form is the focus for this section, which we’ll visit through examples. In particular, we’ll cover the nuts and bolts of three central concepts of programming in R (or any language, really): if statements, for loops, and while loops.</p>
+<div id="functions" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Functions</h1>
+<p>A function is essentially something that takes something in, and returns something else. The possible stuff (or ) that can go into a function is called the , and possible things (or ) that the function can return is called the .</p>
+<p>Usually the first thing you write in a programming class is the <em>Hello World</em> script. It simply prints out the statement “Hello World”.</p>
+<pre class="r"><code>Hello = function(){
+return(&#39;Hello world!&#39;)
+}
+
+
+Hello()</code></pre>
+<pre><code>## [1] &quot;Hello world!&quot;</code></pre>
+<p>Let’s take a look at each of the pieces here. On the first line, to the left of the equal sign, is where you name your function. In this case, our function is named  (it’s case sensitive, by the way), although you can name it whatever you want (well, almost whatever. You can’t start a variable with a number, for instance.) On the right hand side we simply write , and inside parentheses we place the inputs, those variables that the function will use. In our case, there are no inputs! This is perfectly fine. Later examples will show functions that use variables.</p>
+<p>After the inputs are typed in, we add a left brace. Rstudio will automatically place a right brace next to it. Inside your braces, you will write all needed code that gives your output. In this case, we simply want the statement . The output is what your function will return. Appropriately, place your output inside the  function.</p>
+<p>Now let’s look at a simple function which takes in an argument. We’ll call this the successor function</p>
+<pre class="r"><code>successor = function(n){
+  
+m = n+1
+return(m)
+}
+
+
+successor(13)</code></pre>
+<pre><code>## [1] 14</code></pre>
+<p>For this function, we take an input of <span class="math inline">\(n\)</span> and return an output of <span class="math inline">\(n+1\)</span>. Yes, we could have just written  and saved ourselves a line, but there’s an important point to be made.</p>
+<blockquote>
+<p><strong>Q:</strong> What is the value of <span class="math inline">\(m\)</span>?</p>
+</blockquote>
+<p>Typing  into the console gives us an error!</p>
+<p>But why? If <span class="math inline">\(n= 13\)</span>, then surely <span class="math inline">\(m = 14\)</span>, right? Actually, no. The variable <span class="math inline">\(m\)</span> is what’s known as a . The means that <span class="math inline">\(m\)</span> is only defined within the context of the function . You can think of the function as being secretive, not allowing you to know what variables it’s using while it’s computing an output. In fact, we can define <span class="math inline">\(m\)</span> outside of the function, and nothing will go wrong. In this case, <span class="math inline">\(m\)</span> would be a global variable. To see this:</p>
+<pre class="r"><code>successor = function(n){
+  
+m = n+1
+return(m)
+}
+
+
+m = 12
+
+successor(6)</code></pre>
+<pre><code>## [1] 7</code></pre>
+<pre class="r"><code>m</code></pre>
+<pre><code>## [1] 12</code></pre>
+<p>Global variables can be called on in a function, however.</p>
+<pre class="r"><code>m = 6
+
+addmval = function(n){
+  
+m = m+1
+k = n+m
+return(k)
+}
+
+
+
+addmval(6)</code></pre>
+<pre><code>## [1] 13</code></pre>
+<pre class="r"><code>m</code></pre>
+<pre><code>## [1] 6</code></pre>
+<blockquote>
+<p><strong>Q:</strong> Why isn’t <span class="math inline">\(m = 7\)</span>?</p>
+</blockquote>
+<p>Any “redifining” of a variable done within a function is a local operation. In other words, given our current notation for variable assignment, we cannot update a global variable value.</p>
+<p>It is not recommended to have a function modify a global variable. If you insist, however, we can do the following:</p>
+<pre class="r"><code>m = 6
+
+addmval2 = function(n){
+  
+m &lt;&lt;- m+1
+k = n+m
+return(k)
+}
+
+
+
+addmval2(6)</code></pre>
+<pre><code>## [1] 13</code></pre>
+<pre class="r"><code>m</code></pre>
+<pre><code>## [1] 7</code></pre>
+</div>
+<div id="if-statements" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> if statements</h1>
+<p>An  asks a yes or no question. If the answer is yes, then one block of code is followed. If no, then another block is followed instead.</p>
+<blockquote>
+<p><strong>Q:</strong> Use an if statement to generate a number that is one 1 with probability 1/2, and 0 with probability 1/2.</p>
+</blockquote>
+<pre class="r"><code>if (runif(1)&lt;.5){
+  0
+}else{
+    1
+  }</code></pre>
+<pre><code>## [1] 1</code></pre>
+<p>What going on here? Your yes or no question will be wrapped inside . In our case, we’re asking whether , a randomly generated number between 0 and 1, is less than or greater than .5. Certainly, there’s a 50% chance that the answer is yes. The code which runs when the answer to your if statement is yes is then contained in curly braces. In our case, we simply return 0.</p>
+<p>If the answer to our question is no, we can simply write nothing more, and our code will simply do nothing. On the other hand, if you want a block of code to run, you will else an  statement. Make sure to place  on the same line as the closing brace of . In our case, if the answer is no, we produce a 1.</p>
+<p>For convenience, we can wrap this argument into a function. In fact, we’ll generalize, and simulate a biased coin that returns a 1 with probability <span class="math inline">\(p\)</span> and a 0 with probability <span class="math inline">\(1-p\)</span>:</p>
+<pre class="r"><code>flip = function(p){
+if (runif(1)&lt;p){
+  1
+}
+  else{
+    0
+  }
+}
+
+
+flip(.7)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>flip(.7)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>flip(.7)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>flip(.7)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>Our function  is a function of one variable <span class="math inline">\(p \in [0,1]\)</span>. Because this function uses random numbers, we should not expect the same answers each time we run this function.<br />
+## for loops</p>
+<p>Our last command looked quite clunky. What if we wanted to repeat the flip 100 times? Would we have to copy/paste  100 times? What if we wanted a million flips? Repeating blocks of code can be expressed through the convenience of . For loops cycle through a set of values for a variable, and execute the under each instance of this variable. For example, here’s a simple code for summing the first <span class="math inline">\(n\)</span> numbers</p>
+<pre class="r"><code>n = 100
+s = 1
+
+for (i in 2:n){
+  s = s +i
+}
+
+s</code></pre>
+<pre><code>## [1] 5050</code></pre>
+<p>Let’s go through this for loop step by step. The statement wrapped in parentheses next to  tells us what collection of numbers, or strings, or general objects that we will “loop” through. In our cases, we are going to consider the number  at <span class="math inline">\(i = 2\)</span>, then <span class="math inline">\(i = 3\)</span>, <span class="math inline">\(i = 4\)</span>, and so on until we reach <span class="math inline">\(i = 99\)</span> and <span class="math inline">\(i = n = 100\)</span>. For each value of <span class="math inline">\(i\)</span>, we perform the code wrapped in curly braces. So in words, our code does the following:</p>
+<div id="the-fibonacci-sequence" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> The Fibonacci sequence</h2>
+<p>(i)The Fibonacci sequence satisfies the following relation</p>
+<p><span class="math display">\[\begin{equation}
+F_1 = 1, \quad F_2 = 1, \qquad F_k = F_{k-1}+F_{k-2} \hbox{ for } k\ge 3.
+\end{equation}\]</span></p>
+<p>This sequence comes from an idealized case of  from the Italian mathematician Leonardo de Pisa, also known as Fibonacci. The idea is that <span class="math inline">\(F_k\)</span> denotes pairs of rabbits after <span class="math inline">\(k\)</span> generations. Each pair of rabbits generates a new pair of rabbits after having grown up for a single generation, and rabbits (in this idealized model) never die. The number of pairs of rabbits are there in the <span class="math inline">\(k\)</span>th generation equal the number from the previous generation <span class="math inline">\(F_{k-1}\)</span>, plus the number of rabbits created from mature rabbits, <span class="math inline">\(F_{k-2}\)</span> (why is this the case?).</p>
+<blockquote>
+<p><strong>Q:</strong> Write a function  that computes the nth Fibonacci number. Plot <span class="math inline">\(F_k\)</span> for the first <span class="math inline">\(k = 30\)</span> generations.</p>
+</blockquote>
+<pre class="r"><code>#Initialize
+Fibb = rep(0,30)
+
+Fibb[1] = 1
+Fibb[2] = 1
+
+for (i in 3:30){
+  
+  Fibb[i] = Fibb[i-1]+Fibb[i-2]
+  
+}
+ 
+Fibb[1:5]</code></pre>
+<pre><code>## [1] 1 1 2 3 5</code></pre>
+<pre class="r"><code>plot(Fibb, xlab = &#39;Generation&#39;, ylab = &#39;Pairs of Rabbits&#39;)</code></pre>
+<p><img src="newlab5_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>This graph explains why the term “breed like rabbits” makes sense. Under this model for population dynamics, the number of rabbits becomes huge, and quick.</p>
+<blockquote>
+<p><strong>Q:</strong> Search online for an explicit formula for the <span class="math inline">\(n\)</span>th Fibonacci number. Write a function  that uses this formula. Verify that both of your functions return the same number.</p>
+</blockquote>
+<pre class="r"><code>phi = (1+sqrt(5))/2
+psi = 1-phi
+
+Fibb2 = function(n){
+  
+  (phi^n-psi^n)/sqrt(5)
+}
+
+Fibb[1:10]</code></pre>
+<pre><code>##  [1]  1  1  2  3  5  8 13 21 34 55</code></pre>
+<pre class="r"><code>sapply(1:10, Fibb2)</code></pre>
+<pre><code>##  [1]  1  1  2  3  5  8 13 21 34 55</code></pre>
+<blockquote>
+<p><strong>Q:</strong> What do you think the function  does? fAlso, why do we call  with square brackets, but not do the same with ?</p>
+</blockquote>
+<p>The formula used above <span class="math display">\[F_n = \frac{\phi^n-\psi^n}{\sqrt{5}}, \quad n \ge 1,\qquad \phi = (1+\sqrt 5)/2, \quad \psi = 1-\phi,\]</span></p>
+<p>could be proved using an educated guess (or ) about the form of the recurrence relation. In particular, we can guess <span class="math inline">\(F_k = c^k\)</span>, plug the guess into our recurrence, and derive a quadratic which shows <span class="math inline">\(c = \phi\)</span> or <span class="math inline">\(\psi\)</span>. Upon inspection, the exact expression looks rather strange. Certainly, each <span class="math inline">\(F_k\)</span> is a positive integer (there are no half rabbits), but we nevertheless see a factor of <span class="math inline">\(\sqrt 5\)</span>!. Both <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\psi\)</span> contain <span class="math inline">\(\sqrt 5\)</span>, so things work out and the answer is always a positive integer, but this fact is far from obvious if you were just given the formula.</p>
+</div>
+<div id="while-loops" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> while loops</h2>
+<p>A  loop will execute a block of code until a certain condition is fulfilled. The syntax is very similar to a for loop.</p>
+<p>Let’s do an example for the , often seen in probability theory and finance. The idea is the following, let <span class="math inline">\(X_0 = 0\)</span> and define <span class="math inline">\(X_k\)</span> recursively by <span class="math display">\[X_k = X_{k-1}+ B_{k},\]</span> where <span class="math inline">\(B_k\)</span> takes the value 1 with probability 1/2, and -1 with probability 1/2. You can think of <span class="math inline">\(B_k\)</span> as a random step. Let’s write a program for this random step, which is pretty close to the  function we wrote before.</p>
+<pre class="r"><code>step = function(p){
+if (runif(1)&lt;p){
+  -1
+}
+  else{
+    1
+  }
+}</code></pre>
+<p>Let’s take a look at some random walks. If we know how many steps we’d like to take, we can just write a for loops:</p>
+<pre class="r"><code>#number of steps
+n = 20
+#initialize positions as a vector of zeros
+walk = rep(0,n)
+
+for (i in 2:n){
+  
+ walk[i] = walk[i-1]+ step(.5)
+}
+
+
+plot(walk, type = &#39;l&#39;)</code></pre>
+<p><img src="newlab5_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Random walks serve as rudimentary models of stock prices. A common desire when investing is to invest at a certain amount, and then sell when a stock price hits a certain number. When this occurs is called a .</p>
+<p>Suppose we buy a stock at $10, and that each time increment represents a day. Let’s run a simulation that stops the stock when either the stock is at $15 (hooray!) or $5 (agony!). This is where we will first use our while loop.</p>
+<pre class="r"><code>#Initial price
+S = 10
+
+#initialize positions as a vector
+walk = c(10)
+
+
+#the while statement
+while ((S != 5) &amp;&amp; (S != 15)){
+
+ S = S+step(.5)  
+ walk = append(walk, S)
+}
+
+
+#plot function, including upper and lower limits
+plot(walk, type = &#39;l&#39;, ylim = c(4,16))
+abline(h = 5, col = &#39;red&#39;)
+abline(h = 15, col = &#39;red&#39;)</code></pre>
+<p><img src="newlab5_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<blockquote>
+<p><strong>Q:</strong> Can you write the conditional above using “or”s (given by “||”) rather than “and”s?</p>
+</blockquote>
+</div>
+<div id="the-collatz-conjecture" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> The Collatz conjecture</h2>
+<p>Pick a number, any number (well, make sure it’s a positive integer). Call it <span class="math inline">\(N\)</span>. Consider the following algorithm:</p>
+<p>So, for instance, some iterates of this algorithm are <span class="math display">\[\begin{align}
+\hbox{(Starting at 3)} \quad  3\rightarrow  10 \rightarrow 5 \rightarrow
+16 \rightarrow 8 \rightarrow 4 \rightarrow 2 \rightarrow 1 \\
+\hbox{(Starting at 7)} \quad  7 \rightarrow 22 \rightarrow 11 \rightarrow
+34 \rightarrow 17 \rightarrow 52 \rightarrow 26 \\\rightarrow 13 \rightarrow
+40 \rightarrow 20 \rightarrow 10 \rightarrow 5 \rightarrow 16 \\  \rightarrow
+8 \rightarrow 4 \rightarrow 2 \rightarrow 1 
+\end{align}\]</span></p>
+<p>A natural question is whether there exists a number that causes this algorithm to go on forever. Surprisingly, nobody knows the answer! It’s said that the Collatz conjecture is a black hole, causing mathematicians to spend a great deal of time looking for solutions and end up with nothing.</p>
+<blockquote>
+<p><strong>Q:</strong> Write a function Collatz(n) that returns the number of iterations that occur before the algorithm starting at <span class="math inline">\(n\)</span> ends up at 1.</p>
+</blockquote>
+<pre class="r"><code>#A function that returns a length of the Collatz orbit starting at n
+Collatz = function(n){
+  count = 1 
+  while(n != 1){
+    
+    #is n even?
+    if (n %% 2 == 0){
+      n = n/2
+      count = count+1
+    }else{
+      n = 3*n+1
+      count = count+1
+    }
+    
+  }
+  count
+  
+}
+
+
+#Run Collatz on 1:10000 using sapply
+collvec = sapply(1:10000, Collatz)
+
+#Histogram of Collatz orbits
+hist(collvec, breaks= 100, xlab = &quot;Length of Collatz Orbits&quot;, main = &quot;Histogram of Collatz
+     orbits for first 10,000 numbers&quot;)</code></pre>
+<p><img src="newlab5_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Here, we have again used the  function. This creates a vector that applies a function to each value of a vector that you supply for the function. In our case,  gives us a vector where the first element is equal to , the second element is equal to , and so on.</p>
+</div>
+<div id="the-ok-corral-model" class="section level2" number="2.4">
+<h2 number="2.4"><span class="header-section-number">2.4</span> The OK Corral model</h2>
+<p>The OK Corral model was introduced by the probabilists Williams and McIlroy in 1998. The model describes two group of outlaws caught in a random gunfight. Suppose we start with two groups, The Rascals and The Varmints, each having 100 members. In R, we can initialize with</p>
+<p></p>
+<p></p>
+<p>Let’s suppose that shots occur in succession, one at a time. Each member has an equal probability to fire. If a Rascal is selected, he will shoot a Varmint, and if a Varmint is selected, he will shoot a Rascal. Given <span class="math inline">\(R\)</span> Rascals and <span class="math inline">\(V\)</span> Varmints, the probability that a Rascal is selected to shoot is <span class="math inline">\(p_R = R/(V+R)\)</span>, and the probability that a Varmint is selected is <span class="math inline">\(1-p_R = V/(V+R)\)</span>. Here’s a function that returns a 0 if a Varmint shoots and a 1 if a Rascal shoots.</p>
+<pre class="r"><code>V = 100
+R = 100
+
+whoshoots = function(V,R){
+  
+  U = runif(1)
+  if (U &gt; R/(V+R)){
+    0
+  }else{
+    1
+  }
+}
+
+whoshoots(V,R)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>To simulate a shot, and to show the new population, we type</p>
+<pre class="r"><code>shot = function(V,R){
+  
+  a = whoshoots(V,R)
+  if (a == 0){
+    c(V,R-1)
+  } else{
+    c(V-1,R)
+  }
+}
+
+shot(V,R)</code></pre>
+<pre><code>## [1] 100  99</code></pre>
+<p>Now let’s simulate a gunfight until one side is wiped out, and document the demise of the Rascals, plotting the total number of Rascals for each shot</p>
+<pre class="r"><code>V = 1000
+R = 1000
+counter = 0
+totrasc = c(R)
+while( min(c(V,R) != 0)){
+  
+  z = shot(V,R)
+  V = z[1]
+  R = z[2]
+  counter = counter +1
+  totrasc = append(totrasc,R)
+  
+}
+
+
+
+plot(totrasc, type = &#39;l&#39;)</code></pre>
+<p><img src="newlab5_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Now let’s plot 100 such paths.</p>
+<pre class="r"><code>vinit = 1000
+rinit = 1000
+paths = 100
+
+
+rascalpaths = matrix(0,nrow = paths, ncol = vinit+rinit)
+numdraws = rep(0,paths)
+
+
+for (j in 1:paths){
+
+  V = vinit
+  R = rinit
+  counter = 0
+  rascalpaths[j,1] = rinit
+  while( min(c(V,R)) != 0){
+    
+    z = shot(V,R)
+    V = z[1]
+    R = z[2]
+    counter = counter +1
+    rascalpaths[j,counter] = R
+    
+    
+  }
+  
+  numdraws[j] = counter
+  
+  #Fill in remaining steps
+  
+  if (rascalpaths[j,counter] != 0){
+    rascalpaths[j,(counter+1):(vinit+rinit)] = rep(rascalpaths[j,counter], vinit+rinit-counter)
+  }
+  
+
+}
+
+matplot(t(rascalpaths), type = &#39;l&#39;, col = &#39;black&#39;,lty = 1, xlab = &#39;Shots&#39;, ylab = &#39;Remaining Rascals&#39;)</code></pre>
+<p><img src="newlab5_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Note that when a rascal path is flat, then this means that the Rascals have won the gunfight. Let’s take a look at a histogram of the number of survivors.</p>
+<pre class="r"><code>hist(numdraws, breaks = 20)</code></pre>
+<p><img src="newlab5_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>An absolutely remarkable result from Williams and McIlroy, in their short paper  is that if the intiial number of Rascals and Varmints are then same, then the expected number of survivors satisfies</p>
+<p><span class="math display">\[
+\mathbb E[S] \sim 2(3)^{1/4}\pi^{-1/2}\Gamma(3/4)r_0
+\]</span> where</p>
+<p><span class="math display">\[ \Gamma(s) = \int_0^\infty x^{s-1}e^{-x} dx, \quad s&gt;0\]</span> and <span class="math inline">\(r_0\)</span> is the initial number of rascals. Also, <span class="math inline">\(\mathbb E[S]\)</span> is the  of the random quantity <span class="math inline">\(S\)</span>. This means that if we ran the experiment many times and took the average number of survivors, we would have something very close to <span class="math inline">\(\mathbb E[S]\)</span>. Finally, we write <span class="math inline">\(f(x) \sim g(x)\)</span> if <span class="math inline">\(f(x)/g(x) \rightarrow 1\)</span> as <span class="math inline">\(x \rightarrow \infty\)</span>.</p>
+<p>Let’s test if this result holds in our experiments:</p>
+<pre class="r"><code>#This gives a sample mean of our 100 experiments, 
+#which is an approximation of the expected value. 
+
+pathsampmean = mean(vinit+rinit-numdraws)
+
+K = 3^{-1/4}*pi^{-1/2}*gamma(3/4)
+guess = 2*K*vinit^(3/4)
+
+pathsampmean/guess</code></pre>
+<pre><code>## [1] 1.029143</code></pre>
+<p>Not bad!</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

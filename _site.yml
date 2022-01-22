@@ -1,0 +1,25 @@
+name: "Data Science Notes"
+navbar:
+  title: "Lectures"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Lab2"
+      href: newlab2.html
+    - text: "Lab4"
+      href: newlab4.html
+    - text: "Lab5"
+      href: newlab5.html
+output: 
+  html_document:
+    toc: true
+    number_sections: true
+    toc_float: true
+    theme: flatly
+
+
+    
+    
+    
+    
+    
