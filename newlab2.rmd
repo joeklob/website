@@ -3,21 +3,24 @@ title: "Introduction to using R: basic commands and functions"
 ---
 
 
-# Searching
+# Introduction
 
 
-In this section, we will introduce some well known built in functions.  Like any other developed programming language, the R lexicon contains thousands of words for various functions.  We'll cover a select few in what follows, but it would be overbearing and unproductive to try providing an exhaustive list. Finding the correct function when programming will often involve reading \textit{R documentation} or a trip to \textit{Stack Exchange}.  Certainly, you've spent years of training on search engines looking for all sorts of things.  This skill (and it is, indeed, a skill) will come in handy for when you would like to find the correct function for a task.
+In this section, we will introduce some well known built-in functions.  Like any other developed programming language, the R lexicon contains thousands of words which denote various functions.  We'll cover a select few in what follows, but it would be overbearing and unproductive to try providing an exhaustive list. Finding the correct function when programming will often involve reading _R documentation_ or a trip to _Stack Exchange_.  Certainly, you've spent years of training on search engines looking for all sorts of things.  This skill (and it is, indeed, a skill) will come in handy for when you would like to find the correct function for a task.
 
-By documentation, we mean that R, along with all other popular programming languages, has written explanations for how their commands actually work.  In R, documentation is available online at the [Comprehensive R Archive Network](www.cran.r-project.org) (CRAN).  A common first place to look is [Stack Exchange](www.stackexchange.com).  Here, fellow frustrated programmers post questions concerning all types of languages.  Often, it makes sense to include your language in whatever type of query you plug into a search engine (e.g. search "how to sort a list R" rather than "how to sort a list").
+By documentation, we mean that R, along with all other popular programming languages, has written explanations for how their commands actually work.  In R, documentation is available online at the [Comprehensive R Archive Network](https://cran.r-project.org) (CRAN).  A common first place to look is [Stack Exchange](https://stackexchange.com/).  Here, fellow frustrated programmers post questions concerning all types of languages.  Often, it makes sense to include your language in whatever type of query you plug into a search engine (e.g. search for "how to sort a list R" rather than "how to sort a list").
 
 A convention for these notes will be the posting of questions marked with a __Q:__. Sometimes these questions will be answered, and other times you'll be left to figure things out on your own.
 
 > __Q:__ Suppose you want to multiply two numbers on R.  By any means necessary, find the correct symbol. 
 
-The answer here is pretty simple: multiplication is denoted by the "*" symbol.  Here, and in many times in the future, we are going to show code (presented in gray blocks), along with the output of code given in \texttt{typewriter font}.  Typewriter font is essentially a way to communicate that was is being written in notes can be directly copied to a programming language (sometimes urls are also written in typewriter font). So, to demonstrate multiplication in R, we may write, for example
+The answer here is pretty simple: multiplication is denoted by the "*" symbol.  Here, and in many times in the future, we are going to show code (presented in gray blocks), along with the output of code given in <TT>typewriter font</TT>.  Text in typewriter font is essentially communicating that was is being written can be directly copied to a programming language (sometimes urls are also written in typewriter font). 
+
+Let's give an example. To demonstrate multiplication in R, we may write, for example
 
 ```{r}
-#Comment for R code.  Comments give explanations #about what is going on with code, 
+#Comment for R code.  Comments give explanations 
+#about what is going on with code, 
 #but are not actually used in compiling (running) a program.
 #Lots of helpful commenting is common practice for good programmers.
 
@@ -35,21 +38,21 @@ runif(1)
 
 > __Q:__ If I ran \texttt{runif(1)} again, should I expect to produce the same number again?
 
-Is this number truly random?  Not quite.  Programming languages often use pseudorandom numbers, which are actually produced in a deterministic fashion.  There are plenty of ways to make such numbers, but a common method involves "modding out" by large prime numbers.  There are several "randomness" tests that exist to check whether the behavior of pseudorandom numbers is similar to that of truly random numbers.  We won't go into such details, and for the sake of this class, feel free to act like the random numbers you generate are really random.
+Is this number truly random?  Not quite.  Programming languages often use pseudorandom numbers, which are actually produced in a deterministic fashion.  There are plenty of ways to make such numbers, but a common method involves "modding out" huge integers by large prime numbers.  There are several "randomness" tests that exist to check whether the behavior of pseudorandom numbers is similar to that of truly random numbers.  We won't go into such details, and for the sake of this class, feel free to act like the random numbers you generate are in fact random (even if they're not).
 
 
-> __Q:__ I would like to generate 100 numbers, randomly chosen between 3 and 5.  What should I do?
+> __Q:__ You would like to generate 100 numbers, randomly chosen between 3 and 5.  What should you do?
 
-In this case, R makes things quite easy.  The \texttt{runif} function actually has three arguments.  The first gives you the number of random numbers to generate.  The second and third give you a range of the lower and upper numbers from which you choose uniformly.
+In this case, R makes things quite easy.  The <TT>runif</TT> function actually has three arguments.  The first gives you the number of random numbers to generate.  The second and third give you a range of the lower and upper numbers from which you choose uniformly.
 ```{r}
 
 runif(10, 3, 5)
 ```
 
 
-If you move your cursor over a function, it will give you arguments.  Sometimes you can omit arguments, and R will just provide \textit{default values}.  What appear to be the default values of \texttt{runif}?
+If you move your cursor over a function, it will give you arguments.  Sometimes you can omit arguments, and R will just provide <TT>default values</TT>.  What appear to be the default values of <TT>runif</TT>?
 
-> __Q:__ By hovering your cursor over runif, can you tell whether an argument can be omitted, and what default value will be inserted for omitted arguments?  
+> __Q:__ By hovering your cursor over <TT>runif</TT>, can you tell whether an argument can be omitted, and what default value will be inserted for omitted arguments?  
 
 ## The console and R scripts.
 
@@ -57,30 +60,28 @@ Suppose we'd like to compute the product 23845*92834.  There are two ways to do 
 
 > __Q:__ Compute the product 23845*92834 using the command line.
 
-We can also evaluate by opening a \texttt{.r} file and running the code.  To do so, open a new file (\texttt{File -> New File -> R Script}) and type your product in the first line.  Then highlight the code you wish to run and click the ``Run" button just above your script.  Using an R script is a very good idea for (at least) two reasons.
+We can also evaluate by opening a <TT>.r</TT> file and running the code.  To do so, open a new file (<TT>File -> New File -> R Script</TT>) and type your product in the first line.  Then highlight the code you wish to run and click the ``Run" button just above your script.  Using an R script is a very good idea for (at least) two reasons.
 
-\begin{enumerate}
-\item You can save your code for later.  To save code, simply click on the floppy disk icon above the script (aside for youngsters: have you actually ever seen one of these things?) and give your file a name.  Make sure your file ends with `.r'.  Otherwise R studio won't know how to read it.
-\item Almost all programs involve multiple lines.  The console is good for evaluating quick programs (one-liners).  We'll see soon that nontrivial programs involve many steps, and to evaluate them all at the same time will involve using an R script.  
-\end{enumerate}
+1. You can save your code for later.  To save code, simply click on the floppy disk icon above the script (aside for youngsters: have you actually ever seen one of these things?) and give your file a name.  Make sure your file ends with `.r'.  Otherwise R studio won't know how to read it.
+2. Almost all programs involve multiple lines.  The console is good for evaluating quick programs (one-liners).  We'll see soon that nontrivial programs involve many steps, and to evaluate them all at the same time will involve using an R script.  
 
-> __Q:__ Find the product by using an R-script.  Save the file as \texttt{myfirstfile.r}.  Open the file to make sure all's well, and run the script again.
+
+> __Q:__ Find the product by using an R-script.  Save the file as <TT>myfirstfile.r</TT>.  Open the file to make sure all's well, and run the script again.
 
 ## Exploring basic functions
 
 R can function as a scientific calculator.  This is akin to saying that a nuclear bomb can function as a bug zapper.  The operators for addition, subtraction, multiplication, and division are given by 
 
-\begin{enumerate}
-\item $+$ for addition, so \texttt{1+1 = 2}.
-\item  $-$ for subtraction,  so \texttt{1-1 = 0}.
-\item $*$ for multiplication, so \texttt{2*3 = 6}.
-\item  $*$ for division, so \texttt{6/2 = 3}.
-\item  $\hat{}$ for exponentiation, so \texttt{2\^{}3 = 8}.
-\end{enumerate}
+1. $+$ for addition, so <TT>1+1 = 2</TT>.
+2.  $-$ for subtraction,  so <TT>1-1 = 0</TT>.
+3. $*$ for multiplication, so <TT>2*3 = 6</TT>.
+4.  $*$ for division, so <TT>6/2 = 3</TT>.
+5.  $\hat{}$ for exponentiation, so <TT>2\^3 = 8</TT>.
+
 
 The PEMDAS order of operations applies, although if you're in doubt, adding additional parentheses is the way to go.
 
-> __Q:__ Twitter sometimes generates controversy (actually, when does it \textit{not}?) by asking people to evaluate 6/2*(1+2).  What does R give?  What different responses do you think are often provided?  By using parentheses, how should the expression be written to remove any ambiguity?  Also, what happens when you type in 6/2(1+2)?
+> __Q:__ Twitter sometimes generates controversy (actually, when does it _not_?) by asking people to evaluate 6/2*(1+2).  What does R give?  What different responses do you think are often provided?  By using parentheses, how should the expression be written to remove any ambiguity?  Also, what happens when you type in 6/2(1+2)?
 
 The response from R is:
 ```{r}
@@ -107,14 +108,14 @@ The important point here is that parentheses clear any ambiguity regarding PEMDA
 
 ## Variables and class types
 
-If you want to save a value for later, we can use a \texttt{variable}.  For instance, let
+If you want to save a value for later, we can use a <TT>variable</TT>.  For instance, let
 
 ```{r}
 
 A = (6/2)*(1+2)
 ```
 
-There are two things to note here.  First, observe how no response is returned when you run this in an R script.  This is because we are simply creating a new variable, rather than commanding to print a value.  Second, note how the variable \texttt{A} is now stored in the \textit{Environment} on the upper right corner of RStudio.  You'll see the variable \texttt{A} along with its value `9'.  Rather than typing the the entire expression again, we can simply evaluate
+There are two things to note here.  First, observe how no response is returned when you run this in an R script.  This is because we are simply creating a new variable, rather than commanding to print a value.  Second, note how the variable <TT>A</TT> is now stored in the _Environment_ on the upper right corner of RStudio.  You'll see the variable <TT>A</TT> along with its value `9'.  Rather than typing the the entire expression again, we can simply evaluate
 
 ```{r}
 
@@ -122,8 +123,8 @@ A
 ```
 
 
-> __Q:__ R actually has a special expression \texttt{<-} which is used for object assignment.  
-Test this and create the same variable of A using this assigment.  Throughout these notes, we will most often use \texttt{=} for variable assignment (what's a very basic argument for why \texttt{=} is preferable to \texttt{<-}), but there are in fact cases where the two commands will give you different responses (this won't arise in our class, however).
+> __Q:__ R actually has a special expression <TT><-</TT> which is used for object assignment.  
+Test this and create the same variable of A using this assigment.  Throughout these notes, we will most often use <TT>=</TT> for variable assignment (what's a very basic argument for why <TT>=</TT> is preferable to <TT><-</TT>), but there are in fact cases where the two commands will give you different responses (this won't arise in our class, however).
 
 ```{r}
 
@@ -134,30 +135,30 @@ A
 
 
 
-Variables can span a vast collection of different types of \texttt{objects}.  The type of object can be found with \texttt{str}.
+Variables can span a vast collection of different types of _objects_.  The type of object can be found with <TT>str</TT>.
 
-> __Q:__ What kind of object is \texttt{A}?
+> __Q:__ What kind of object is <TT>A</TT>?
 
 ```{r}
 
 str(A)
 ```
 
-This tells you that you're dealing with a \texttt{numeric} variable, with a value of 9.  For another class of objects, consider \texttt{character objects} (often called \texttt{strings} in other languages), which is basically text valued variables.  Here's a popular "Hello World" program
+This tells you that you're dealing with a _numeric_ variable, with a value of 9.  For another class of objects, consider _character objects_ (often called _strings_ in other languages), which is basically text valued variables.  Here's a popular "Hello World" program
 
 ```{r}
 s = 'Hello World'
 s
 ```
 
-The variable \texttt{s} has object type
+The variable <TT>s</TT> has object type
 
 ```{r}
 str(s)
 ```
 
 
-We can also look at lists of numbers, called \textit{vectors}.  These are written using \texttt{c()} and then plugging in whatever number you want.  This is an ordered list, so \texttt{c(1,2)} is not the same as \texttt{c(2,1)}
+We can also look at lists of numbers, called _vectors_.  These are written using <TT>c()</TT> and then plugging in whatever number you want.  This is an ordered list, so <TT>c(1,2)</TT> is not the same as <TT>c(2,1)</TT>
 
 ```{r}
 v = c(6,4,7,3,8)
@@ -179,7 +180,7 @@ str(v)
 
 When mixing, R will convert everything to characters. It makes sense after some thought.  It's fairly easy to convert a string to a number again. It would be nonsensical, however, going the other way around and defining everything as a number.
 
-If you'd like to call on a certain index in a vector, use square brackets.  Like humans almost always do, R begins counting at 1.  This is not an obvious statement!  Many languages, such as Python begin counting at 0, and translating between the two is often filled with 'off by 1' errors.
+If you'd like to call on a certain index in a vector, use square brackets.  Like humans almost always do, R begins counting at 1.  This is not an obvious statement!  Many languages, such as Python, begin counting at 0, and translating between the two is often filled with 'off by 1' errors.
 
 ```{r}
 v = c('The','rain','in','Spain')
@@ -188,7 +189,7 @@ v[2]
 ```
 
 
-It's possible to call on several indices at once.  You can use a colon to call on a sequence of values
+It's possible to call on several indices at once.  You can use a colon to call on a sequence of values.
 
 ```{r}
 v = c('The','rain','in','Spain')
@@ -196,7 +197,7 @@ v = c('The','rain','in','Spain')
 v[1:3]
 ```
 
-Or you can simpy call in the index values using another vector
+Or you can simply call on the index values using another vector
 
 ```{r}
 v = c('The','rain','in','Spain')
@@ -206,6 +207,7 @@ v[c(1,3,4)]
 
 
 Let's now give a moment to discuss assigning multiple variables. We'll start with a simple example:
+
 > __Q:__ What do each of these programs evaluate? 
 
 ```{r}
@@ -228,11 +230,11 @@ print(b)
 
 ```
 
-Note the space in the second program! We've broken up the \texttt{<-} symbol into the two symbols \texttt{<} (less than) and - (negative sign).  So \texttt{b < -a} is actually asking a yes or no type question: Is \texttt{b} less than \texttt{-a}?  Since $b = -4 < 5 = -(-5) = -a$, then answer is "Yes", or in terms of R, \texttt{TRUE} or simply \texttt{1}.  This yes/no question didn't actually reassign \textbf{b}, so when we run \texttt{print(b)}, it simply returns it initial value of -4.
+Note the space in the second program! We've broken up the <TT><-</TT> symbol into the two symbols <TT><</TT> (less than) and - (negative sign).  So <TT>b < -a</TT> is actually asking a yes or no type question: Is <TT>b</TT> less than <TT>-a</TT>?  Since $b = -4 < 5 = -(-5) = -a$, then answer is "Yes", or in terms of R, <TT>TRUE</TT> or simply <TT>1</TT>.  This yes/no question didn't actually reassign <TT>b</TT>, so when we run <TT>print(b)</TT>, it simply returns it initial value of -4.
 
 ## Sorting
 
-We can also apply functions to variables.  Functions use parentheses to take in variables. \textbf{Beware!} It is a very, very common mistake to call on functions with brackets, or call a vector index with parentheses.
+We can also apply functions to variables.  Functions use parentheses to take in variables. __Beware!__ It is a very, very common mistake to call on functions with brackets, or call a vector index with parentheses.
 
 Consider the vector
 
@@ -262,22 +264,22 @@ Sorting is done alphabetically.
 v = c(3,6,4,6,1)
 sort(v, decreasing= TRUE)
 ```
-What, then, is the default value of \texttt{decreasing} in \texttt{sort}?
+What, then, is the default value of <TT>decreasing</TT> in <TT>sort</TT>?
 
 
 ## Zero, infinity, and everything in between
 
-It's important to remember that while computers often have the upper hand with calculating expressions, once in awhile they produce an answer that we humans can immediately identify as not exactly correctly.  For example, you should know from trigonometry that $\sin(\pi) = 0$ (you \textit{do} remember the unit circle, right?).  However, when we ask R to evaluate this expression, we obtain
+It's important to remember that while computers often have the upper hand with calculating expressions, once in awhile they produce an answer that we humans can immediately identify as not exactly correctly.  For example, you should know from trigonometry that $\sin(\pi) = 0$ (you _do_ remember the unit circle, right?).  However, when we ask R to evaluate this expression, we obtain
 
 ```{r}
 sin(pi)
 
 ```
 
-The "e-16" that we see in our answer means $10^{-16}$.  This is an extremely small number, but not quite the correct value of zero that we know is the exact answer.  The issue here isn't so much that we're interested in measuring something with 16 digits of accuracy. These kinds of demands on precision are quite rare.  Rather, problems may arise when dealing with things like \textit{if statements}, which we'll run into shortly.  By this, we might say something along the lines of "if an expression is equal to 0, then run some snippet of code".  If the expression we evaluate is very small, but not exactly 0, we would not run the code snippet. In general, be cautious about expecting precise answers, especially when evaluating with continuous functions like sines, exponentials, and logarithms.  
+The "e-16" that we see in our answer means $10^{-16}$.  This is an extremely small number, but not quite the correct value of zero that we know is the exact answer.  The issue here isn't so much that we're interested in measuring something with 16 digits of accuracy. These kinds of demands on precision are quite rare.  Rather, problems may arise when dealing with things like _if statements_, which we'll run into shortly.  By this, we might say something along the lines of "if an expression is equal to 0, then run some snippet of code".  If the expression we evaluate is very small, but not exactly 0, we would not run the code snippet. In general, be cautious about expecting precise answers, especially when evaluating with continuous functions like sines, exponentials, and logarithms.  
 
 
-Sometimes we'll deal with \textit{infinity}, denoted in mathematics as $\infty$, and expressed in R as \texttt{Inf}.  As you may have learned in calculus, infinity isn't exactly a \textit{number}, but more of a \textit{concept}.  Nevertheless, we can still treat $\infty$ as a number when dealing with calculations which are intuitive.  For instance, it's reasonable to say things like $\infty +1 = \infty$.  If there are infinitely many balls, and we remove or add some balls, then we should still have infinitely many balls, right?  Other cases aren't so obvious: what if we remove infinitely many balls?  Do we still have infinitely many left?  In ambiguous cases like these, we simply shrug our shoulders and say "Who knows?".  In R, expressing such an \textit{indeterminate form} ($0/0, \infty-\infty$, etc.) is given by \texttt{NaN} (read as "not a number").
+Sometimes we'll deal with _infinity_, denoted in mathematics as $\infty$, and expressed in R as <TT>Inf</TT>.  As you may have learned in calculus, infinity isn't exactly a _number_, but more of a _concept_.  Nevertheless, we can still treat $\infty$ as a number when dealing with calculations which are intuitive.  For instance, it's reasonable to say things like $\infty +1 = \infty$.  If there are infinitely many balls, and we remove or add some balls, then we should still have infinitely many balls, right?  Other cases aren't so obvious: what if we remove infinitely many balls?  Do we still have infinitely many left?  In ambiguous cases like these, we simply shrug our shoulders and say "Who knows?".  In R, expressing such an _indeterminate form_ ($0/0, \infty-\infty$, etc.) is given by <TT>NaN</TT> (read as "not a number").
 > __Q:__ What do each of the following commands do?
 
 ```{r}
@@ -303,7 +305,7 @@ Inf*Inf
 
 ## Booleans
 
-An operator which gives a value of \texttt{TRUE} or \texttt{FALSE} (1 or 0) is called a \textit{Boolean operator}.  Here are Booleans for comparing two numbers
+An operator which gives a value of <TT>TRUE</TT> or <TT>FALSE</TT> (1 or 0) is called a _Boolean operator_.  Here are Booleans for comparing two numbers.
 
 ```{r}
 

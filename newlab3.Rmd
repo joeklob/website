@@ -1,0 +1,217 @@
+---
+title: "Basic commands and functions with R"
+---
+
+# Functions
+
+## A few examples of basic functions in mathematics
+
+
+Here's a classic question from discrete mathematics: how should one go about summing  the integers from 1 to 1000?  Using summation notation, we can express this sum as 
+
+\begin{equation}
+\sum_{i = 1}^{1000} i = 1+2 + \dots + 999 +1000
+\end{equation}
+
+> __Q:__ What does each part in the above formula correspond to? 
+
+There are two ways to go about evaluating this sum. First you can always just use the __brute force method__ by listing the numbers you want to sum in a vector.  We use a colon to write the sequence from 1 to n. 
+
+
+```{r}
+
+V = 1:1000
+```
+
+Now you can just sum the elements by writing:
+
+```{r}
+
+sum(V)
+```
+
+A simpler method comes from using a __closed formula__.  You've hopefully encountered (and remembered!) this formula in calculus when evaluating Riemann sums
+\begin{equation}
+\sum_{i = 1}^{n} i = \frac{n(n+1)}2
+\end{equation}
+
+> __Q:__ Do you know how to show this formula?  If not, especially if you're a computer science or math major, you should take a look at __mathematical induction__, for which the above formula is a textbook example.  There's also a classic story about how Gauss solved summing 1 to 100 as a schoolboy by ``folding" the list of numbers.  Whether the story is actually true is unknown.
+
+The beauty of this closed formula is that you don't need an entire list of numbers to find what you want.  Here, we simply write
+
+```{r}
+n = 1000
+s = n*(n+1)/2
+s
+```
+
+The above is a first example of _computational complexity_ encountered in _algorithms_.  The first formula requires summing $n$ numbers (technically, $n-1$ sums), while the second simply has two multiplications and one sum, regardless of what $n$ is!  We would say that the first method is $O(n)$ (`order $n$') while the second is $O(1)$ ('order $1$').  The goal in developing algorithms is to make the number of operations as small as possible.  
+
+What about summing the first 1000 squares? This would be given by the sum
+
+\begin{equation}
+\sum_{i = 1}^{1000} i^2 = 1^2+2^2 + \dots + 999^2 +1000^2.
+\end{equation}
+
+To list squares of integers, we could write something that would look quite ghastly to a mathematician:
+
+```{r}
+s = (1:1000)**2
+s[1:10]
+sum(s)
+```
+
+> __Q:__ Why would such an expression raise eyebrows for a mathematician?
+
+Like the first sum we looked at, we can also use induction to show
+\begin{equation}
+\sum_{i = 1}^{n} i = \frac{n(n+1)(2n+1)}6.
+\end{equation}
+
+This is another closed form, meaning we have the $O(1)$ solution
+
+```{r}
+n = 1000
+s = n*(n+1)*(2*n+1)/6
+s
+```
+
+
+## Matrices
+
+__Matrices__ are the main currency of dealing with multiple dimensions.  A fancy term for a matrix is a __linear transformation__, which means that matrices are functions that take in lists of numbers (vectors) and spit out another list of numbers.  The linear part means that the function has very nice properties.  I won't go into the details now, but I strongly, strongly recommend that you take bone up on linear algebra, regardless of your discipline.  For now, we will essentially view matrices as `numbers in a box', as much as this phrase is an insult to the discipline.  Matrices have __rows__ and __columns__, and each number we put in a matrix is called an __entry__.  For instance, let's define the matrix
+
+\begin{equation}
+M = \begin{bmatrix}1 & 3 \\
+5 & 2 \\
+6 & 8 \\
+\end{bmatrix}
+\end{equation}
+
+The matrix $M$ has three rows and two columns.  The $i,j$th entry of $M$, often writen as $M_{i,j}$, corresponds to the entry in the $i$th row and $j$th column.  So entry $M_{3,1} = 6$.  In R, the matrix is written out as 
+
+```{r}
+M = matrix(c(1,5,6,3,2,8), 3,2)
+M
+```
+
+Note a few things here: the data is represented as a single vector in the first argument, where the first entries correspond to the first column, and then the second, etc.  The second and third arguments give the shape of the matrix (rows then columns).
+
+Summing matrices is what you would expect (element-wise multiplication).  This only makes sense if the two matrices we're adding have the same size:
+
+```{r}
+M = matrix(c(1,5,6,3,2,8), 3,2)
+N = matrix(c(2,1,4,3,6,-1), 3,2)
+M+N
+```
+
+Subtracting is essentially the same, but multiplication is not, at least in the traditional sense.  For those who know how to properly multiply matrices, multiplication is given by the operator <TT>\%*\%</TT>.
+
+```{r}
+M = matrix(c(1,5,6,3,2,8), 3,2)
+N = matrix(c(2,1,4,3,6,-1), 2,3)
+M %*% N
+```
+
+The `naive product' of multiplying elements entry by entry (known as the Hadamard product), denoted $M \circ N$, is again what you'd expect:
+
+```{r}
+M = matrix(c(1,5,6,3,2,8), 3,2)
+N = matrix(c(2,1,4,3,6,-1), 3,2)
+M*N
+```
+
+
+
+## Fun with <TT>mtcars</TT>
+
+Thus far, we've been going through basic information on different datatypes in R. But recall, we're in a data science class, so let's take a look at some data.  We'll obtain data from all different sources, but for now, we will use built in datasets provided by R. For our first dataset, we'll be looking at the <TT>mtcars</TT> dataset.
+
+```{r}
+mtcars
+```
+
+There's a bunch to take in here.  It looks like there's a list of cars representing rows, and then a large collection of variables which describe different features for each car.  What do they stand for?  For built in datasets, we can simply type in 
+
+```{r}
+?mtcars
+```
+
+On the bottom right of the RStudio window, we get a summary description of <TT>mtcars</TT>.  This includes a quick description (we're looking at cars from a 1974 _Motor Trend_ magazine), what the variables stand for, and where the dataset comes from (the source).
+
+> __Q:__ What kind of an object is <TT>mtcars</TT>?
+
+```{r}
+str(mtcars)
+```
+
+The object type is a __data frame__, which is the main form of representing datsets for R, at least for the purposes of this class.  Data frames allow us to represent different types of variables for each column (although in this case, <TT>mtcars</TT> is all numeric variables).  
+
+To look at a specific variable, we use the __accessor__ symbol <TT>$</TT>.  So, for instance, if we'd like to look at the miles per gallon of each vehicle, we type
+
+```{r}
+mtcars$mpg
+```
+
+
+> __Q:__ What is the highest mpg for all the cars?  Which car does it belong to?
+
+This is found using the <TT>max</TT> and <TT>which.max</TT> functions.
+
+```{r}
+max(mtcars$mpg)
+```
+
+```{r}
+which.max(mtcars$mpg)
+```
+
+While <TT>max</TT> gives the largest value, <TT>which.max</TT> gives what's called the _argmax_, meaning the argument which provides the maximum value.  In our case, the maximum occurs at the 20th element.  To get a name, we type
+
+```{r}
+rownames(mtcars)[which.max(mtcars$mpg)]
+```
+
+> __Q:__ Why did we use brackets in one place in parentheses in others?
+
+We can do the same thing for gears:
+
+```{r}
+max(mtcars$gear)
+rownames(mtcars)[which.max(mtcars$gear)]
+```
+
+> __Q:__ Notice anything fishy here? How can we fix it?
+
+
+The problem here is that there are several cars that have 5 gears.  How to list all of them?  One way is to index by a boolean statement
+
+```{r}
+
+b = mtcars$gear == max(mtcars$gear)
+rownames(mtcars)[b]
+```
+
+> __Q:__ Return a list giving a list of cars from the least mpg to the most mpg.
+
+As we explore different __packages__ for R (these are additional sets of tools we can download for various purposes), solving this question will be a one-liner. For now, we use the <TT>order</TT> function. 
+
+```{r}
+
+b =  order(mtcars$mpg)
+rownames(mtcars)[b][1:10]
+```
+
+> __Q:__ What does the <TT>order</TT> function do?  How about the \texttt{rank} function?
+
+> __Q:__ What if we wanted to list to be ordered from most mpg to least mpg?
+
+
+
+
+
+
+
+
+
+

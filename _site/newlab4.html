@@ -11,7 +11,7 @@
 
 
 
-<title>Some more tools for basic data manipulation</title>
+<title>Some tools for basic data manipulation</title>
 
 <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -313,7 +313,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Lectures</a>
+      <a class="navbar-brand" href="index.html">Data Science Notes</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -321,13 +321,16 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="newlab2.html">Lab2</a>
+  <a href="newlab2.html">Intro to R</a>
 </li>
 <li>
-  <a href="newlab4.html">Lab4</a>
+  <a href="newlab3.html">Commands and functions</a>
 </li>
 <li>
-  <a href="newlab5.html">Lab5</a>
+  <a href="newlab4.html">Data massaging: basics</a>
+</li>
+<li>
+  <a href="newlab5.html">Intro to programming</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -341,20 +344,22 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Some more tools for basic data manipulation</h1>
+<h1 class="title toc-ignore">Some tools for basic data manipulation</h1>
 
 </div>
 
 
-<div id="defining-new-variables" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Defining new variables</h1>
-<p>Let’s keep working with the  dataset. Before we dig in, let’s look at a few more functions which tell what our dataset looks like.</p>
+<div id="data-massaging" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Data massaging</h1>
+<div id="defining-new-variables" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Defining new variables</h2>
+<p>Let’s keep working with the <TT>mtcars</TT> dataset. Before we dig in, let’s look at a few more functions which tell what our dataset looks like.</p>
 <blockquote>
-<p><strong>Q:</strong> What type of object is ?</p>
+<p><strong>Q:</strong> What type of object is <TT>mtcars</TT>?</p>
 </blockquote>
 <pre class="r"><code>class(mtcars) </code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<p> is a , which is the main type of object for holding data. We’ll see soon that many  made for datasets assume that we’re working in dataframes.</p>
+<p><TT>mtcars</TT> is a <strong>data frame</strong>, which is the main type of object for holding data. We’ll see soon that many <strong>packages</strong> made for datasets assume that we’re working in data frames.</p>
 <p>We might also want to take a peek at our dataset without viewing the whole thing. This is done through</p>
 <pre class="r"><code>str(mtcars) </code></pre>
 <pre><code>## &#39;data.frame&#39;:    32 obs. of  11 variables:
@@ -369,7 +374,7 @@ div.tocify {
 ##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
 ##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
 ##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
-<p>How convenient! Here we are given the object type, the number of variables, their names, how many observations of each variable, and the first couple of datapoints to boot! To just see the first few entries, type</p>
+<p>How convenient! Here we are given the object type, the number of variables, their names, how many observations of each variable, and the first couple of data points to boot! To just see the first few entries, type</p>
 <pre class="r"><code>head(mtcars) </code></pre>
 <pre><code>##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
 ## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
@@ -378,10 +383,10 @@ div.tocify {
 ## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
 ## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
 ## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
-<p>Sometimes we will need to define new variables which are combinations of existing variables. For instance, one might be interested in creating a new variable called  (Note: the author is a mathematician, not an auto mechanic. I have no clue if this is a real thing…). We can define it by</p>
+<p>Sometimes we will need to define new variables which are combinations of existing variables. For instance, one might be interested in creating a new variable called <strong>horsepower efficiency</strong> (Note: the author is a mathematician, not an auto mechanic. I have no clue if this is a real thing…). We can define it by</p>
 <p><span class="math display">\[ \hbox{ HPE} = \mathrm{MPG}/\mathrm{HP}.\]</span> Here <span class="math inline">\(MPG\)</span> is the miles per gallon of a car, and <span class="math inline">\(HP\)</span> is its horsepower. In R, we can create calculate the HPE by</p>
 <pre class="r"><code>hpeffic = mtcars$mpg/mtcars$hp </code></pre>
-<p>Note that this type of language is anathema to the mathematician. It’s nonsense to divide a vector by a vector. To the R programmer, however, this is just pedantry. We all  what it means to divide two vectors. Just perform the division operation pointwise. When R does this for a function, we say that it is .</p>
+<p>Note that this type of language is anathema to the mathematician. It’s nonsense to divide a vector by a vector. To the R programmer, however, this is just pedantry. We all <em>know</em> what it means to divide two vectors. Just perform the division operation pointwise. When R does this for a function, we say that it is <strong>vectorized</strong>.</p>
 <blockquote>
 <p><strong>Q:</strong> For the vectors <span class="math inline">\(v = [3,5,2]\)</span> and <span class="math inline">\(w = [8,4,6]\)</span>, verify that addition, subtraction, multiplication, division, and exponentiation are all vectorized.</p>
 </blockquote>
@@ -401,7 +406,7 @@ v+w</code></pre>
 <blockquote>
 <p><strong>Q:</strong> Which cars have HPE greater than .1?</p>
 </blockquote>
-<p>This is done by using the  function. This gives indices of a list which satisfy a certain condition.</p>
+<p>This is done by using the <TT>which</TT> function. This gives indices of a list which satisfy a certain condition.</p>
 <pre class="r"><code>ind = which(hpeffic &gt; .1)
 
 rownames(mtcars)[ind]</code></pre>
@@ -421,9 +426,10 @@ rownames(mtcars)[ind]</code></pre>
 <pre class="r"><code>min(hpeffic)</code></pre>
 <pre><code>## [1] 0.04477612</code></pre>
 </div>
+</div>
 <div id="some-quick-plots" class="section level1" number="2">
 <h1 number="2"><span class="header-section-number">2</span> Some quick plots</h1>
-<p>R has built in features for producing some pretty decent looking visuals. Let’s take a look at a  which plots two features on a plane. We’ll do a scatter plot comparing mpg and horsepower.</p>
+<p>R has built in features for producing some pretty decent looking visuals. Let’s take a look at a <strong>scatterplot</strong> which plots two features on a plane. We’ll do a scatter plot comparing mpg and horsepower.</p>
 <pre class="r"><code>x = mtcars$mpg
 
 y = mtcars$hp
@@ -431,7 +437,7 @@ y = mtcars$hp
 plot(x,y, xlab = &#39;Miles per gallon&#39;, ylab = &#39;Horsepower&#39;)</code></pre>
 <p><img src="newlab4_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <blockquote>
-<p><strong>Q:</strong> What happens if we don’t include the text  and  in the arguments for ?</p>
+<p><strong>Q:</strong> What happens if we don’t include the text <TT>xlab</TT> and <TT>ylab</TT> in the arguments for <TT>plot</TT>?</p>
 </blockquote>
 <p>These arguments are not necessary, but they are nice to include if you’d like to make it clear to either yourself or someone else reading your code what your variables are.</p>
 <p>Now let’s do the another plot, comparing mpg with gears</p>
@@ -441,7 +447,7 @@ y = mtcars$gear
 
 plot(x,y, xlab = &#39;Miles per gallon&#39;, ylab = &#39;Gears&#39;)</code></pre>
 <p><img src="newlab4_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>The variable gears takes  values (e.g. 2,3,4) whereas mpg is a  varaible, taking values like 13.5, 18.4, etc. In a case like this, it’s more informative to use something called a .</p>
+<p>The variable gears takes <strong>discrete</strong> values (e.g. 2,3,4) whereas mpg is a <strong>continuous</strong> variable, taking values like 13.5, 18.4, etc. In a case like this, it’s more informative to use something called a <strong>box plot</strong>.</p>
 <pre class="r"><code>boxplot(mpg~gear, data = mtcars)</code></pre>
 <p><img src="newlab4_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <blockquote>
@@ -452,8 +458,8 @@ plot(x,y, xlab = &#39;Miles per gallon&#39;, ylab = &#39;Gears&#39;)</code></pre
 </blockquote>
 <pre class="r"><code>boxplot(gear~mpg, data = mtcars)</code></pre>
 <p><img src="newlab4_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>Yuck! If you picked up a newspaper and saw the above as a graph, you’d rightfully cancel your subscription. But why? It isn’t because the information presented is . This figure is indeed giving a range of gears for each value of mpg. The problem is that almost all of these mpgs have only a single value for mpg. A box plot in this case just looks awful, and it doesn’t do what graphs are supposed to do- compress information into a digestible form. The lesson here is to trust your eyes when making a figure.</p>
-<p>When you just want to look at a single continuous variable, use a . This will  values within a particular range. R does a pretty decent job deciding what the number of bins should be, most of the time, but sometimes you need to go in yourself and change the number of bins yourself.</p>
+<p>Yuck! If you picked up a newspaper and saw the above as a graph, you’d rightfully cancel your subscription. But why? It isn’t because the information presented is <em>incorrect</em>. This figure is indeed giving a range of gears for each value of mpg. The problem is that almost all of these mpgs have only a single value for mpg. A box plot in this case just looks awful, and it doesn’t do what graphs are supposed to do- compress information into a digestible form. The lesson here is to trust your eyes when making a figure.</p>
+<p>When you just want to look at a single continuous variable, use a <strong>histogram</strong>. This will <strong>bin</strong> values within a particular range. R does a pretty decent job deciding what the number of bins should be, most of the time, but sometimes you need to go in yourself and change the number of bins yourself.</p>
 <pre class="r"><code>hpeffic = mtcars$mpg/mtcars$hp
 
 hist(hpeffic, main = &quot;Histogram of horsepower efficiency&quot;)</code></pre>

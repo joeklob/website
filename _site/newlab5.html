@@ -313,7 +313,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Lectures</a>
+      <a class="navbar-brand" href="index.html">Data Science Notes</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -321,13 +321,16 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="newlab2.html">Lab2</a>
+  <a href="newlab2.html">Intro to R</a>
 </li>
 <li>
-  <a href="newlab4.html">Lab4</a>
+  <a href="newlab3.html">Commands and functions</a>
 </li>
 <li>
-  <a href="newlab5.html">Lab5</a>
+  <a href="newlab4.html">Data massaging: basics</a>
+</li>
+<li>
+  <a href="newlab5.html">Intro to programming</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -346,10 +349,12 @@ div.tocify {
 </div>
 
 
-<p>In the last section, we focused on what many would (mistakenly) consider the meat of a good data science class: pretty figures. That’s all well and good, but oftentimes it’s necessary to work with data at the ground level. Doing so requires asking some questions from . For instance, do I want to cycle through all the elements of my dataset? Or am I only considering those elements that pass a certain condition? Maybe I keep want to keep looking until a particular condition is fulfilled. Putting these logical constraints in a programmable form is the focus for this section, which we’ll visit through examples. In particular, we’ll cover the nuts and bolts of three central concepts of programming in R (or any language, really): if statements, for loops, and while loops.</p>
-<div id="functions" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Functions</h1>
-<p>A function is essentially something that takes something in, and returns something else. The possible stuff (or ) that can go into a function is called the , and possible things (or ) that the function can return is called the .</p>
+<div id="programming-basics-in-r" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Programming basics in R</h1>
+<p>In the last section, we focused on what many would (mistakenly) consider the meat of a good data science class: pretty figures. That’s all well and good, but oftentimes it’s necessary to work with data at the ground level. Doing so requires asking some questions from <strong>flow control</strong>. For instance, do we want to cycle through all the elements of my dataset? Or are we only considering those elements that pass a certain condition? Maybe we keep want to keep looking until a particular condition is fulfilled. Putting these logical constraints in a programmable form is the focus for this section, which we’ll visit through examples. In particular, we’ll cover the nuts and bolts of three central concepts of programming in R (or any language, really): if statements, for loops, and while loops.</p>
+<div id="functions" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Functions</h2>
+<p>A function is essentially something that takes something in, and returns something else. The possible stuff that can go into a function (<strong>inputs</strong>) is called the <strong>domain</strong>, and the collection of possible things that the function can return (<strong>outputs</strong>) is called the <strong>range</strong>.</p>
 <p>Usually the first thing you write in a programming class is the <em>Hello World</em> script. It simply prints out the statement “Hello World”.</p>
 <pre class="r"><code>Hello = function(){
 return(&#39;Hello world!&#39;)
@@ -358,8 +363,8 @@ return(&#39;Hello world!&#39;)
 
 Hello()</code></pre>
 <pre><code>## [1] &quot;Hello world!&quot;</code></pre>
-<p>Let’s take a look at each of the pieces here. On the first line, to the left of the equal sign, is where you name your function. In this case, our function is named  (it’s case sensitive, by the way), although you can name it whatever you want (well, almost whatever. You can’t start a variable with a number, for instance.) On the right hand side we simply write , and inside parentheses we place the inputs, those variables that the function will use. In our case, there are no inputs! This is perfectly fine. Later examples will show functions that use variables.</p>
-<p>After the inputs are typed in, we add a left brace. Rstudio will automatically place a right brace next to it. Inside your braces, you will write all needed code that gives your output. In this case, we simply want the statement . The output is what your function will return. Appropriately, place your output inside the  function.</p>
+<p>Let’s take a look at each of the pieces here. On the first line, to the left of the equal sign, is where you name your function. In this case, our function is named <TT>Hello</TT> (it’s case sensitive, by the way), although you can name it whatever you want (well, almost whatever. You can’t start a variable with a number, for instance.) On the right hand side we simply write <TT>function</TT>, and inside parentheses we place the inputs, those variables that the function will use. In our case, there are no inputs! This is perfectly fine. Later examples will show functions that use variables.</p>
+<p>After the inputs are typed in, we add a left brace. Rstudio will automatically place a right brace next to it. Inside your braces, you will write all needed code that gives your output. In this case, we simply want the statement <TT>Hello world</TT>. The output is what your function will return. Appropriately, place your output inside the <TT>return</TT> function.</p>
 <p>Now let’s look at a simple function which takes in an argument. We’ll call this the successor function</p>
 <pre class="r"><code>successor = function(n){
   
@@ -370,12 +375,12 @@ return(m)
 
 successor(13)</code></pre>
 <pre><code>## [1] 14</code></pre>
-<p>For this function, we take an input of <span class="math inline">\(n\)</span> and return an output of <span class="math inline">\(n+1\)</span>. Yes, we could have just written  and saved ourselves a line, but there’s an important point to be made.</p>
+<p>For this function, we take an input of <span class="math inline">\(n\)</span> and return an output of <span class="math inline">\(n+1\)</span>. Yes, we could have just written <TT>return(n+1)</TT> and saved ourselves a line, but there’s an important point to be made.</p>
 <blockquote>
 <p><strong>Q:</strong> What is the value of <span class="math inline">\(m\)</span>?</p>
 </blockquote>
-<p>Typing  into the console gives us an error!</p>
-<p>But why? If <span class="math inline">\(n= 13\)</span>, then surely <span class="math inline">\(m = 14\)</span>, right? Actually, no. The variable <span class="math inline">\(m\)</span> is what’s known as a . The means that <span class="math inline">\(m\)</span> is only defined within the context of the function . You can think of the function as being secretive, not allowing you to know what variables it’s using while it’s computing an output. In fact, we can define <span class="math inline">\(m\)</span> outside of the function, and nothing will go wrong. In this case, <span class="math inline">\(m\)</span> would be a global variable. To see this:</p>
+<p>Typing <TT>m</TT> into the console gives us an error!</p>
+<p>But why? If <span class="math inline">\(n= 13\)</span>, then surely <span class="math inline">\(m = 14\)</span>, right? Actually, no. The variable <span class="math inline">\(m\)</span> is what’s known as a <strong>local variable</strong>. The means that <span class="math inline">\(m\)</span> is only defined within the context of the function <TT>successor</TT>. You can think of the function as being secretive, not allowing you to know what variables it’s using while it’s computing an output. In fact, we can define <span class="math inline">\(m\)</span> outside of the function, and nothing will go wrong. In this case, <span class="math inline">\(m\)</span> would be a global variable. To see this:</p>
 <pre class="r"><code>successor = function(n){
   
 m = n+1
@@ -426,9 +431,9 @@ addmval2(6)</code></pre>
 <pre class="r"><code>m</code></pre>
 <pre><code>## [1] 7</code></pre>
 </div>
-<div id="if-statements" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> if statements</h1>
-<p>An  asks a yes or no question. If the answer is yes, then one block of code is followed. If no, then another block is followed instead.</p>
+<div id="if-statements" class="section level2" number="1.2">
+<h2 number="1.2"><span class="header-section-number">1.2</span> if statements</h2>
+<p>An <strong>if statment</strong> asks a yes or no question. If the answer is yes, then one block of code is followed. If no, then another block is followed instead.</p>
 <blockquote>
 <p><strong>Q:</strong> Use an if statement to generate a number that is one 1 with probability 1/2, and 0 with probability 1/2.</p>
 </blockquote>
@@ -438,8 +443,8 @@ addmval2(6)</code></pre>
     1
   }</code></pre>
 <pre><code>## [1] 1</code></pre>
-<p>What going on here? Your yes or no question will be wrapped inside . In our case, we’re asking whether , a randomly generated number between 0 and 1, is less than or greater than .5. Certainly, there’s a 50% chance that the answer is yes. The code which runs when the answer to your if statement is yes is then contained in curly braces. In our case, we simply return 0.</p>
-<p>If the answer to our question is no, we can simply write nothing more, and our code will simply do nothing. On the other hand, if you want a block of code to run, you will else an  statement. Make sure to place  on the same line as the closing brace of . In our case, if the answer is no, we produce a 1.</p>
+<p>What going on here? Your yes or no question will be wrapped inside <TT>if()</TT>. In our case, we’re asking whether <TT>runif(1)</TT>, a randomly generated number between 0 and 1, is less than or greater than .5. Certainly, there’s a 50% chance that the answer is yes. The code which runs when the answer to your if statement is yes is then contained in curly braces. In our case, we simply return 0.</p>
+<p>If the answer to our question is no, we can simply write nothing more, and our code will simply do nothing. On the other hand, if you want a block of code to run, you will else an <TT>else</TT> statement. Make sure to place <TT>else</TT> on the same line as the closing brace of <TT>if</TT>. In our case, if the answer is no, we produce a 1.</p>
 <p>For convenience, we can wrap this argument into a function. In fact, we’ll generalize, and simulate a biased coin that returns a 1 with probability <span class="math inline">\(p\)</span> and a 0 with probability <span class="math inline">\(1-p\)</span>:</p>
 <pre class="r"><code>flip = function(p){
 if (runif(1)&lt;p){
@@ -456,12 +461,14 @@ flip(.7)</code></pre>
 <pre class="r"><code>flip(.7)</code></pre>
 <pre><code>## [1] 1</code></pre>
 <pre class="r"><code>flip(.7)</code></pre>
-<pre><code>## [1] 1</code></pre>
-<pre class="r"><code>flip(.7)</code></pre>
 <pre><code>## [1] 0</code></pre>
-<p>Our function  is a function of one variable <span class="math inline">\(p \in [0,1]\)</span>. Because this function uses random numbers, we should not expect the same answers each time we run this function.<br />
-## for loops</p>
-<p>Our last command looked quite clunky. What if we wanted to repeat the flip 100 times? Would we have to copy/paste  100 times? What if we wanted a million flips? Repeating blocks of code can be expressed through the convenience of . For loops cycle through a set of values for a variable, and execute the under each instance of this variable. For example, here’s a simple code for summing the first <span class="math inline">\(n\)</span> numbers</p>
+<pre class="r"><code>flip(.7)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<p>Our function <TT>flip</TT> is a function of one variable <span class="math inline">\(p \in [0,1]\)</span>. Because this function uses random numbers, we should not expect the same answers each time we run this function.</p>
+</div>
+<div id="for-loops" class="section level2" number="1.3">
+<h2 number="1.3"><span class="header-section-number">1.3</span> for loops</h2>
+<p>Our last command looked quite clunky. What if we wanted to repeat the flip 100 times? Would we have to copy/paste <TT>flip(.7)</TT> 100 times? What if we wanted a million flips? Repeating blocks of code can be expressed through the convenience of <strong>or loops</strong>. For loops cycle through a set of values for a variable, and execute the under each instance of this variable. For example, here’s a simple code for summing the first <span class="math inline">\(n\)</span> numbers</p>
 <pre class="r"><code>n = 100
 s = 1
 
@@ -471,14 +478,23 @@ for (i in 2:n){
 
 s</code></pre>
 <pre><code>## [1] 5050</code></pre>
-<p>Let’s go through this for loop step by step. The statement wrapped in parentheses next to  tells us what collection of numbers, or strings, or general objects that we will “loop” through. In our cases, we are going to consider the number  at <span class="math inline">\(i = 2\)</span>, then <span class="math inline">\(i = 3\)</span>, <span class="math inline">\(i = 4\)</span>, and so on until we reach <span class="math inline">\(i = 99\)</span> and <span class="math inline">\(i = n = 100\)</span>. For each value of <span class="math inline">\(i\)</span>, we perform the code wrapped in curly braces. So in words, our code does the following:</p>
-<div id="the-fibonacci-sequence" class="section level2" number="2.1">
-<h2 number="2.1"><span class="header-section-number">2.1</span> The Fibonacci sequence</h2>
-<p>(i)The Fibonacci sequence satisfies the following relation</p>
+<p>Let’s go through this for loop step by step. The statement wrapped in parentheses next to <TT>for</TT> tells us what collection of numbers, or strings, or general objects that we will “loop” through. In our cases, we are going to consider the number <TT>i</TT> at <span class="math inline">\(i = 2\)</span>, then <span class="math inline">\(i = 3\)</span>, <span class="math inline">\(i = 4\)</span>, and so on until we reach <span class="math inline">\(i = 99\)</span> and <span class="math inline">\(i = n = 100\)</span>. For each value of <span class="math inline">\(i\)</span>, we perform the code wrapped in curly braces. So in words, our code does the following:</p>
+<ol style="list-style-type: decimal">
+<li>Initialize <span class="math inline">\(s = 1\)</span>.</li>
+<li>The first value of <span class="math inline">\(i\)</span> is 2. The code says to redefine <span class="math inline">\(s\)</span> as <span class="math inline">\(s+i = 1+3 = 3\)</span>. So now <span class="math inline">\(s = 2\)</span>.</li>
+<li>The next value of <span class="math inline">\(i\)</span> is 3. The code says to redefine <span class="math inline">\(s\)</span> as <span class="math inline">\(s+i = 3+3 = 6\)</span>. So now <span class="math inline">\(s = 6\)</span>.</li>
+<li>The next value of <span class="math inline">\(i\)</span> is 4. The code says to redefine <span class="math inline">\(s\)</span> as <span class="math inline">\(s+i = 6+4 = 10\)</span>. So now <span class="math inline">\(s = 10\)</span>.</li>
+<li>Do it again and again and again for <span class="math inline">\(i = 5, 6, 7, \dots, 99, 100\)</span>, each time changing the value of <span class="math inline">\(s\)</span>.</li>
+<li>Return the value of <span class="math inline">\(s\)</span> once the loop is complete. This is given by <span class="math display">\[s = \sum_{i = 1}^{100} i= 100(101)/2 = 5050\]</span></li>
+</ol>
+</div>
+<div id="the-fibonacci-sequence" class="section level2" number="1.4">
+<h2 number="1.4"><span class="header-section-number">1.4</span> The Fibonacci sequence</h2>
+<p>The Fibonacci sequence satisfies the following relation</p>
 <p><span class="math display">\[\begin{equation}
 F_1 = 1, \quad F_2 = 1, \qquad F_k = F_{k-1}+F_{k-2} \hbox{ for } k\ge 3.
 \end{equation}\]</span></p>
-<p>This sequence comes from an idealized case of  from the Italian mathematician Leonardo de Pisa, also known as Fibonacci. The idea is that <span class="math inline">\(F_k\)</span> denotes pairs of rabbits after <span class="math inline">\(k\)</span> generations. Each pair of rabbits generates a new pair of rabbits after having grown up for a single generation, and rabbits (in this idealized model) never die. The number of pairs of rabbits are there in the <span class="math inline">\(k\)</span>th generation equal the number from the previous generation <span class="math inline">\(F_{k-1}\)</span>, plus the number of rabbits created from mature rabbits, <span class="math inline">\(F_{k-2}\)</span> (why is this the case?).</p>
+<p>This sequence comes from an idealized case of <strong>population dynamics</strong> from the Italian mathematician Leonardo de Pisa, also known as Fibonacci. The idea is that <span class="math inline">\(F_k\)</span> denotes pairs of rabbits after <span class="math inline">\(k\)</span> generations. Each pair of rabbits generates a new pair of rabbits after having grown up for a single generation, and rabbits (in this idealized model) never die. The number of pairs of rabbits are there in the <span class="math inline">\(k\)</span>th generation equal the number from the previous generation <span class="math inline">\(F_{k-1}\)</span>, plus the number of rabbits created from mature rabbits, <span class="math inline">\(F_{k-2}\)</span> (why is this the case?).</p>
 <blockquote>
 <p><strong>Q:</strong> Write a function  that computes the nth Fibonacci number. Plot <span class="math inline">\(F_k\)</span> for the first <span class="math inline">\(k = 30\)</span> generations.</p>
 </blockquote>
@@ -496,7 +512,7 @@ for (i in 3:30){
  
 Fibb[1:5]</code></pre>
 <pre><code>## [1] 1 1 2 3 5</code></pre>
-<pre class="r"><code>plot(Fibb, xlab = &#39;Generation&#39;, ylab = &#39;Pairs of Rabbits&#39;)</code></pre>
+<pre class="r"><code>plot(Fibb, xlab = &#39;Generation&#39;, ylab = &#39;Pairs of Rabbits&#39;, type = &#39;l&#39;)</code></pre>
 <p><img src="newlab5_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>This graph explains why the term “breed like rabbits” makes sense. Under this model for population dynamics, the number of rabbits becomes huge, and quick.</p>
 <blockquote>
@@ -518,12 +534,12 @@ Fibb[1:10]</code></pre>
 <p><strong>Q:</strong> What do you think the function  does? fAlso, why do we call  with square brackets, but not do the same with ?</p>
 </blockquote>
 <p>The formula used above <span class="math display">\[F_n = \frac{\phi^n-\psi^n}{\sqrt{5}}, \quad n \ge 1,\qquad \phi = (1+\sqrt 5)/2, \quad \psi = 1-\phi,\]</span></p>
-<p>could be proved using an educated guess (or ) about the form of the recurrence relation. In particular, we can guess <span class="math inline">\(F_k = c^k\)</span>, plug the guess into our recurrence, and derive a quadratic which shows <span class="math inline">\(c = \phi\)</span> or <span class="math inline">\(\psi\)</span>. Upon inspection, the exact expression looks rather strange. Certainly, each <span class="math inline">\(F_k\)</span> is a positive integer (there are no half rabbits), but we nevertheless see a factor of <span class="math inline">\(\sqrt 5\)</span>!. Both <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\psi\)</span> contain <span class="math inline">\(\sqrt 5\)</span>, so things work out and the answer is always a positive integer, but this fact is far from obvious if you were just given the formula.</p>
+<p>could be proved using an educated guess (or <strong>ansatz</strong>) about the form of the recurrence relation. In particular, we can guess <span class="math inline">\(F_k = c^k\)</span>, plug the guess into our recurrence, and derive a quadratic which shows <span class="math inline">\(c = \phi\)</span> or <span class="math inline">\(\psi\)</span>. Upon inspection, the exact expression looks rather strange. Certainly, each <span class="math inline">\(F_k\)</span> is a positive integer (there are no half rabbits), but we nevertheless see a factor of <span class="math inline">\(\sqrt 5\)</span>!. Both <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\psi\)</span> contain <span class="math inline">\(\sqrt 5\)</span>, so things work out and the answer is always a positive integer, but this fact is far from obvious if you were just given the formula.</p>
 </div>
-<div id="while-loops" class="section level2" number="2.2">
-<h2 number="2.2"><span class="header-section-number">2.2</span> while loops</h2>
-<p>A  loop will execute a block of code until a certain condition is fulfilled. The syntax is very similar to a for loop.</p>
-<p>Let’s do an example for the , often seen in probability theory and finance. The idea is the following, let <span class="math inline">\(X_0 = 0\)</span> and define <span class="math inline">\(X_k\)</span> recursively by <span class="math display">\[X_k = X_{k-1}+ B_{k},\]</span> where <span class="math inline">\(B_k\)</span> takes the value 1 with probability 1/2, and -1 with probability 1/2. You can think of <span class="math inline">\(B_k\)</span> as a random step. Let’s write a program for this random step, which is pretty close to the  function we wrote before.</p>
+<div id="while-loops" class="section level2" number="1.5">
+<h2 number="1.5"><span class="header-section-number">1.5</span> while loops</h2>
+<p>A <TT>while</TT> loop will execute a block of code until a certain condition is fulfilled. The syntax is very similar to a for loop.</p>
+<p>Let’s do an example for the <strong>random walk</strong>, often seen in probability theory and finance. The idea is the following, let <span class="math inline">\(X_0 = 0\)</span> and define <span class="math inline">\(X_k\)</span> recursively by <span class="math display">\[X_k = X_{k-1}+ B_{k},\]</span> where <span class="math inline">\(B_k\)</span> takes the value 1 with probability 1/2, and -1 with probability 1/2. You can think of <span class="math inline">\(B_k\)</span> as a random step. Let’s write a program for this random step, which is pretty close to the <TT>flip</TT> function we wrote before.</p>
 <pre class="r"><code>step = function(p){
 if (runif(1)&lt;p){
   -1
@@ -546,7 +562,7 @@ for (i in 2:n){
 
 plot(walk, type = &#39;l&#39;)</code></pre>
 <p><img src="newlab5_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p>Random walks serve as rudimentary models of stock prices. A common desire when investing is to invest at a certain amount, and then sell when a stock price hits a certain number. When this occurs is called a .</p>
+<p>Random walks serve as rudimentary models of stock prices. A common desire when investing is to invest at a certain amount, and then sell when a stock price hits a certain number. When this occurs is called a <strong>hitting time</strong>.</p>
 <p>Suppose we buy a stock at $10, and that each time increment represents a day. Let’s run a simulation that stops the stock when either the stock is at $15 (hooray!) or $5 (agony!). This is where we will first use our while loop.</p>
 <pre class="r"><code>#Initial price
 S = 10
@@ -572,9 +588,14 @@ abline(h = 15, col = &#39;red&#39;)</code></pre>
 <p><strong>Q:</strong> Can you write the conditional above using “or”s (given by “||”) rather than “and”s?</p>
 </blockquote>
 </div>
-<div id="the-collatz-conjecture" class="section level2" number="2.3">
-<h2 number="2.3"><span class="header-section-number">2.3</span> The Collatz conjecture</h2>
+<div id="the-collatz-conjecture" class="section level2" number="1.6">
+<h2 number="1.6"><span class="header-section-number">1.6</span> The Collatz conjecture</h2>
 <p>Pick a number, any number (well, make sure it’s a positive integer). Call it <span class="math inline">\(N\)</span>. Consider the following algorithm:</p>
+<ol style="list-style-type: decimal">
+<li>Start with a positive number <span class="math inline">\(N&gt;1\)</span></li>
+<li>If your number is even, divide it by 2, if it is odd, multiply it by 3 and add 1</li>
+<li>If your number is <span class="math inline">\(1\)</span> stop. If it isn’t return to step 2</li>
+</ol>
 <p>So, for instance, some iterates of this algorithm are <span class="math display">\[\begin{align}
 \hbox{(Starting at 3)} \quad  3\rightarrow  10 \rightarrow 5 \rightarrow
 16 \rightarrow 8 \rightarrow 4 \rightarrow 2 \rightarrow 1 \\
@@ -614,13 +635,13 @@ collvec = sapply(1:10000, Collatz)
 hist(collvec, breaks= 100, xlab = &quot;Length of Collatz Orbits&quot;, main = &quot;Histogram of Collatz
      orbits for first 10,000 numbers&quot;)</code></pre>
 <p><img src="newlab5_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<p>Here, we have again used the  function. This creates a vector that applies a function to each value of a vector that you supply for the function. In our case,  gives us a vector where the first element is equal to , the second element is equal to , and so on.</p>
+<p>Here, we have again used the <TT>sapply</TT> function. This creates a vector that applies a function to each value of a vector that you supply for the function. In our case, <TT>(1:10000, Collatz)</TT> gives us a vector where the first element is equal to <TT>Collatz(1)</TT>, the second element is equal to <TT>Collatz(2)</TT>, and so on.</p>
 </div>
-<div id="the-ok-corral-model" class="section level2" number="2.4">
-<h2 number="2.4"><span class="header-section-number">2.4</span> The OK Corral model</h2>
+<div id="the-ok-corral-model" class="section level2" number="1.7">
+<h2 number="1.7"><span class="header-section-number">1.7</span> The OK Corral model</h2>
 <p>The OK Corral model was introduced by the probabilists Williams and McIlroy in 1998. The model describes two group of outlaws caught in a random gunfight. Suppose we start with two groups, The Rascals and The Varmints, each having 100 members. In R, we can initialize with</p>
-<p></p>
-<p></p>
+<p><TT>R = 100</TT></p>
+<p><TT>V = 100</TT></p>
 <p>Let’s suppose that shots occur in succession, one at a time. Each member has an equal probability to fire. If a Rascal is selected, he will shoot a Varmint, and if a Varmint is selected, he will shoot a Rascal. Given <span class="math inline">\(R\)</span> Rascals and <span class="math inline">\(V\)</span> Varmints, the probability that a Rascal is selected to shoot is <span class="math inline">\(p_R = R/(V+R)\)</span>, and the probability that a Varmint is selected is <span class="math inline">\(1-p_R = V/(V+R)\)</span>. Here’s a function that returns a 0 if a Varmint shoots and a 1 if a Rascal shoots.</p>
 <pre class="r"><code>V = 100
 R = 100
@@ -649,7 +670,7 @@ whoshoots(V,R)</code></pre>
 }
 
 shot(V,R)</code></pre>
-<pre><code>## [1] 100  99</code></pre>
+<pre><code>## [1]  99 100</code></pre>
 <p>Now let’s simulate a gunfight until one side is wiped out, and document the demise of the Rascals, plotting the total number of Rascals for each shot</p>
 <pre class="r"><code>V = 1000
 R = 1000
@@ -712,11 +733,11 @@ matplot(t(rascalpaths), type = &#39;l&#39;, col = &#39;black&#39;,lty = 1, xlab 
 <p>Note that when a rascal path is flat, then this means that the Rascals have won the gunfight. Let’s take a look at a histogram of the number of survivors.</p>
 <pre class="r"><code>hist(numdraws, breaks = 20)</code></pre>
 <p><img src="newlab5_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<p>An absolutely remarkable result from Williams and McIlroy, in their short paper  is that if the intiial number of Rascals and Varmints are then same, then the expected number of survivors satisfies</p>
+<p>An absolutely remarkable result from Williams and McIlroy, in their short paper <em>The OK Corral and the Power of the Law (A Curious Poisson-Kernel Formula for a Parabolic Equation)</em> is that if the intial number of Rascals and Varmints are then same, then the expected number of survivors satisfies</p>
 <p><span class="math display">\[
 \mathbb E[S] \sim 2(3)^{1/4}\pi^{-1/2}\Gamma(3/4)r_0
 \]</span> where</p>
-<p><span class="math display">\[ \Gamma(s) = \int_0^\infty x^{s-1}e^{-x} dx, \quad s&gt;0\]</span> and <span class="math inline">\(r_0\)</span> is the initial number of rascals. Also, <span class="math inline">\(\mathbb E[S]\)</span> is the  of the random quantity <span class="math inline">\(S\)</span>. This means that if we ran the experiment many times and took the average number of survivors, we would have something very close to <span class="math inline">\(\mathbb E[S]\)</span>. Finally, we write <span class="math inline">\(f(x) \sim g(x)\)</span> if <span class="math inline">\(f(x)/g(x) \rightarrow 1\)</span> as <span class="math inline">\(x \rightarrow \infty\)</span>.</p>
+<p><span class="math display">\[ \Gamma(s) = \int_0^\infty x^{s-1}e^{-x} dx, \quad s&gt;0\]</span> and <span class="math inline">\(r_0\)</span> is the initial number of rascals. Also, <span class="math inline">\(\mathbb E[S]\)</span> is the <strong>expected value</strong> of the random quantity <span class="math inline">\(S\)</span>. This means that if we ran the experiment many times and took the average number of survivors, we would have something very close to <span class="math inline">\(\mathbb E[S]\)</span>. Finally, we write <span class="math inline">\(f(x) \sim g(x)\)</span> if <span class="math inline">\(f(x)/g(x) \rightarrow 1\)</span> as <span class="math inline">\(x \rightarrow \infty\)</span>.</p>
 <p>Let’s test if this result holds in our experiments:</p>
 <pre class="r"><code>#This gives a sample mean of our 100 experiments, 
 #which is an approximation of the expected value. 
@@ -727,7 +748,7 @@ K = 3^{-1/4}*pi^{-1/2}*gamma(3/4)
 guess = 2*K*vinit^(3/4)
 
 pathsampmean/guess</code></pre>
-<pre><code>## [1] 1.029143</code></pre>
+<pre><code>## [1] 1.070088</code></pre>
 <p>Not bad!</p>
 </div>
 </div>

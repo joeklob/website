@@ -313,7 +313,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Lectures</a>
+      <a class="navbar-brand" href="index.html">Data Science Notes</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -321,13 +321,16 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="newlab2.html">Lab2</a>
+  <a href="newlab2.html">Intro to R</a>
 </li>
 <li>
-  <a href="newlab4.html">Lab4</a>
+  <a href="newlab3.html">Commands and functions</a>
 </li>
 <li>
-  <a href="newlab5.html">Lab5</a>
+  <a href="newlab4.html">Data massaging: basics</a>
+</li>
+<li>
+  <a href="newlab5.html">Intro to programming</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -346,16 +349,18 @@ div.tocify {
 </div>
 
 
-<div id="searching" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Searching</h1>
-<p>In this section, we will introduce some well known built in functions. Like any other developed programming language, the R lexicon contains thousands of words for various functions. We’ll cover a select few in what follows, but it would be overbearing and unproductive to try providing an exhaustive list. Finding the correct function when programming will often involve reading  or a trip to . Certainly, you’ve spent years of training on search engines looking for all sorts of things. This skill (and it is, indeed, a skill) will come in handy for when you would like to find the correct function for a task.</p>
-<p>By documentation, we mean that R, along with all other popular programming languages, has written explanations for how their commands actually work. In R, documentation is available online at the <a href="www.cran.r-project.org">Comprehensive R Archive Network</a> (CRAN). A common first place to look is <a href="www.stackexchange.com">Stack Exchange</a>. Here, fellow frustrated programmers post questions concerning all types of languages. Often, it makes sense to include your language in whatever type of query you plug into a search engine (e.g. search “how to sort a list R” rather than “how to sort a list”).</p>
+<div id="introduction" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Introduction</h1>
+<p>In this section, we will introduce some well known built-in functions. Like any other developed programming language, the R lexicon contains thousands of words which denote various functions. We’ll cover a select few in what follows, but it would be overbearing and unproductive to try providing an exhaustive list. Finding the correct function when programming will often involve reading <em>R documentation</em> or a trip to <em>Stack Exchange</em>. Certainly, you’ve spent years of training on search engines looking for all sorts of things. This skill (and it is, indeed, a skill) will come in handy for when you would like to find the correct function for a task.</p>
+<p>By documentation, we mean that R, along with all other popular programming languages, has written explanations for how their commands actually work. In R, documentation is available online at the <a href="https://cran.r-project.org">Comprehensive R Archive Network</a> (CRAN). A common first place to look is <a href="https://stackexchange.com/">Stack Exchange</a>. Here, fellow frustrated programmers post questions concerning all types of languages. Often, it makes sense to include your language in whatever type of query you plug into a search engine (e.g. search for “how to sort a list R” rather than “how to sort a list”).</p>
 <p>A convention for these notes will be the posting of questions marked with a <strong>Q:</strong>. Sometimes these questions will be answered, and other times you’ll be left to figure things out on your own.</p>
 <blockquote>
 <p><strong>Q:</strong> Suppose you want to multiply two numbers on R. By any means necessary, find the correct symbol.</p>
 </blockquote>
-<p>The answer here is pretty simple: multiplication is denoted by the "*" symbol. Here, and in many times in the future, we are going to show code (presented in gray blocks), along with the output of code given in . Typewriter font is essentially a way to communicate that was is being written in notes can be directly copied to a programming language (sometimes urls are also written in typewriter font). So, to demonstrate multiplication in R, we may write, for example</p>
-<pre class="r"><code>#Comment for R code.  Comments give explanations #about what is going on with code, 
+<p>The answer here is pretty simple: multiplication is denoted by the "*" symbol. Here, and in many times in the future, we are going to show code (presented in gray blocks), along with the output of code given in <TT>typewriter font</TT>. Text in typewriter font is essentially communicating that was is being written can be directly copied to a programming language (sometimes urls are also written in typewriter font).</p>
+<p>Let’s give an example. To demonstrate multiplication in R, we may write, for example</p>
+<pre class="r"><code>#Comment for R code.  Comments give explanations 
+#about what is going on with code, 
 #but are not actually used in compiling (running) a program.
 #Lots of helpful commenting is common practice for good programmers.
 
@@ -363,21 +368,21 @@ div.tocify {
 <pre><code>## [1] 20</code></pre>
 <p>For another example, let’s look at randomly generated numbers, a concept that we will run into quite often. To draw a single random number, we use</p>
 <pre class="r"><code>runif(1)</code></pre>
-<pre><code>## [1] 0.6375225</code></pre>
+<pre><code>## [1] 0.9273334</code></pre>
 <blockquote>
 <p><strong>Q:</strong> If I ran  again, should I expect to produce the same number again?</p>
 </blockquote>
-<p>Is this number truly random? Not quite. Programming languages often use pseudorandom numbers, which are actually produced in a deterministic fashion. There are plenty of ways to make such numbers, but a common method involves “modding out” by large prime numbers. There are several “randomness” tests that exist to check whether the behavior of pseudorandom numbers is similar to that of truly random numbers. We won’t go into such details, and for the sake of this class, feel free to act like the random numbers you generate are really random.</p>
+<p>Is this number truly random? Not quite. Programming languages often use pseudorandom numbers, which are actually produced in a deterministic fashion. There are plenty of ways to make such numbers, but a common method involves “modding out” huge integers by large prime numbers. There are several “randomness” tests that exist to check whether the behavior of pseudorandom numbers is similar to that of truly random numbers. We won’t go into such details, and for the sake of this class, feel free to act like the random numbers you generate are in fact random (even if they’re not).</p>
 <blockquote>
-<p><strong>Q:</strong> I would like to generate 100 numbers, randomly chosen between 3 and 5. What should I do?</p>
+<p><strong>Q:</strong> You would like to generate 100 numbers, randomly chosen between 3 and 5. What should you do?</p>
 </blockquote>
-<p>In this case, R makes things quite easy. The  function actually has three arguments. The first gives you the number of random numbers to generate. The second and third give you a range of the lower and upper numbers from which you choose uniformly.</p>
+<p>In this case, R makes things quite easy. The <TT>runif</TT> function actually has three arguments. The first gives you the number of random numbers to generate. The second and third give you a range of the lower and upper numbers from which you choose uniformly.</p>
 <pre class="r"><code>runif(10, 3, 5)</code></pre>
-<pre><code>##  [1] 3.410314 3.625337 4.414432 3.651803 3.268997 3.331552 3.616778 4.637545
-##  [9] 4.036260 3.431658</code></pre>
-<p>If you move your cursor over a function, it will give you arguments. Sometimes you can omit arguments, and R will just provide . What appear to be the default values of ?</p>
+<pre><code>##  [1] 3.194632 4.536187 4.958865 3.731961 3.520843 3.506919 3.645003 3.711089
+##  [9] 3.151063 3.174583</code></pre>
+<p>If you move your cursor over a function, it will give you arguments. Sometimes you can omit arguments, and R will just provide <TT>default values</TT>. What appear to be the default values of <TT>runif</TT>?</p>
 <blockquote>
-<p><strong>Q:</strong> By hovering your cursor over runif, can you tell whether an argument can be omitted, and what default value will be inserted for omitted arguments?</p>
+<p><strong>Q:</strong> By hovering your cursor over <TT>runif</TT>, can you tell whether an argument can be omitted, and what default value will be inserted for omitted arguments?</p>
 </blockquote>
 <div id="the-console-and-r-scripts." class="section level2" number="1.1">
 <h2 number="1.1"><span class="header-section-number">1.1</span> The console and R scripts.</h2>
@@ -385,17 +390,28 @@ div.tocify {
 <blockquote>
 <p><strong>Q:</strong> Compute the product 23845*92834 using the command line.</p>
 </blockquote>
-<p>We can also evaluate by opening a  file and running the code. To do so, open a new file () and type your product in the first line. Then highlight the code you wish to run and click the ``Run" button just above your script. Using an R script is a very good idea for (at least) two reasons.</p>
+<p>We can also evaluate by opening a <TT>.r</TT> file and running the code. To do so, open a new file (<TT>File -&gt; New File -&gt; R Script</TT>) and type your product in the first line. Then highlight the code you wish to run and click the ``Run" button just above your script. Using an R script is a very good idea for (at least) two reasons.</p>
+<ol style="list-style-type: decimal">
+<li>You can save your code for later. To save code, simply click on the floppy disk icon above the script (aside for youngsters: have you actually ever seen one of these things?) and give your file a name. Make sure your file ends with `.r’. Otherwise R studio won’t know how to read it.</li>
+<li>Almost all programs involve multiple lines. The console is good for evaluating quick programs (one-liners). We’ll see soon that nontrivial programs involve many steps, and to evaluate them all at the same time will involve using an R script.</li>
+</ol>
 <blockquote>
-<p><strong>Q:</strong> Find the product by using an R-script. Save the file as . Open the file to make sure all’s well, and run the script again.</p>
+<p><strong>Q:</strong> Find the product by using an R-script. Save the file as <TT>myfirstfile.r</TT>. Open the file to make sure all’s well, and run the script again.</p>
 </blockquote>
 </div>
 <div id="exploring-basic-functions" class="section level2" number="1.2">
 <h2 number="1.2"><span class="header-section-number">1.2</span> Exploring basic functions</h2>
 <p>R can function as a scientific calculator. This is akin to saying that a nuclear bomb can function as a bug zapper. The operators for addition, subtraction, multiplication, and division are given by</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(+\)</span> for addition, so <TT>1+1 = 2</TT>.</li>
+<li><span class="math inline">\(-\)</span> for subtraction, so <TT>1-1 = 0</TT>.</li>
+<li><span class="math inline">\(*\)</span> for multiplication, so <TT>2*3 = 6</TT>.</li>
+<li><span class="math inline">\(*\)</span> for division, so <TT>6/2 = 3</TT>.</li>
+<li><span class="math inline">\(\hat{}\)</span> for exponentiation, so <TT>2^3 = 8</TT>.</li>
+</ol>
 <p>The PEMDAS order of operations applies, although if you’re in doubt, adding additional parentheses is the way to go.</p>
 <blockquote>
-<p><strong>Q:</strong> Twitter sometimes generates controversy (actually, when does it ?) by asking people to evaluate 6/2*(1+2). What does R give? What different responses do you think are often provided? By using parentheses, how should the expression be written to remove any ambiguity? Also, what happens when you type in 6/2(1+2)?</p>
+<p><strong>Q:</strong> Twitter sometimes generates controversy (actually, when does it <em>not</em>?) by asking people to evaluate 6/2*(1+2). What does R give? What different responses do you think are often provided? By using parentheses, how should the expression be written to remove any ambiguity? Also, what happens when you type in 6/2(1+2)?</p>
 </blockquote>
 <p>The response from R is:</p>
 <pre class="r"><code>6/2*(1+2)</code></pre>
@@ -410,32 +426,32 @@ div.tocify {
 </div>
 <div id="variables-and-class-types" class="section level2" number="1.3">
 <h2 number="1.3"><span class="header-section-number">1.3</span> Variables and class types</h2>
-<p>If you want to save a value for later, we can use a . For instance, let</p>
+<p>If you want to save a value for later, we can use a <TT>variable</TT>. For instance, let</p>
 <pre class="r"><code>A = (6/2)*(1+2)</code></pre>
-<p>There are two things to note here. First, observe how no response is returned when you run this in an R script. This is because we are simply creating a new variable, rather than commanding to print a value. Second, note how the variable  is now stored in the  on the upper right corner of RStudio. You’ll see the variable  along with its value `9’. Rather than typing the the entire expression again, we can simply evaluate</p>
+<p>There are two things to note here. First, observe how no response is returned when you run this in an R script. This is because we are simply creating a new variable, rather than commanding to print a value. Second, note how the variable <TT>A</TT> is now stored in the <em>Environment</em> on the upper right corner of RStudio. You’ll see the variable <TT>A</TT> along with its value `9’. Rather than typing the the entire expression again, we can simply evaluate</p>
 <pre class="r"><code>A</code></pre>
 <pre><code>## [1] 9</code></pre>
 <blockquote>
-<p><strong>Q:</strong> R actually has a special expression  which is used for object assignment.<br />
-Test this and create the same variable of A using this assigment. Throughout these notes, we will most often use  for variable assignment (what’s a very basic argument for why  is preferable to ), but there are in fact cases where the two commands will give you different responses (this won’t arise in our class, however).</p>
+<p><strong>Q:</strong> R actually has a special expression <TT>&lt;-</TT> which is used for object assignment.<br />
+Test this and create the same variable of A using this assigment. Throughout these notes, we will most often use <TT>=</TT> for variable assignment (what’s a very basic argument for why <TT>=</TT> is preferable to <TT>&lt;-</TT>), but there are in fact cases where the two commands will give you different responses (this won’t arise in our class, however).</p>
 </blockquote>
 <pre class="r"><code>A &lt;- (6/2)*(1+2)
 A</code></pre>
 <pre><code>## [1] 9</code></pre>
-<p>Variables can span a vast collection of different types of . The type of object can be found with .</p>
+<p>Variables can span a vast collection of different types of <em>objects</em>. The type of object can be found with <TT>str</TT>.</p>
 <blockquote>
-<p><strong>Q:</strong> What kind of object is ?</p>
+<p><strong>Q:</strong> What kind of object is <TT>A</TT>?</p>
 </blockquote>
 <pre class="r"><code>str(A)</code></pre>
 <pre><code>##  num 9</code></pre>
-<p>This tells you that you’re dealing with a  variable, with a value of 9. For another class of objects, consider  (often called  in other languages), which is basically text valued variables. Here’s a popular “Hello World” program</p>
+<p>This tells you that you’re dealing with a <em>numeric</em> variable, with a value of 9. For another class of objects, consider <em>character objects</em> (often called <em>strings</em> in other languages), which is basically text valued variables. Here’s a popular “Hello World” program</p>
 <pre class="r"><code>s = &#39;Hello World&#39;
 s</code></pre>
 <pre><code>## [1] &quot;Hello World&quot;</code></pre>
-<p>The variable  has object type</p>
+<p>The variable <TT>s</TT> has object type</p>
 <pre class="r"><code>str(s)</code></pre>
 <pre><code>##  chr &quot;Hello World&quot;</code></pre>
-<p>We can also look at lists of numbers, called . These are written using  and then plugging in whatever number you want. This is an ordered list, so  is not the same as </p>
+<p>We can also look at lists of numbers, called <em>vectors</em>. These are written using <TT>c()</TT> and then plugging in whatever number you want. This is an ordered list, so <TT>c(1,2)</TT> is not the same as <TT>c(2,1)</TT></p>
 <pre class="r"><code>v = c(6,4,7,3,8)
 str(v)</code></pre>
 <pre><code>##  num [1:5] 6 4 7 3 8</code></pre>
@@ -450,22 +466,25 @@ str(v)</code></pre>
 str(v)</code></pre>
 <pre><code>##  chr [1:4] &quot;3&quot; &quot;rain&quot; &quot;in&quot; &quot;Spain&quot;</code></pre>
 <p>When mixing, R will convert everything to characters. It makes sense after some thought. It’s fairly easy to convert a string to a number again. It would be nonsensical, however, going the other way around and defining everything as a number.</p>
-<p>If you’d like to call on a certain index in a vector, use square brackets. Like humans almost always do, R begins counting at 1. This is not an obvious statement! Many languages, such as Python begin counting at 0, and translating between the two is often filled with ‘off by 1’ errors.</p>
+<p>If you’d like to call on a certain index in a vector, use square brackets. Like humans almost always do, R begins counting at 1. This is not an obvious statement! Many languages, such as Python, begin counting at 0, and translating between the two is often filled with ‘off by 1’ errors.</p>
 <pre class="r"><code>v = c(&#39;The&#39;,&#39;rain&#39;,&#39;in&#39;,&#39;Spain&#39;)
 
 v[2]</code></pre>
 <pre><code>## [1] &quot;rain&quot;</code></pre>
-<p>It’s possible to call on several indices at once. You can use a colon to call on a sequence of values</p>
+<p>It’s possible to call on several indices at once. You can use a colon to call on a sequence of values.</p>
 <pre class="r"><code>v = c(&#39;The&#39;,&#39;rain&#39;,&#39;in&#39;,&#39;Spain&#39;)
 
 v[1:3]</code></pre>
 <pre><code>## [1] &quot;The&quot;  &quot;rain&quot; &quot;in&quot;</code></pre>
-<p>Or you can simpy call in the index values using another vector</p>
+<p>Or you can simply call on the index values using another vector</p>
 <pre class="r"><code>v = c(&#39;The&#39;,&#39;rain&#39;,&#39;in&#39;,&#39;Spain&#39;)
 
 v[c(1,3,4)]</code></pre>
 <pre><code>## [1] &quot;The&quot;   &quot;in&quot;    &quot;Spain&quot;</code></pre>
-<p>Let’s now give a moment to discuss assigning multiple variables. We’ll start with a simple example: &gt; <strong>Q:</strong> What do each of these programs evaluate?</p>
+<p>Let’s now give a moment to discuss assigning multiple variables. We’ll start with a simple example:</p>
+<blockquote>
+<p><strong>Q:</strong> What do each of these programs evaluate?</p>
+</blockquote>
 <pre class="r"><code>a = 5
 b = 4
 b = a
@@ -478,11 +497,11 @@ b &lt; - a</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>print(b)</code></pre>
 <pre><code>## [1] -4</code></pre>
-<p>Note the space in the second program! We’ve broken up the  symbol into the two symbols  (less than) and - (negative sign). So  is actually asking a yes or no type question: Is  less than ? Since <span class="math inline">\(b = -4 &lt; 5 = -(-5) = -a\)</span>, then answer is “Yes”, or in terms of R,  or simply . This yes/no question didn’t actually reassign , so when we run , it simply returns it initial value of -4.</p>
+<p>Note the space in the second program! We’ve broken up the <TT>&lt;-</TT> symbol into the two symbols <TT>&lt;</TT> (less than) and - (negative sign). So <TT>b &lt; -a</TT> is actually asking a yes or no type question: Is <TT>b</TT> less than <TT>-a</TT>? Since <span class="math inline">\(b = -4 &lt; 5 = -(-5) = -a\)</span>, then answer is “Yes”, or in terms of R, <TT>TRUE</TT> or simply <TT>1</TT>. This yes/no question didn’t actually reassign <TT>b</TT>, so when we run <TT>print(b)</TT>, it simply returns it initial value of -4.</p>
 </div>
 <div id="sorting" class="section level2" number="1.4">
 <h2 number="1.4"><span class="header-section-number">1.4</span> Sorting</h2>
-<p>We can also apply functions to variables. Functions use parentheses to take in variables.  It is a very, very common mistake to call on functions with brackets, or call a vector index with parentheses.</p>
+<p>We can also apply functions to variables. Functions use parentheses to take in variables. <strong>Beware!</strong> It is a very, very common mistake to call on functions with brackets, or call a vector index with parentheses.</p>
 <p>Consider the vector</p>
 <pre class="r"><code>v = c(3,6,4,6,1)</code></pre>
 <p>What function should you apply to sort the vector?</p>
@@ -502,15 +521,15 @@ sort(v)</code></pre>
 <pre class="r"><code>v = c(3,6,4,6,1)
 sort(v, decreasing= TRUE)</code></pre>
 <pre><code>## [1] 6 6 4 3 1</code></pre>
-<p>What, then, is the default value of  in ?</p>
+<p>What, then, is the default value of <TT>decreasing</TT> in <TT>sort</TT>?</p>
 </div>
 <div id="zero-infinity-and-everything-in-between" class="section level2" number="1.5">
 <h2 number="1.5"><span class="header-section-number">1.5</span> Zero, infinity, and everything in between</h2>
-<p>It’s important to remember that while computers often have the upper hand with calculating expressions, once in awhile they produce an answer that we humans can immediately identify as not exactly correctly. For example, you should know from trigonometry that <span class="math inline">\(\sin(\pi) = 0\)</span> (you  remember the unit circle, right?). However, when we ask R to evaluate this expression, we obtain</p>
+<p>It’s important to remember that while computers often have the upper hand with calculating expressions, once in awhile they produce an answer that we humans can immediately identify as not exactly correctly. For example, you should know from trigonometry that <span class="math inline">\(\sin(\pi) = 0\)</span> (you <em>do</em> remember the unit circle, right?). However, when we ask R to evaluate this expression, we obtain</p>
 <pre class="r"><code>sin(pi)</code></pre>
 <pre><code>## [1] 1.224647e-16</code></pre>
-<p>The “e-16” that we see in our answer means <span class="math inline">\(10^{-16}\)</span>. This is an extremely small number, but not quite the correct value of zero that we know is the exact answer. The issue here isn’t so much that we’re interested in measuring something with 16 digits of accuracy. These kinds of demands on precision are quite rare. Rather, problems may arise when dealing with things like , which we’ll run into shortly. By this, we might say something along the lines of “if an expression is equal to 0, then run some snippet of code”. If the expression we evaluate is very small, but not exactly 0, we would not run the code snippet. In general, be cautious about expecting precise answers, especially when evaluating with continuous functions like sines, exponentials, and logarithms.</p>
-<p>Sometimes we’ll deal with , denoted in mathematics as <span class="math inline">\(\infty\)</span>, and expressed in R as . As you may have learned in calculus, infinity isn’t exactly a , but more of a . Nevertheless, we can still treat <span class="math inline">\(\infty\)</span> as a number when dealing with calculations which are intuitive. For instance, it’s reasonable to say things like <span class="math inline">\(\infty +1 = \infty\)</span>. If there are infinitely many balls, and we remove or add some balls, then we should still have infinitely many balls, right? Other cases aren’t so obvious: what if we remove infinitely many balls? Do we still have infinitely many left? In ambiguous cases like these, we simply shrug our shoulders and say “Who knows?”. In R, expressing such an  (<span class="math inline">\(0/0, \infty-\infty\)</span>, etc.) is given by  (read as “not a number”). &gt; <strong>Q:</strong> What do each of the following commands do?</p>
+<p>The “e-16” that we see in our answer means <span class="math inline">\(10^{-16}\)</span>. This is an extremely small number, but not quite the correct value of zero that we know is the exact answer. The issue here isn’t so much that we’re interested in measuring something with 16 digits of accuracy. These kinds of demands on precision are quite rare. Rather, problems may arise when dealing with things like <em>if statements</em>, which we’ll run into shortly. By this, we might say something along the lines of “if an expression is equal to 0, then run some snippet of code”. If the expression we evaluate is very small, but not exactly 0, we would not run the code snippet. In general, be cautious about expecting precise answers, especially when evaluating with continuous functions like sines, exponentials, and logarithms.</p>
+<p>Sometimes we’ll deal with <em>infinity</em>, denoted in mathematics as <span class="math inline">\(\infty\)</span>, and expressed in R as <TT>Inf</TT>. As you may have learned in calculus, infinity isn’t exactly a <em>number</em>, but more of a <em>concept</em>. Nevertheless, we can still treat <span class="math inline">\(\infty\)</span> as a number when dealing with calculations which are intuitive. For instance, it’s reasonable to say things like <span class="math inline">\(\infty +1 = \infty\)</span>. If there are infinitely many balls, and we remove or add some balls, then we should still have infinitely many balls, right? Other cases aren’t so obvious: what if we remove infinitely many balls? Do we still have infinitely many left? In ambiguous cases like these, we simply shrug our shoulders and say “Who knows?”. In R, expressing such an <em>indeterminate form</em> (<span class="math inline">\(0/0, \infty-\infty\)</span>, etc.) is given by <TT>NaN</TT> (read as “not a number”). &gt; <strong>Q:</strong> What do each of the following commands do?</p>
 <pre class="r"><code>2/0</code></pre>
 <pre><code>## [1] Inf</code></pre>
 <pre class="r"><code>-1/0</code></pre>
@@ -532,7 +551,7 @@ sort(v, decreasing= TRUE)</code></pre>
 </div>
 <div id="booleans" class="section level2" number="1.6">
 <h2 number="1.6"><span class="header-section-number">1.6</span> Booleans</h2>
-<p>An operator which gives a value of  or  (1 or 0) is called a . Here are Booleans for comparing two numbers</p>
+<p>An operator which gives a value of <TT>TRUE</TT> or <TT>FALSE</TT> (1 or 0) is called a <em>Boolean operator</em>. Here are Booleans for comparing two numbers.</p>
 <pre class="r"><code>#Here we are assigning the value of 4 to the variable &#39;a&#39;
 a = 4
 

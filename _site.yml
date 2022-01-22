@@ -1,14 +1,16 @@
 name: "Data Science Notes"
 navbar:
-  title: "Lectures"
+  title: "Data Science Notes"
   left:
     - text: "Home"
       href: index.html
-    - text: "Lab2"
+    - text: "Intro to R"
       href: newlab2.html
-    - text: "Lab4"
+    - text: "Commands and functions"
+      href: newlab3.html
+    - text: "Data massaging: basics"
       href: newlab4.html
-    - text: "Lab5"
+    - text: "Intro to programming"
       href: newlab5.html
 output: 
   html_document:

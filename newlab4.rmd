@@ -1,14 +1,15 @@
 ---
-title: "Some more tools for basic data manipulation"
+title: "Some tools for basic data manipulation"
 ---
 
+# Data massaging
 
-# Defining new variables
+## Defining new variables
 
-Let's keep working with the \texttt{mtcars} dataset. Before we dig in, let's look at a few more functions which tell what our dataset looks like.
+Let's keep working with the <TT>mtcars</TT> dataset. Before we dig in, let's look at a few more functions which tell what our dataset looks like.
 
 
-> __Q:__ What type of object is \texttt{mtcars}? 
+> __Q:__ What type of object is <TT>mtcars</TT>? 
 
 
 ```{r}
@@ -16,7 +17,7 @@ Let's keep working with the \texttt{mtcars} dataset. Before we dig in, let's loo
 class(mtcars) 
 ```
 
-\texttt{mtcars} is a \textbf{data frame}, which is the main type of object for holding data.  We'll see soon that many \textbf{packages} made for datasets assume that we're working in dataframes.
+<TT>mtcars</TT> is a __data frame__, which is the main type of object for holding data.  We'll see soon that many __packages__ made for datasets assume that we're working in data frames.
 
 We might also want to take a peek at our dataset without viewing the whole thing.  This is done through
 
@@ -25,14 +26,14 @@ We might also want to take a peek at our dataset without viewing the whole thing
 str(mtcars) 
 ```
 
-How convenient!  Here we are given the object type, the number of variables, their names, how many observations of each variable, and the first couple of datapoints to boot!  To just see the first few entries, type
+How convenient!  Here we are given the object type, the number of variables, their names, how many observations of each variable, and the first couple of data points to boot!  To just see the first few entries, type
 
 ```{r}
 
 head(mtcars) 
 ```
 
-Sometimes we will need to define new variables which are combinations of existing variables.  For instance, one might be interested in creating a new variable called \textbf{horsepower efficiency} (Note: the author is a mathematician, not an auto mechanic.  I have no clue if this is a real thing...).  We can define it by 
+Sometimes we will need to define new variables which are combinations of existing variables.  For instance, one might be interested in creating a new variable called __horsepower efficiency__ (Note: the author is a mathematician, not an auto mechanic.  I have no clue if this is a real thing...).  We can define it by 
 
 $$ \hbox{ HPE} = \mathrm{MPG}/\mathrm{HP}.$$
 Here $MPG$ is the miles per gallon of a car, and $HP$ is its horsepower. In R, we can create calculate the HPE by 
@@ -42,7 +43,7 @@ Here $MPG$ is the miles per gallon of a car, and $HP$ is its horsepower. In R, w
 hpeffic = mtcars$mpg/mtcars$hp 
 ```
 
-Note that this type of language is anathema to the mathematician.  It's nonsense to divide a vector by a vector.  To the R programmer, however, this is just pedantry.  We all \textit{know} what it means to divide two vectors.  Just perform the division operation pointwise.  When R does this for a function, we say that it is \textbf{vectorized}.
+Note that this type of language is anathema to the mathematician.  It's nonsense to divide a vector by a vector.  To the R programmer, however, this is just pedantry.  We all _know_ what it means to divide two vectors.  Just perform the division operation pointwise.  When R does this for a function, we say that it is __vectorized__.
 
 
 > __Q:__ For the vectors $v = [3,5,2]$ and $w = [8,4,6]$, verify that addition, subtraction, multiplication, division, and exponentiation are all vectorized.
@@ -62,7 +63,7 @@ v^w
 
 > __Q:__ Which cars have HPE greater than .1? 
 
-This is done by using the \texttt{which} function.  This gives indices of a list which satisfy a certain condition.
+This is done by using the <TT>which</TT> function.  This gives indices of a list which satisfy a certain condition.
 
 ```{r}
 
@@ -85,7 +86,7 @@ min(hpeffic)
 
 # Some quick plots
 
-R has built in features for producing some pretty decent looking visuals.  Let's take a look at a \textbf{scatterplot} which plots two features on a plane.  We'll do a scatter plot comparing mpg and horsepower.
+R has built in features for producing some pretty decent looking visuals.  Let's take a look at a __scatterplot__ which plots two features on a plane.  We'll do a scatter plot comparing mpg and horsepower.
 
 ```{r}
 x = mtcars$mpg
@@ -97,7 +98,7 @@ plot(x,y, xlab = 'Miles per gallon', ylab = 'Horsepower')
 
 ```
 
-> __Q:__ What happens if we don't include the text \texttt{xlab} and \texttt{ylab} in the arguments for \texttt{plot}?
+> __Q:__ What happens if we don't include the text <TT>xlab</TT> and <TT>ylab</TT> in the arguments for <TT>plot</TT>?
 
 These arguments are not necessary, but they are nice to include if you'd like to make it clear to either yourself or someone else reading your code what your variables are.
 
@@ -115,7 +116,7 @@ plot(x,y, xlab = 'Miles per gallon', ylab = 'Gears')
 ```
 
 
-The variable gears takes \textbf{discrete} values (e.g. 2,3,4) whereas mpg is a \textbf{continuous} varaible, taking values like 13.5, 18.4, etc.  In a case like this, it's more informative to use something called a \textbf{box plot}.
+The variable gears takes __discrete__ values (e.g. 2,3,4) whereas mpg is a __continuous__ variable, taking values like 13.5, 18.4, etc.  In a case like this, it's more informative to use something called a __box plot__.
 
 
 ```{r}
@@ -133,9 +134,9 @@ boxplot(mpg~gear, data = mtcars)
 boxplot(gear~mpg, data = mtcars)
 ```
 
-Yuck! If you picked up a newspaper and saw the above as a graph, you'd rightfully cancel your subscription.  But why?  It isn't because the information presented is \textit{incorrect}.  This figure is indeed giving a range of gears for each value of mpg.  The problem is that almost all of these mpgs have only a single value for mpg.  A box plot in this case just looks awful, and it doesn't do what graphs are supposed to do- compress information into a digestible form.  The lesson here is to trust your eyes when making a figure.  
+Yuck! If you picked up a newspaper and saw the above as a graph, you'd rightfully cancel your subscription.  But why?  It isn't because the information presented is _incorrect_.  This figure is indeed giving a range of gears for each value of mpg.  The problem is that almost all of these mpgs have only a single value for mpg.  A box plot in this case just looks awful, and it doesn't do what graphs are supposed to do- compress information into a digestible form.  The lesson here is to trust your eyes when making a figure.  
 
-When you just want to look at a single continuous variable, use a \textbf{histogram}. This will \textbf{bin} values within a particular range.  R does a pretty decent job deciding what the number of bins should be, most of the time, but sometimes you need to go in yourself and change the number of bins yourself.
+When you just want to look at a single continuous variable, use a __histogram__. This will __bin__ values within a particular range.  R does a pretty decent job deciding what the number of bins should be, most of the time, but sometimes you need to go in yourself and change the number of bins yourself.
 
 ```{r}
 
