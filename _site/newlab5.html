@@ -442,7 +442,7 @@ addmval2(6)</code></pre>
 }else{
     1
   }</code></pre>
-<pre><code>## [1] 1</code></pre>
+<pre><code>## [1] 0</code></pre>
 <p>What going on here? Your yes or no question will be wrapped inside <TT>if()</TT>. In our case, we’re asking whether <TT>runif(1)</TT>, a randomly generated number between 0 and 1, is less than or greater than .5. Certainly, there’s a 50% chance that the answer is yes. The code which runs when the answer to your if statement is yes is then contained in curly braces. In our case, we simply return 0.</p>
 <p>If the answer to our question is no, we can simply write nothing more, and our code will simply do nothing. On the other hand, if you want a block of code to run, you will else an <TT>else</TT> statement. Make sure to place <TT>else</TT> on the same line as the closing brace of <TT>if</TT>. In our case, if the answer is no, we produce a 1.</p>
 <p>For convenience, we can wrap this argument into a function. In fact, we’ll generalize, and simulate a biased coin that returns a 1 with probability <span class="math inline">\(p\)</span> and a 0 with probability <span class="math inline">\(1-p\)</span>:</p>
@@ -457,11 +457,11 @@ if (runif(1)&lt;p){
 
 
 flip(.7)</code></pre>
-<pre><code>## [1] 1</code></pre>
-<pre class="r"><code>flip(.7)</code></pre>
-<pre><code>## [1] 1</code></pre>
-<pre class="r"><code>flip(.7)</code></pre>
 <pre><code>## [1] 0</code></pre>
+<pre class="r"><code>flip(.7)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>flip(.7)</code></pre>
+<pre><code>## [1] 1</code></pre>
 <pre class="r"><code>flip(.7)</code></pre>
 <pre><code>## [1] 1</code></pre>
 <p>Our function <TT>flip</TT> is a function of one variable <span class="math inline">\(p \in [0,1]\)</span>. Because this function uses random numbers, we should not expect the same answers each time we run this function.</p>
@@ -688,7 +688,7 @@ while( min(c(V,R) != 0)){
 
 
 
-plot(totrasc, type = &#39;l&#39;)</code></pre>
+plot(totrasc, type = &#39;l&#39;, xlab = &#39;Shots&#39;, ylab = &#39;Remaining Rascals&#39;)</code></pre>
 <p><img src="newlab5_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>Now let’s plot 100 such paths.</p>
 <pre class="r"><code>vinit = 1000
@@ -728,14 +728,14 @@ for (j in 1:paths){
 
 }
 
-matplot(t(rascalpaths), type = &#39;l&#39;, col = &#39;black&#39;,lty = 1, xlab = &#39;Shots&#39;, ylab = &#39;Remaining Rascals&#39;)</code></pre>
+matplot(t(rascalpaths), type = &#39;l&#39;, col = rgb(0, 0, 1,  alpha = .2),lty = 1, xlab = &#39;Shots&#39;, ylab = &#39;Remaining Rascals&#39;)</code></pre>
 <p><img src="newlab5_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Note that when a rascal path is flat, then this means that the Rascals have won the gunfight. Let’s take a look at a histogram of the number of survivors.</p>
 <pre class="r"><code>hist(numdraws, breaks = 20)</code></pre>
 <p><img src="newlab5_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<p>An absolutely remarkable result from Williams and McIlroy, in their short paper <em>The OK Corral and the Power of the Law (A Curious Poisson-Kernel Formula for a Parabolic Equation)</em> is that if the intial number of Rascals and Varmints are then same, then the expected number of survivors satisfies</p>
+<p>An absolutely remarkable result from Williams and McIlroy, in their short paper <em>The OK Corral and the Power of the Law (A Curious Poisson-Kernel Formula for a Parabolic Equation)</em> is that if the initial number of Rascals and Varmints are then same, then the expected number of survivors satisfies</p>
 <p><span class="math display">\[
-\mathbb E[S] \sim 2(3)^{1/4}\pi^{-1/2}\Gamma(3/4)r_0
+\mathbb E[S] \sim 2(3)^{1/4}\pi^{-1/2}\Gamma(3/4)r_0^{3/4}
 \]</span> where</p>
 <p><span class="math display">\[ \Gamma(s) = \int_0^\infty x^{s-1}e^{-x} dx, \quad s&gt;0\]</span> and <span class="math inline">\(r_0\)</span> is the initial number of rascals. Also, <span class="math inline">\(\mathbb E[S]\)</span> is the <strong>expected value</strong> of the random quantity <span class="math inline">\(S\)</span>. This means that if we ran the experiment many times and took the average number of survivors, we would have something very close to <span class="math inline">\(\mathbb E[S]\)</span>. Finally, we write <span class="math inline">\(f(x) \sim g(x)\)</span> if <span class="math inline">\(f(x)/g(x) \rightarrow 1\)</span> as <span class="math inline">\(x \rightarrow \infty\)</span>.</p>
 <p>Let’s test if this result holds in our experiments:</p>
@@ -748,7 +748,7 @@ K = 3^{-1/4}*pi^{-1/2}*gamma(3/4)
 guess = 2*K*vinit^(3/4)
 
 pathsampmean/guess</code></pre>
-<pre><code>## [1] 1.070088</code></pre>
+<pre><code>## [1] 1.024861</code></pre>
 <p>Not bad!</p>
 </div>
 </div>
