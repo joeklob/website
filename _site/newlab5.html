@@ -457,7 +457,7 @@ if (runif(1)&lt;p){
 
 
 flip(.7)</code></pre>
-<pre><code>## [1] 0</code></pre>
+<pre><code>## [1] 1</code></pre>
 <pre class="r"><code>flip(.7)</code></pre>
 <pre><code>## [1] 1</code></pre>
 <pre class="r"><code>flip(.7)</code></pre>
@@ -542,10 +542,10 @@ Fibb[1:10]</code></pre>
 <p>Let’s do an example for the <strong>random walk</strong>, often seen in probability theory and finance. The idea is the following, let <span class="math inline">\(X_0 = 0\)</span> and define <span class="math inline">\(X_k\)</span> recursively by <span class="math display">\[X_k = X_{k-1}+ B_{k},\]</span> where <span class="math inline">\(B_k\)</span> takes the value 1 with probability 1/2, and -1 with probability 1/2. You can think of <span class="math inline">\(B_k\)</span> as a random step. Let’s write a program for this random step, which is pretty close to the <TT>flip</TT> function we wrote before.</p>
 <pre class="r"><code>step = function(p){
 if (runif(1)&lt;p){
-  -1
+  1
 }
   else{
-    1
+    -1
   }
 }</code></pre>
 <p>Let’s take a look at some random walks. If we know how many steps we’d like to take, we can just write a for loops:</p>
@@ -748,7 +748,7 @@ K = 3^{-1/4}*pi^{-1/2}*gamma(3/4)
 guess = 2*K*vinit^(3/4)
 
 pathsampmean/guess</code></pre>
-<pre><code>## [1] 1.024861</code></pre>
+<pre><code>## [1] 1.015227</code></pre>
 <p>Not bad!</p>
 </div>
 </div>
