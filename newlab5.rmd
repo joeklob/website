@@ -539,7 +539,7 @@ matplot(t(rascalpaths), type = 'l', col = rgb(0, 0, 1,  alpha = .2),lty = 1, xla
 ```
 
 
-Note that when a rascal path is flat, then this means that the Rascals have won the gunfight.  Let's take a look at a histogram of the number of survivors.
+Note that when a rascal path is flat, then this means that the Rascals have won the gunfight.  Let's take a look at a histogram of the number of shots fired.
 
 
 ```{r}
