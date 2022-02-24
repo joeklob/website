@@ -1,0 +1,459 @@
+---
+title: "LLN, CLT"
+author: 
+date: 
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r include=FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+
+```{r}
+
+runs = 100000
+
+
+eps = .01
+
+samps = rbinom(runs, 1, .5)
+
+
+trials = 1:runs
+Xbar = cumsum(samps)/1:length(samps)
+
+C = data.frame(trials, Xbar)
+
+C %>% ggplot() + geom_line(aes(trials, Xbar))+geom_hline(yintercept = .5+eps, color = 'red', size = 1) +geom_hline(yintercept = .5-eps, color = 'red', size = 1) 
+
+```
+
+
+
+
+##The dreaded Cauchy random variable
+
+The Cauchy $C$ random variable is a problem child.  It's a continuous random variable defined on whole line with a pdf of 
+\begin{equation}
+f(x) = \frac{1}{\pi} \frac{1}{1+x^2}
+\end{equation}
+
+> __Q:__ What is the integral corresponding to the expected value?  Show that the integral doesn't exist!
+
+If $\mathbb E[C]$ doesn't exist, then the law of large numbers doesn't apply.  This means that we're lost, in general, with regards to what happens to sample means.  In terms of the $\epsilon$-prison, the Cauchy distribution is able to make a jail break:
+
+Despite being so unruly, it's not hard to generate Cauchy random variables.  One way is to simply divide two standard normals $Z_1, Z_2$.  In probability speak, 
+\begin{equation}
+C \sim Z^1_{0,1}/Z^2_{0,1}
+\end{equation}
+
+Let's repeat the same experiment that we just did with the normal.  
+
+```{r}
+
+runs = 100000
+
+
+eps = .01
+
+samps = rnorm(runs, 0, 1)/rnorm(runs, 0, 1)
+
+
+trials = 1:runs
+Xbar = cumsum(samps)/1:length(samps)
+
+C = data.frame(trials, Xbar)
+
+C %>% ggplot() + geom_line(aes(trials, Xbar))
+
+```
+
+You can see here the result of \textbf{fat tails}.  A pdf for a Gaussian collapses to zero incredibly quickly, at a rate of $e^{-x^2}$.  Cauchy pdfs, on the other hand, really take their time, decaying at a rate of $1/x^2$.  Since the tails of a Cauchy are so fat, it isn't insanely rare to draw a sample with an incredibly large magnitude.  In the graph above, this corresponds to the big jumps.  After each big jump, the sample mean tends to drift toward zero, but inevitably, a devastatingly large sample will be drawn, and ruin everything.
+
+
+
+# The central limit theorem
+
+Perhaps the crown jewel of probability is the \textbf{centeral limit theorem}.  This theorem shows that the normal distribution is, in a sense, \textit{universal}.  This theorem states that for (almost) every random variable, we can take average in the right way and obtain the distribution for $Z_{0,1}$.
+ That's quite crazy, since our original distribution can be completely different from a normal.  Its pdf can be arbitrarily weird looking.  Heck, it could even be a discrete distribution!
+ 
+ So what's the correct way to take averages?  Note that if I take averages like in the last section,
+\begin{equation}
+\bar X_N = (X_1 +\dots + X_N)/N \rightarrow \mathbb E[X].
+\end{equation}
+This is the law of large numbers.  As wonderful as that theorem is, it's not what we're looking for.  The expected value is a deterministic number, but we want to scale things so that the  sum that converges to something random. The central limit theorem states
+for $S_n = X_1 +\dots +X_n$, then the correct scaling is
+
+\begin{equation}
+ \frac{ S_n-n \mathbb E[X]}{\sqrt{n\mathrm{Var}(X)}} \rightarrow N(0,1)
+ \end{equation}
+ 
+\textit{in law} (meaning the histograms of the left and right side ought to look the same for large $n$). 
+
+
+##Generating samples and samples of samples 
+
+
+We'll be assuming here that we can generate as much data as we need.  The
+main theme in statistics is scarcity: in reality this is never the case.
+
+
+
+Here's a run through for creating a visual which shows the central limit theorem.  There's some subtlety here:  we are looking at the random variable 
+$$T = \frac{ S_n-n \mathbb E[X]}{\sqrt{n\mathrm{Var}(X)}}$$.  To generate a single sample sample of this, we need to generate $n$ iid samples $X_1, X_2, \dots, X_n$.  Thus, to get a \textit{histogram}, we sample $T_1, \dots, T_N$ for some other large number $N$.  
+
+```{r}
+
+experiments = 10000
+
+flips = 1000
+p = .2
+
+A = rep(0, experiments)
+
+for (i in 1:experiments){
+  
+  A[i] = sum(rbinom(flips, 1, p))
+  
+}
+
+meanber = function(p){
+  
+  return(p)
+}
+
+sdber = function(p){
+  
+  return(sqrt(p*(1-p)))
+}
+
+stdize = function(x){
+  return ((x-meanber(p)*flips)/(sdber(p)*sqrt(flips)))
+}
+
+stdizeA = mapply(stdize, A)
+
+#Let's ggplotize this
+
+CLT = data.frame(Ber = stdizeA, Norm = rnorm(experiments, 0, 1))
+
+CLT %>% ggplot()+ geom_density(aes(Ber), fill = "red", alpha = 0.5, bins = 120, color = 'red')+
+  geom_density(aes(Norm), fill = "blue", alpha = 0.5, bins = 120, color = 'blue')
+
+
+
+```
+
+\begin{equation}
+(S_n -  n \mathbb E[X_1])/(\sqrt {n}\sigma_X) \rightarrow Z_{0,1} \quad \hbox{as
+} n\rightarrow \infty.
+\end{equation}
+
+There's a lot of  stuff flying around here.  To put it in less formal terms:
+
+
+1. Take any random variable $X$
+2. Sample it many, many times, and take its sum.  Call it $S_n$
+3. Chop off the mean of $S_n$, and divide by the standard deviation of
+$S_n$.
+4. The variable you're left with should be pretty close to a $Z_{0,1}$
+random variable.
+
+
+I mean, that's nice and all, but what does this have to do with \textbf{data
+science}?  Isn't this a data science class?  Well, the point is that if I
+want to make statements about  sample means,  then I might deal with things
+like confidence intervals that use the central limit theorem in a very important
+way.  We'll visit this shorty.
+
+
+
+#The CDF
+
+One last type of object from probability that we'll cover is the \textbf{cumulative distribution function}, or \textbf{CDF}.  Both discrete and continuous random variables have CDFs.  The CDF $F_X(x)$ for a random variable $X$ is defined by 
+\begin{equation}
+F_X(x) = \mathbb P(X \le x).
+\end{equation}
+
+
+> __Q:__ From this definition, for any $X$, what should $F_X(x)$ be as $x \rightarrow
+-\infty$ and $x \rightarrow \infty$?
+
+
+For a dataset with values $X_1, X_2, \dots, X_N$, there is also the \textbf{empirical
+cumulative distribution function} (eCDF), given by 
+\begin{equation}
+\hat F_N(x) = \#\{X_i \le  x\}/N
+\end{equation}
+
+In words, this is fraction of $X_i$ which are at most $x$.
+ 
+# The Glivenko Cantelli theorem
+
+The \textbf{Glivenko Cantelli} theorem shows that the eCDF approaches the CDF as the number of samples becomes large:
+
+\begin{equation}
+\sup_{x} |F(x)-\hat F_N(x)| \rightarrow 0, \quad \hbox{ as } N \rightarrow \infty
+\end{equation}
+
+Some comments are in order for this equation.  It's okay to think of the expression $\sup$ (read "supremum") as a maximum.  What are we taking a maximum of?  Well, the biggest absolute difference between the two functions $F(x)$ and $\hat F(x)$.  This quantity above is called the \textbf{Kolmogorov-Smirnov} distance between $F$ and $\hat F_N$.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+What should the CDF of the Bernoulli random variable $B_{.5}$ look like?
+
+Let's generate 10000 samples of a Uniform(2,4) random variable.  Plot the
+empirical CDF with the function.
+
+```{r}
+
+samps = runif(200, 2, 4)
+
+ourbincdf = ecdf(samps)
+
+plot(ourbincdf)
+```
+
+
+```{r}
+
+
+plot(ecdf(samps), xlim = c(-.2,1.2), col = 'red')
+
+#Compare to cdf of Bernoulli (it's vectorized!)
+
+graphs = data.frame(ecdf = ourbincdf(200:400/100), cdf = punif( 200:400/100, 2,  4), xcoord = 200:400/100)
+
+#Let's just use the alpha argument
+
+graphs %>% ggplot(aes(x = xcoord))+geom_line(aes(y = cdf), color = "red", alpha = .5)+
+  geom_line(aes(y = ecdf),  color = "blue",  alpha = .5)
+
+```
+
+
+
+This result holds in general: If I sample many times from some distribution,
+and take the empirical CDF, it should look very close to the theoretical
+CDF.  This is the \textbf{Glivenko Cantelli} theorem.
+
+> __Q:__ What the approximate KS distance between the cdf and ecdf here?
+
+
+# The cdf and quantiles in practice
+
+
+eCDFs can be quite practical when using actual datasets.  In this example We will be using \texttt{baseball} the dataset, which gives positions and physical characteristics of different baseball players. 
+
+```{r include=FALSE}
+baseball <- read.csv("~/Dropbox/Classes/Fall2020/Datascience/baseball.txt")
+```
+
+
+
+Let's ask the following question: What percentage of baseball players are at least 6 feet tall?
+
+Here is the eCDF of heights for different baseball players, along with a vertical line denoting the 6 foot mark:
+
+
+```{r}
+
+empcdfheight = ecdf(baseball$Height.inches)
+
+baseball %>% ggplot(aes(Height.inches.))+ stat_ecdf()+
+  geom_vline(xintercept = 72, color = 'red')
+
+
+```
+
+> __Q:__ Is the percentage of baseball players over 6 feet more or less than 75\%? Be careful!  Use the definition of eCDF, or just invoke the fact that CDFs and eCDFs are cadlag (meaning continuous from the right, and having a limit from the left).
+
+As you can see, having an eCDF enables the reader to answer the question "What percentage of players are over/under $x$ inches tall?" for any value of $x$.  
+
+You can in fact just use the \texttt{ecdf} function to answer this question with the \texttt{ecdf} function.
+
+```{r}
+empcdfheight = ecdf(baseball$Height.inches)
+
+empcdfheight(72)
+```
+
+
+> __Q:__ What percentage of players are under 75 inches tall?  What percentage are at least 70 inches tall?
+
+
+We can further check out individual ecdfs under different positions:
+
+```{r}
+
+baseball %>%  filter(Position %in% c(' First Baseman', ' Outfielder')) %>% 
+  ggplot(aes(Height.inches., color = Position))+
+  stat_ecdf()
+
+
+
+```
+
+> __Q:__ The eCDF for Outfielders is heigher than the eCDF for First Basemen.  What does this tell you about comparing heights between the two positions?  In fancy probability speak, if the CDF of X is greater than the CDF of Y, we say that Y is _stochastically dominant_ to X.
+
+
+We can also switch inputs and outputs and ask the question "What value of $x$ is in the $p$th \textit{percentile} of the dataset".  This kind of question comes up all the time in standardized testing: "What score do I need to achieve to be at least as good as 90\% of all test takers?".  The answer to this question is known as the \textbf{quantile}.  It should be seen as the inverse function of the CDF (or eCDF), although there are a few technical issues when trying to take the inverse of a function which has piecewise constant parts.  The quantile is given by the R function, \texttt{quantile} (surprise!).  The first argument takes in the data and the second corresponds to the percentile.
+
+
+```{r}
+
+quantile(baseball$Height.inches., .1)
+quantile(baseball$Height.inches., .9)
+
+empcdfheight(71)
+empcdfheight(77)
+
+
+```
+
+> __Q:__ Hold on!  Shouldn't these values be equal?  What happened?  Hint: try plugging in values of the empirical cdf at 70.9 and 76.9.
+
+
+
+
+#A universal random variable generator
+
+Besides their use in ranking, quantiles have an incredibly practical purpose.
+Given a random variable $X$ and a CDF $F_X(x)$, we can simulate $X$ by using
+the quantile function $F^{-1}(q)$ and a run of the mill $U(0,1)$ random number
+generator.  For R, this is simply given by the function \texttt{runif(1)}.
+
+How does it work? Well, the theorem is 
+
+\vspace{10pt}
+
+\fbox{\textbf{Theorem} For a continuous random variable $X$, $F_X^{-1}(U)
+\sim X$.}
+
+\vspace{10pt}
+
+This theorem states that I can just compose the quantile with a uniform random
+1 variable to generate random samples of $X$.  
+
+\textit{Proof of claim}: (handwavy)  We show that  $F_X^{-1}(U)$ and $X$
+have the same CDFs.  Let $F_Y$ be the CDF of $F_X^{-1}(U)$
+
+$$F_Y(x) = \mathbb P(F_X^{-1}(U) \le x) =  \mathbb P(U \le F_X(x) ) = F_X(x)$$
+
+...and we're done!
+
+
+
+ Let's test this out.
+ 
+1. Derive the quantile for the exponential distribution $X_\lambda$ where $\lambda = 3$.
+
+
+The cdf of an exponential RV is 
+
+
+$$F(x) = 1-e^{-\lambda x}.$$
+
+The inverse of this function is
+
+$$ F^{-1}(q) = -\log(1-q)/\lambda $$
+
+
+Let's code this up as
+
+```{r}
+
+lambda = 3
+
+quantexp = function(x){
+  
+  return(- log(1-x)/lambda)
+  
+}
+
+```
+
+
+
+
+
+
+2. Simulate 10000 samples using the quantile method.
+
+
+```{r}
+
+samps = 10000
+U = runif(samps)
+
+quantsamps = quantexp(U)
+
+```
+
+
+3. Simulate 10000 samples using the built in R function for exponential
+random variables.
+
+```{r}
+
+easysamps = rexp(10000, rate = 3)
+
+```
+
+
+4. Plot the eCDFs of both methods. 
+ 
+```{r}
+
+quantecdf = ecdf(quantsamps)(1:300/100)
+
+easyecdf = ecdf(easysamps)(1:300/100)
+
+CDFs = data.frame(quantecdf, easyecdf)
+
+CDFs %>% ggplot(aes(x = 1:300/100)) + geom_line(aes(y = quantecdf), color = 'red')+
+  geom_line(aes(y = easyecdf), color = 'green')
+
+```
+
+ Not bad!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

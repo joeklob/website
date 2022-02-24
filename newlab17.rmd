@@ -1,0 +1,245 @@
+---
+title: "Predictve algorithms and logistic regression"
+author: 
+date: 
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+In this section we are interested in an instance of a __generalized linear model__, in which we're interested in a function composed with a linear function.
+Specifically, we are interested in logistic regression, in which we want a
+model function $f: I \rightarrow \{0,1\}$ that takes in a continuous argument
+and outputs a binary value (yes or no). For instance, we might want a model that predicts the following kinds of questions:
+
+
+
+1) Does practice result in a winning season?
+
+2) Does an increase in knuckle cracking result in arthritis?
+
+3) Do violent video games result in aggressive behavior?
+
+The second and third cases need to be treated carefully in the sense that there's some wiggle room in posing a yes or no question.  Is minor hand pain count for arthritis?  Is cutting in line or sending back an overcooked steak in a restaurant sufficient for the label of "aggressive person"?  Along with having sound mathematics, it is critical, perhaps paramount, that your variables make sense.  
+
+
+
+
+Logistic regression provides probabilities for a function to produce a $1$.
+Specifically, given an input $x$, the probability of producing a one is modeled
+by the logistic function
+
+\begin{equation}
+p = \frac{1}{1+e^{(\beta_0 +\beta_1 x)}}.
+\end{equation}
+
+Er...this doesn't look linear at all!  Not to fear:\ let's just solve for
+the linear part $y =  \beta_0+\beta_1 x$.
+
+
+\begin{equation}
+p = \frac{1}{1+e^{y}} \Rightarrow e^y = \frac{1-p}{p} \Rightarrow y = \log((1-p)/p)
+:= \ell.
+\end{equation}
+
+
+The quantity $\ell$ is called the \textbf{log odds}. This is the quantity
+that we model by the linear quantity $y = \beta_0+\beta_1x.$ Once we find
+the log odds in our regression, we could then use equation (1) to obtain
+$p$.
+
+Computing the optimal parameters is not explicit like linear regression,
+unfortunately.  It requires \textbf{maximum likelihood estimation} (this
+will be covered in DS 210).  
+
+
+# Use a model to predict: An example from Galton
+
+Francis Galton was a polymath whose largest contributions were in the field of genetics^[it's also true that Galton dabbled in some unsavory fields such as eugenics].  The famous dataset Galton used in comparing the heights of children to their parents is found in the \texttt{HistData} package, with the dataset \texttt{GaltonFamilies}.  We're going to use this dataset to guess a son's height given the height of the father.
+
+
+```{r include=FALSE}
+library(ggplot2)
+library(dplyr)
+library(HistData)
+data('GaltonFamilies')
+```
+
+We are going to draw heavily from Chapter 17 of the text "Introduction to Data Science" by Rafael Irizarry.  In particular, it contains a nice massaging of the dataset.  Let's go line by line to determine what he's doing:
+
+```{r}
+#Start with dataset GaltonFamilies
+galton_heights <- GaltonFamilies %>%
+#Then require we only look at males
+  filter(gender == "male") %>%
+#Then clump stats with regards to families
+  group_by(family) %>%
+#Then pick one representative from each family
+  sample_n(1) %>%
+#Then forget about your original grouping
+  ungroup() %>%
+#Then only look at father and childHeight columns
+  select(father, childHeight) %>%
+#Then rename childHeight- we know we're picking a son
+  rename(son = childHeight)
+
+#Let's take a look
+head(galton_heights)
+```
+
+
+We now separate our data into __training__ and __testing__ data.  The training data is what we build our model off of.  Certainly, we'll need to know the inputs as well as the inputs of our dataset to estimate whatever parameters are in our model. The package \texttt{caret} has convenient functions to do this task.  Let's split the data in half.
+
+
+```{r include=FALSE}
+library(caret)
+```
+
+
+
+```{r}
+
+y <- galton_heights$son
+test_index <- createDataPartition(y, times = 1, p = 0.5, list = FALSE)
+
+train_set <- galton_heights[-test_index,]
+test_set <- galton_heights[test_index,]
+
+```
+
+
+One cruddy estimate for the son's height is just to always guess the mean height.  
+
+```{r}
+avsonheight = mean(train_set$son)
+```
+
+Note that we must use the average restricted to the training set.  The main point of testing a predictive algorithm is to only use the training set to build a prediction, and then see how good the prediction is using the testing set.
+
+Well...how good is this (clearly lousy) prediction? We can judge the distance from our prediction the actual heights using the __mean squared loss__
+
+
+
+```{r}
+mean((avsonheight - test_set$son)^2)
+```
+
+So on average, we're off by about 6 inches squared.  Let's use linear regression to get a better estimate.  We've looked under the hood for linear regression, so we've earned ourselves a break--let's use the canned \texttt{lm} function to perform linear regression:
+
+```{r}
+fit <- lm(son ~ father, data = train_set)
+fit$coef
+
+#The lm fit gives a fit for y = mx+b
+
+y_hat <- fit$coef[1] + fit$coef[2]*test_set$father
+mean((y_hat - test_set$son)^2)
+
+```
+
+We've gained about one inch squared in our predictive power.  In fact, we could have just used the \texttt{predict} function.
+
+```{r}
+y_hat = predict(fit, test_set)
+mean((y_hat - test_set$son)^2)
+```
+
+
+# Predicting male vs female with heights
+
+Now let's look at the difference between linear and logistic regression models when predicting a binary variable.  We'll use the \texttt{heights} dataset from \texttt{dslabs}
+
+```{r}
+library(dslabs)
+data(heights)
+```
+
+We require another deluge of data messaging 
+
+```{r}
+
+heights %>% 
+  mutate(x = round(height)) %>%
+  #Run operation with respect to each height
+  group_by(x) %>%
+  #A way for getting rid of outliers- require that the counts for each height are greater than 10
+  filter(n() >= 10) %>%
+  #Find the percent female for each height
+  summarize(prop = mean(sex == "Female")) %>%
+  #Plot this dataset of heights vs. pct. female
+  ggplot(aes(x, prop)) +
+  geom_point()
+
+```
+
+> __Q:__ What is this graph showing?
+
+
+Let's create the training and test sets.
+
+```{r}
+
+
+#We'll use 1 for female and 0 for male
+newheights = heights %>% mutate(sex = as.numeric(sex== "Female"))
+
+
+y  =  newheights$sex
+test_index <- createDataPartition(y, times = 1, p = 0.5, list = FALSE)
+
+train_set <- newheights %>% slice(-test_index)
+test_set <- newheights %>% slice(test_index)
+
+
+```
+
+
+The function \texttt{lm} covers a wide range of general linear models.  To perform logistic regression, we use the argument \texttt{family = 'binomial}.
+
+```{r}
+
+glm_fit <- train_set %>% 
+  glm(sex ~ height, data=., family = "binomial")
+
+
+
+
+```
+
+The dot in the last line means that we're using the data before the pipe operator, which in our case is the training set.
+
+Here is our prediction of _probabilities_.
+
+```{r}
+
+p_hat_logit <- predict(glm_fit, newdata = test_set, type = "response")
+
+
+```
+
+Depending on how demanding we are, we can set a threshold $p_{Thold}$ and make a rule that inputs with a prediction greater than $p$ are female.  The most common value to use is simply $p_{Thold} = 1/2$ 
+
+
+```{r}
+y_hat_logit <- ifelse(p_hat_logit > 0.5, 1, 0) %>% factor
+cm = confusionMatrix(y_hat_logit, factor(test_set$sex))
+cm
+```
+
+The confusion matrix tells us that when we guess male, we're right $383/(383+87) \approx .81$ of the time, whereas when we guess female, we are correct $32/(23+32) = .58$ of the time.
+
+> __Q:__ What terms in the output of confusionMatrix correspond to these decimals?  What do you think the other terms correspond to?
+
+
+
+
+
+
+
+

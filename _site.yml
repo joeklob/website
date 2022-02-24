@@ -12,6 +12,29 @@ navbar:
       href: newlab4.html
     - text: "Intro to programming"
       href: newlab5.html
+    - text: "ggplot2"
+      href: newlab6.html
+    - text: "Data transformations I"
+      href: newlab7.html
+    - text: "Data transformations II"
+      href: newlab8.html
+    - text: "Data cleaning"
+      href: newlab9.html
+    - text: "Random variables"
+      href: newlab10.html
+    - text: "Discrete and continous random variables"
+      href: newlab11.html
+    - text: "Mean and variance"
+      href: newlab12.html
+    - text: "Confidence Intervals"
+      href: newlab14.html
+    - text: "Hypothesis Testing"
+      href: newlab15.html
+    - text: "Regression"
+      href: newlab16.html
+    - text: "Machine learning"
+      href: newlab18.html
+      
 output: 
   html_document:
     toc: true

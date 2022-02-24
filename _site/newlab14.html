@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Confidence intervals</title>
+
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Data Science Notes</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="newlab2.html">Intro to R</a>
+</li>
+<li>
+  <a href="newlab3.html">Commands and functions</a>
+</li>
+<li>
+  <a href="newlab4.html">Data massaging: basics</a>
+</li>
+<li>
+  <a href="newlab5.html">Intro to programming</a>
+</li>
+<li>
+  <a href="newlab6.html">ggplot2</a>
+</li>
+<li>
+  <a href="newlab7.html">Data transformations I</a>
+</li>
+<li>
+  <a href="newlab8.html">Data transformations II</a>
+</li>
+<li>
+  <a href="newlab9.html">Data cleaning</a>
+</li>
+<li>
+  <a href="newlab10.html">Random variables</a>
+</li>
+<li>
+  <a href="newlab11.html">Discrete and continous random variables</a>
+</li>
+<li>
+  <a href="newlab12.html">Mean and variance</a>
+</li>
+<li>
+  <a href="newlab14.html">Confidence Intervals</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Confidence intervals</h1>
+
+</div>
+
+
+<p>We now leave the munificent world of probability and trek into the barren and unsettling land of statistics, where we can’t assume that we can generate as much data as we want. For most studies, more samples means more money, so ideally a dataset can make a strong statement without being too large.</p>
+<p>In this section, we will show the usefulness of the central limit theorem applied to polling. Let’s imagine an ice cream company is polling people for their preference of vanilla versus chocolate.</p>
+<div id="polling-and-confidence-intervals" class="section level2" number="0.1">
+<h2 number="0.1"><span class="header-section-number">0.1</span> Polling and confidence intervals</h2>
+<p>How much more (or less) popular is vanilla ice cream to chocolate? Let’s imagine we asked 100 people this question. We’ll generate data by</p>
+<pre class="r"><code>n = 100
+vanpct = .7
+votes = rbinom(n, 1, .7 )</code></pre>
+<p>However, let’s act like we have no idea where this dataset came from (in particular, we will pretend to not know the actual value of <span class="math inline">\(p\)</span>.)</p>
+<p>This is a binary vector (consisting of 0’s and 1’s). The 1’s correspond to ‘vanilla’, and the 0’s for ‘chocolate’. We can find the percentage of vanilla voters by simply taking the sample mean</p>
+<pre class="r"><code>xbar = mean(votes)
+xbar</code></pre>
+<pre><code>## [1] 0.63</code></pre>
+<p>We will denote this quantity as <span class="math inline">\(\bar X = \sum X_i/n\)</span>. This quantity is our best guess for the true population proportion <span class="math inline">\(p\)</span>, if we asked every person in the world what their preference is.</p>
+<p>So if <span class="math inline">\(\bar X &gt; .5\)</span>, then we’re done, right? Not quite, unfortunately. It’s true that in this one poll vanilla is the preferred flavor, but perhaps our random sample is not representative of the larger population of ice cream consumers. Ideally, we’d like to figure out how <em>confident</em> we are about our single poll.</p>
+<p>This will require a computation which will incorporate the central limit theorem. Previously, we showed that</p>
+<p><span class="math display">\[\begin{equation}
+(S_n- p n)/(\sqrt{n}\sigma) \approx Z_{0,1},
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(Z_{0,1}\)</span> is the standard normal random variable. We can message this a bit: if we multiply and divide the left hand side by <span class="math inline">\(n\)</span>, we get</p>
+<p><span class="math display">\[\begin{equation}
+n(1/n)(S_n- p n)/(\sqrt{n}\sigma)  = n\cdot(S_n/n- p )/(\sqrt{n}\sigma)   = \sqrt n(\bar X_n-p)/\sigma
+\end{equation}\]</span></p>
+<p>This is in a better form since it includes our sample mean <span class="math inline">\(\bar X_n\)</span>. Since we’ve only multiplied by one, the right hand side of the above equations also has a distribution that’s approximately the same as <span class="math inline">\(Z_{0,1}\)</span>.</p>
+<p>The point of using this expression is that it helps us answer the following question regarding fluctuations from the mean:</p>
+<p><em>If the true proportion of voters is <span class="math inline">\(p\)</span>, then what’s the probability that the sample proportion is more than <span class="math inline">\(\epsilon\)</span> (say 5%, or 1%) away from <span class="math inline">\(p\)</span>?</em></p>
+<p>If other words, our task is to write a useable expression for</p>
+<p><span class="math display">\[\begin{equation}
+\mathbb P (|\bar X- p| \le  \epsilon) = \mathbb P (\bar X\le  \epsilon+ p)- \mathbb P(\bar X &lt; p- \epsilon).
+\end{equation}\]</span></p>
+<p>For the two probabilities above, let’s subtract <span class="math inline">\(p\)</span> and multiply by <span class="math inline">\(\sqrt{n}/\sigma\)</span> on both sides of the inequalities, we then get</p>
+<p><span class="math display">\[\begin{align}
+\mathbb P (\bar X\le  \epsilon+ p)- \mathbb P(\bar X &lt; p- \epsilon ) \\
+= \mathbb P ((\bar X- p)\sqrt{n}/\sigma \le\epsilon \sqrt{n}/\sigma)- \mathbb P((\bar X -p )\sqrt{n}/\sigma &lt; -\epsilon \sqrt{n}/\sigma ) \\
+\approx  \mathbb P (Z_{0,1}\le  \epsilon/SE(\bar X))- \mathbb P (Z_{0,1}&lt;  -\epsilon/SE(\bar X))
+\end{align}\]</span></p>
+<p>Here we used <span class="math display">\[\begin{equation}
+SE(\bar X) = \sigma/\sqrt n
+\end{equation}\]</span> to denote the standard error of <span class="math inline">\(\bar X\)</span>. So now everything is written in terms of <span class="math inline">\(Z_{0,1}\)</span>. The upshot is that, regardless of what random variable we begin with, our calculation boils down to calcluating probabilities regarding the standard normal.</p>
+<p>In the clean world of probability, we have an exact expression for what <span class="math inline">\(SE(\bar X)\)</span> is. It is given by <span class="math display">\[\begin{equation}
+SE(\bar X) = \sqrt{p(1-p)/n}
+\end{equation}\]</span></p>
+<p>There is a major problem with this, however: we don’t know what <span class="math inline">\(p\)</span> is! This is the point of this whole exercise in the first place! This isn’t such a disaster, thankfully, since we can simply estimate this quantity with a <strong>plug in estimator</strong>, where we just replace <span class="math inline">\(p\)</span> with our best guess, which in our case is simply <span class="math inline">\(\bar X\)</span>. This gives us the estimate</p>
+<p><span class="math display">\[\begin{equation}
+\widehat {SE}(\bar X) = \sqrt{\bar X(1-\bar X)/n}
+\end{equation}\]</span></p>
+<p>Getting back to our equation: we have that</p>
+<p><span class="math display">\[\begin{equation}
+\mathbb P (|\bar X- p| &lt; \epsilon) \approx \mathbb P (Z_{0,1}\le  \epsilon/\widehat{SE}(\bar X))- \mathbb P (Z_{0,1} &lt;  -\epsilon/\widehat{SE}(\bar X))
+\end{equation}\]</span></p>
+<blockquote>
+<p><strong>Q:</strong> Why the “approximate” sign? There are in fact two reasons.</p>
+</blockquote>
+<p>Let’s plug all of this into R. We’ll set our <span class="math inline">\(\epsilon = .02\)</span> and also compute the estimate for the standard error:</p>
+<pre class="r"><code>eps = .02
+se = sqrt(xbar*(1-xbar)/n)
+se</code></pre>
+<pre><code>## [1] 0.04828043</code></pre>
+<p>So then the probability that our estimate is with 2% is then given by</p>
+<p><span class="math display">\[\begin{equation}
+\mathbb P (|\bar X- p| &lt; .02) \approx \mathbb P (Z_{0,1}\le  .02/\widehat{SE}(\bar X))- \mathbb P (Z_{0,1}\le  -.02/\widehat{SE}(\bar X))
+\end{equation}\]</span></p>
+<p>In R, this is given by</p>
+<pre class="r"><code>pnorm(eps/se)- pnorm(-eps/se)</code></pre>
+<pre><code>## [1] 0.3213064</code></pre>
+<p>Here, we used the function &lt;<T>&gt;pnorm&lt;</T>&gt;, which computes the cumulative probability for the standard normal.</p>
+<blockquote>
+<p><strong>Q:</strong> What happens when we let <span class="math inline">\(\epsilon\)</span> get larger? Smaller?</p>
+</blockquote>
+<p>Now let’s flip arguments by supposing that after you ran your poll, you want to create a wide enough estimate around <span class="math inline">\(\bar X\)</span> so that most of the time in contains <span class="math inline">\(p\)</span>. In other words, we’d like a desired probability <span class="math inline">\(\beta\)</span> such that</p>
+<p><span class="math display">\[\mathbb P (|\bar X- p| \le  \epsilon)  = \beta\]</span></p>
+<p>Let’s fix a desired value for <span class="math inline">\(\beta\)</span>, and now rewrite the argument inside as a probability the <span class="math inline">\(p\)</span> is inside a certain interval, which we call the :</p>
+<p><span class="math display">\[\begin{equation}
+|\bar X- p| \le  \epsilon\Longleftrightarrow\bar
+X-\epsilon \le  p \le  \bar X +\epsilon  \Longleftrightarrow p \in [\bar X-\epsilon, \bar X +\epsilon].
+\end{equation}\]</span></p>
+<p>Thus, any <strong>confidence level</strong> <span class="math inline">\(\beta\)</span> is going to create a confidence interval given in the above equation. As <span class="math inline">\(\beta \rightarrow 1\)</span>, should my interval get bigger or smaller?</p>
+<p><em>Philosophical aside:</em> A general principle of statistics (and life) is that the less remarkable of a claim you make, the more likely that it is true. For instance, which of the following two claims is more likely to be true:</p>
+<p><strong>Claim A:</strong> The next thunderstorm will occur this upcoming Friday at 4:23 pm.</p>
+<p><strong>Claim B:</strong> The next thunderstorm will occur some time next year.</p>
+<p>So the point here is that if you’re running a poll with limited data, the less specific your claim is, the better chances that you’re correct. Right now, you’re stuck with a best guess for <span class="math inline">\(p\)</span>, given by <span class="math inline">\(\bar X\)</span>. Which of these is more likely:</p>
+<p><strong>Claim A:</strong> <span class="math inline">\(p\)</span> is between <span class="math inline">\(\bar X - .00001\)</span> and <span class="math inline">\(\bar X +.00001\)</span></p>
+<p><strong>Claim B:</strong> <span class="math inline">\(p\)</span> is between <span class="math inline">\(\bar X -1\)</span> and <span class="math inline">\(\bar X+1\)</span>.</p>
+<p>You can actually pinpoint how big your interval should be if you want to be correct with a frequency of <span class="math inline">\(\beta\)</span>. So let’s say you want 95% confidence, meaning that the true parameter would appear in your interval 95% of the time if you ran your experiment many times. Then you’d have</p>
+<p><span class="math display">\[\begin{equation}
+\mathbb P (Z_{0,1}\le  \epsilon/\widehat{SE}(\bar X))- \mathbb P (Z_{0,1}\le  -\epsilon/\widehat{SE}(\bar X)) = .95
+\end{equation}\]</span></p>
+<p>One can show, really through just plugging in values and seeing what works, that this occurs for</p>
+<p><span class="math display">\[\begin{equation}
+\epsilon = z^{*}_{.95}\cdot  \widehat{SE}(\bar X), \quad z^{*}_{.95} = 1.96
+\end{equation}\]</span></p>
+<p>And it’s just that simple folks! Your 95% confidence interval is then</p>
+<p><span class="math display">\[\begin{equation}
+[\bar X - 1.96 \widehat{SE}(\bar X), \bar X + 1.96 \widehat{SE}(\bar X)]  = \bar X \pm 1.96 \widehat{SE}(\bar X).
+\end{equation}\]</span></p>
+<p>For each confidence level <span class="math inline">\(\beta\)</span>, my value of <span class="math inline">\(z^*_\beta\)</span> will change. Some popular values are</p>
+<p><span class="math display">\[z^*_{.8} = 1.28 , \quad z^*_{.9} = 1.65, \quad z^*_{.99} = 2.58.\]</span></p>
+<p>It should make sense that as our demands get stronger, our confidence interval should grow.</p>
+<p>For our example, the 95% confidence interval for <span class="math inline">\(p\)</span> is given by</p>
+<pre class="r"><code>conflow = xbar-1.96*se
+confhigh = xbar +1.96*se
+c(conflow, confhigh)</code></pre>
+<pre><code>## [1] 0.5353704 0.7246296</code></pre>
+<p>One last point: when doing a poll, we’re often more interested in the spread. If Candidate A has 45% and Candidate B has 55%, then the spread is <span class="math inline">\(.45-.55 = -.1\)</span>. In general, if Candidate A has a fraction <span class="math inline">\(p\)</span> of the vote, then candidate B has a fraction <span class="math inline">\(1-p\)</span>, and the spread is <span class="math inline">\(p- (1-p) = 2p-1\)</span>. If our best guess for <span class="math inline">\(p\)</span> is <span class="math inline">\(\bar X\)</span>, then certainly our best guess for the spread is <span class="math inline">\(2\bar X-1\)</span>. The factor of two will cause our confidence interval to be twice as large.</p>
+<p>(Question: what about the -1 term? Shouldn’t that cause a change in the confidence interval too?)</p>
+</div>
+<div id="verifying-confidence-intervals-work" class="section level2" number="0.2">
+<h2 number="0.2"><span class="header-section-number">0.2</span> Verifying confidence intervals work</h2>
+<p>Last section, we really dove into the weeds, and dug up the following for guessing a candidate’s percentage <span class="math inline">\(p\)</span> after polling <span class="math inline">\(n\)</span> people. Our findings:</p>
+<ol style="list-style-type: decimal">
+<li>Our best guess for <span class="math inline">\(p\)</span> is given by <span class="math inline">\(\bar X = \sum X_i/n\)</span>.<br />
+</li>
+<li>If we want to provide a range in which we can have 95% confidence, it is given by the confidence interval <span class="math display">\[\begin{equation}
+CI = \bar X \pm 1.96 \widehat{SE}(\bar X), \quad \widehat{SE}(\bar X) = \sqrt{\bar X(1-\bar X)/n}
+\end{equation}\]</span></li>
+</ol>
+<p>Now is a good time to drill away at the idea of a confidence interval. This interval is a keystone of what’s called <strong>frequentist statistics</strong> . This philosophy states that what you’re trying to find (polling percentages, masses of atoms, average sugar content in a soda) exists, and there’s nothing random about it. You, the mortal statistician, can only dip your toes in the ocean of truth belonging to <strong>parameters</strong>.</p>
+<p>There is a great deal of subtlety with interpreting a confidence interval. The following statement regarding a 95% confidence interval is very commonly uttered:</p>
+<p><em>The parameter <span class="math inline">\(p\)</span> has a 95% probability of landing in my confidence interval.</em></p>
+<p>This is, unfortunately, wrong! There is nothing random about <span class="math inline">\(p\)</span>!</p>
+<p><em>Wrong idea</em>: Generate some confidence interval. If the experiment is run many times, <span class="math inline">\(p\)</span> will land in the confidence interval 95% of the time.</p>
+<p><em>Right idea</em>: <span class="math inline">\(p\)</span> is fixed. For every poll run, we will obtain a 95% confidence interval. Out of all of these intervals, 95% of them will contain the true parameter <span class="math inline">\(p\)</span>.</p>
+<p>Imagine <span class="math inline">\(p\)</span> living in Valhalla in the valley of the gods. We finite mortals can only poke at what <span class="math inline">\(p\)</span> is with our flimsy, noisy, finite data. A 95% confidence interval provides us with the comfort that if we were to run our experiment many times and compute a confidence interval for each experiment, then 95% of our intervals would contain this fixed value <span class="math inline">\(p\)</span>.</p>
+</div>
+<div id="verifying-confidence-intervals-work-1" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Verifying confidence intervals work</h1>
+<p>Now let us imagine that Parameter Valhalla has allowed us to peek, and let us know for sure what <span class="math inline">\(p\)</span> is. Loki from the clouds declares</p>
+<p><strong>Behold! The true value of p is .72. </strong></p>
+<p>In fact, Loki has even provided us with a vote generator, the &lt;<T>&gt;rbinom&lt;</T>&gt; function we have been using in the probability section. With this generator, let’s simulate 1000 elections, each of which polls 300 people. Let’s confirm that about 95% of the confidence intervals we generate contain our true value <span class="math inline">\(p = .72\)</span>.</p>
+<pre class="r"><code>#Our actual parameter value
+p = .72
+numelections = 100
+votes = 3000
+
+#Votes in each election
+elections = rbinom(numelections, votes, p)</code></pre>
+<p>Our 100 different estimates for <span class="math inline">\(p\)</span> (1 estimate for each poll) is given by</p>
+<pre class="r"><code>#It&#39;s p_hat, not phat
+p_hat = elections/votes</code></pre>
+<p>And now our confidence intervals are provided by</p>
+<pre class="r"><code>se = sqrt(p_hat*(1-p_hat)/votes)
+
+conflow = p_hat-1.96*se
+confhigh = p_hat+1.96*se</code></pre>
+<p>The percentage of confidence intervals which contain the true parameter is then</p>
+<pre class="r"><code>print(sum( (p &gt; conflow) &amp; (p&lt;confhigh))/numelections)</code></pre>
+<pre><code>## [1] 0.93</code></pre>
+<p>Note that we’re not going to get exactly 95 %. Confidence intervals are random objects, and the statement of coverage provided by a confidence interval is probabilistic. What is true, by the law of large numbers, is that if we ran more and more polls, then the percentage of confidence intervals containing <span class="math inline">\(p\)</span> would indeed converge to .95.</p>
+<div id="plotting-segments-of-confidence-intervals" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Plotting segments of confidence intervals</h2>
+<p>We can also plot all of our confidence intervals at once to see how they vary from poll to poll.</p>
+<pre class="r"><code>Conftest = data.frame(p_hat, conflow, confhigh, 1:numelections)
+
+colnames(Conftest) = c(&#39;P_hat&#39;, &#39;Percentage&#39;, &#39;Upper&#39;, &#39;Election&#39;)
+
+
+Conftest %&gt;% ggplot()+
+  geom_segment(aes(x = Election, y = Percentage, 
+                   xend = 1:numelections, yend = Upper))+
+  geom_hline(yintercept = p,  color = &#39;red&#39;, size = .2)</code></pre>
+<p><img src="newlab14_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<blockquote>
+<p><strong>Q:</strong> Tinker around with the variables. What happens to confidence intervals as we increase or decrease (a) the population size, (b) the level of confidence?</p>
+</blockquote>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

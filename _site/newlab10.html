@@ -11,7 +11,7 @@
 
 
 
-<title>Data Science Notes</title>
+<title>Random variables</title>
 
 <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -342,28 +342,10 @@ div.tocify {
   <a href="newlab8.html">Data transformations II</a>
 </li>
 <li>
-  <a href="newlab9.html">Data cleaning</a>
+  <a href="newlab9.html">Data Cleaning</a>
 </li>
 <li>
-  <a href="newlab10.html">Random variables</a>
-</li>
-<li>
-  <a href="newlab11.html">Discrete and continous random variables</a>
-</li>
-<li>
-  <a href="newlab12.html">Mean and variance</a>
-</li>
-<li>
-  <a href="newlab14.html">Confidence Intervals</a>
-</li>
-<li>
-  <a href="newlab15.html">Hypothesis Testing</a>
-</li>
-<li>
-  <a href="newlab16.html">Regression</a>
-</li>
-<li>
-  <a href="newlab18.html">Machine learning</a>
+  <a href="newlab10.html">Random Variables</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -377,12 +359,85 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Data Science Notes</h1>
+<h1 class="title toc-ignore">Random variables</h1>
 
 </div>
 
 
-<p>Welcome to the main page for Data Science 201! These notes were used as the main reading material for the class DS 201: Introduction to Data Science at the University of Scranton.</p>
+<p>For the next few sections, we’ll be concerned with datasets of a single variable. It will be necessary that we learn some basic stuff from <strong>probability</strong> and <strong>statistics</strong>. This is be introductory, and some explanations will be <em>very</em> hand-wavy. In particular, while we’ll dip our toes into some probability notation, and perform a few calculations, we will mostly verify all of our claims through sampling with R. Of course, this is no substitute for the real thing, so we strongly recommend is taking a probability (and a statistics) course in the future. Hopefully the next few sections will serve as a motivation for what probability and statistics looks like thorugh a sampling perspective.</p>
+<p>In probability, a major object is the <strong>random variable</strong>. There’s a precise way to define this, but for now, we just imagine that a random variable <span class="math inline">\(X\)</span> is just some random quantity. For instance, <span class="math inline">\(X\)</span> could be the result of a coin flip, or the number of points the Scranton lacrosse team scores, or the number of Coronavirus cases in a particular day.</p>
+<p>Of course, one may object that none of these quantities are actually random. Theoretically, with enough information, we ought to be able to compute all of these things with pure certainty. Well, even that is a contentious point, and if we were allow ourselves down the philosophical rabbit hole, we’d find ourselves arguing about determinism and free will and a whole host of deep questions. One quick way out of this is to say that probability is the mathematics based on having partial information. Sure, perhaps we can get into the brains of every lacrosse player and figure out exactly what’s going to happen in a game. But given some basic facts (previous record of games, age of players, weather conditions, etc.), what’s the best guess we can make? Our limited information is  a dataset.</p>
+<p>Let’s focus on a random variable <span class="math inline">\(X\)</span> (usually random variables are denoted by capital letters) which spit out real numbers. Some useful things to ask about <span class="math inline">\(X\)</span> are</p>
+<ol style="list-style-type: decimal">
+<li>What’s an average value for what <span class="math inline">\(X\)</span> should return?</li>
+<li>How frequently, or what is the probability, that <span class="math inline">\(X\)</span> is less than some number <span class="math inline">\(b\)</span>, or greater than some number <span class="math inline">\(a\)</span>?</li>
+<li>How ``Spread out" is <span class="math inline">\(X\)</span>. Does <span class="math inline">\(X\)</span> return numbers which are very close to each other, or do I get a wide variety of results?</li>
+</ol>
+<p>We’ll answer each of these questions through the notion of <strong>distributions</strong>. We’ll be using <strong>synthetic data</strong> for a bit, which is generated through a random number generator from R.</p>
+<div id="discrete-distributions" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Discrete distributions</h1>
+<p>In this exercise, we are going to generate a random variable <span class="math inline">\(X\)</span> which has the possible values <span class="math inline">\(S = \{4,5,7,9\}\)</span> (the set <span class="math inline">\(S\)</span> of possible values for <span class="math inline">\(X\)</span> is called a <strong>state space</strong>. The random variable <span class="math inline">\(X\)</span> is a <strong>discrete random variable</strong>, meaning that it can takes only finitely many values (well, it could technically be <em>countably infinite</em>, but let’s not worry about that for now). For discrete random variables, we can describe <span class="math inline">\(X\)</span> by the probability that it takes for each value, denoted by the `blackboard script’ <span class="math inline">\(\mathbb P\)</span>. Let’s say the probabilities for values of <span class="math inline">\(X\)</span> are given by</p>
+<p><span class="math display">\[\begin{equation}
+\mathbb P(X = 4) = .3, \quad \mathbb P(X = 5) = .5, \quad \mathbb P(X = 7)
+= .1, \quad \mathbb P(X = 9) = .1,
+\end{equation}\]</span></p>
+<p>Here is a function using <TT>sample</TT> that will generate <span class="math inline">\(n\)</span> random instances of <span class="math inline">\(X\)</span>:</p>
+<pre class="r"><code>samplex = function(n){
+  
+  sample(x = c(4,5,7,9), n, replace = T, prob = c(.3,.5,.1,.1))
+  
+}
+
+samps = samplex(100)
+
+samps</code></pre>
+<pre><code>##   [1] 5 4 4 4 5 5 4 5 7 5 4 5 4 5 4 4 5 4 9 7 7 5 5 7 4 5 5 5 5 5 4 9 7 7 5 5 4
+##  [38] 4 5 5 4 5 5 4 5 4 4 9 4 5 7 4 5 5 5 4 5 9 4 4 9 5 4 5 7 4 4 4 5 5 5 4 7 5
+##  [75] 5 4 5 4 5 5 4 5 5 4 7 4 9 5 5 5 5 7 5 4 5 5 4 7 5 5</code></pre>
+<blockquote>
+<p><strong>Q:</strong> What do you think each part of the code does?</p>
+</blockquote>
+<p>Let’s convert our numeric vector <TT>samps</TT> into a dataframe.</p>
+<pre class="r"><code>samps = data.frame(samps)
+
+str(samps)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    100 obs. of  1 variable:
+##  $ samps: num  5 4 4 4 5 5 4 5 7 5 ...</code></pre>
+<p>We’ll give the column a name of “Trial”, since we performed 100 trials of <span class="math inline">\(X\)</span>.</p>
+<pre class="r"><code>colnames(samps) = &quot;Trial&quot;
+head(samps)</code></pre>
+<pre><code>##   Trial
+## 1     5
+## 2     4
+## 3     4
+## 4     4
+## 5     5
+## 6     5</code></pre>
+<p>Now we can make some basic visuals with <TT>ggplot2</TT>. Let’s take a look at a histogram:</p>
+<pre class="r"><code>samps %&gt;% ggplot()+geom_bar(aes(x = Trial, y = ..count../sum(..count..))) +
+  labs(x = &#39;Value&#39;, y = &#39;Proportion&#39;)</code></pre>
+<p><img src="newlab10_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Note that the fractions that each of the possible values in <span class="math inline">\(S\)</span> takes is pretty close to the probabilities assigned from before. This illustrates an important theme: as the number of samples increases, these fractions will converge to the assigned probabilities. Such a phenomenon is called the <strong>law of large numbers</strong>, and we’ll talk about this in more detail soon.</p>
+<p>Let’s ramp up the number of samples and see what happens</p>
+<pre class="r"><code>samps =  samplex(1000000)
+
+samps = data.frame(samps)
+
+colnames(samps) = &quot;Trial&quot;
+
+samps %&gt;% ggplot()+geom_bar(aes(x = Trial
+                                , y = stat(prop)))</code></pre>
+<p><img src="newlab10_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>sum(samps == 4)/dim(samps)[1]</code></pre>
+<pre><code>## [1] 0.300043</code></pre>
+<pre class="r"><code>sum(samps == 5)/dim(samps)[1]</code></pre>
+<pre><code>## [1] 0.499667</code></pre>
+<pre class="r"><code>sum(samps == 7)/dim(samps)[1]</code></pre>
+<pre><code>## [1] 0.100676</code></pre>
+<pre class="r"><code>sum(samps == 9)/dim(samps)[1]</code></pre>
+<pre><code>## [1] 0.099614</code></pre>
+<p>Now our fractions are much closer to the actual probabilities. Something about this process is a bit artificial, however. In the real world, of course, we don’t have the luxury of generating infinite amounts of data to find out the value of a probability. This is where statistics comes into play. If we have only finitely many datapoints, then we need to make a best guess about what probability. We may also want some type of statement about how good our guess is, as well. This will be covered with the concept of <strong>confidence intervals</strong>. Much more on this later.</p>
+</div>
 
 
 

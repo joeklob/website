@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Fill in the blanks: What to do when your dataset isn’t perfect</title>
+
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Data Science Notes</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="newlab2.html">Intro to R</a>
+</li>
+<li>
+  <a href="newlab3.html">Commands and functions</a>
+</li>
+<li>
+  <a href="newlab4.html">Data massaging: basics</a>
+</li>
+<li>
+  <a href="newlab5.html">Intro to programming</a>
+</li>
+<li>
+  <a href="newlab6.html">ggplot2</a>
+</li>
+<li>
+  <a href="newlab7.html">Data transformations I</a>
+</li>
+<li>
+  <a href="newlab8.html">Data transformations II</a>
+</li>
+<li>
+  <a href="newlab9.html">Data Cleaning</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Fill in the blanks: What to do when your dataset isn’t perfect</h1>
+
+</div>
+
+
+<p>Data from the real world is not perfect. As we’ve discussed before, errors can permeate a dataset. However, a good data scientist does not need a dataset to be perfect. Several methods exist for estimating what a data set <em>should</em> look like, with varying degrees of crudeness.</p>
+<p>In general, the process of preparing your data before you start making figures and models is called <strong>data cleaning</strong>. For this lab, we’ll be dealing with cleaning dataset with numeric entries. We’ve already done a bit of cleaning in previous datasets. For instance, we identified entries in patients with BMI or glucose levels of zero. Certainly, such entries are nonsense, but for all we know, there could have been more. For instance, what if we found a BMI of 500? Or a BMI simply labeled “yes”? In general, a good <em>domain knowledge</em> is very helpful in determining reasonable ranges for your variables.</p>
+<p>In other cases, it just makes sense to pare down your data and possibly throw some of it away. To the newcomer, this might seem odd. Isn’t more data always better? The answer is an emphatic no. More relevant data is better, but data which is useless can simply get in the way. A popular example of this appears in text data. If you were given a copy of <em>War and Peace</em> and asked to identify key phrases found in the book that don’t appear elsewhere, it doesn’t make sense to have to deal with words like “the” or “and”. A proper data cleaning might just snip these <strong>stop words</strong> out before getting to more serious endeavors.</p>
+<p>We’ll be working with the “Melbourne Housing” dataset, which lists information regarding housing prices and features (make sure you include the heading when downloading this dataset). You can get more information about this dataset on the associated <a href="https://www.kaggle.com/anthonypino/melbourne-housing-market">Kaggle page</a> (Kaggle is a fun website that hosts data science competitions.)</p>
+<p>Perhaps the most asked question for someone searching for a house in Melbourne is what a house goes for in the area.</p>
+<pre class="r"><code>mean(Melbourne_housing_FULL$Price)</code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>It looks like we have an incomplete dataset (surprise, surprise). The answer of <TT>NA</TT> is technically correct, since even a single <TT>NA</TT> means that we don’t actually know the average house price. We need to include the <TT>na.rm</TT> argument to calculate the average house price for housing that have a known value. Let’s find some other statistics as well:</p>
+<pre class="r"><code>mean(Melbourne_housing_FULL$Price, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 1050173</code></pre>
+<pre class="r"><code>median(Melbourne_housing_FULL$Price, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 870000</code></pre>
+<pre class="r"><code>range(Melbourne_housing_FULL$Price, na.rm = TRUE)</code></pre>
+<pre><code>## [1]    85000 11200000</code></pre>
+<p>Note that prices are given in Australian dollars, so things look a little more expensive to an American than they actually are.</p>
+<blockquote>
+<p><strong>Q:</strong> What’s the difference between mean and median? What can be the cause for the median to be significantly less than the mean?</p>
+</blockquote>
+<p>How many houses don’t have prices?</p>
+<pre class="r"><code>sum(is.na(Melbourne_housing_FULL$Price))/length(Melbourne_housing_FULL$Price)</code></pre>
+<pre><code>## [1] 0.2183206</code></pre>
+<p>About 22% of houses don’t have prices. There are several options of what to do with these entries.</p>
+<div id="method-1-trash" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Method 1: Trash</h1>
+<p>If exact house prices are absolutely crucial, then we should just throw away those rows containing an <TT>NA</TT>. Using <TT>dplyr</TT> should come in handy here. Also, let’s further restrict our data to just include the Suburb and price:</p>
+<pre class="r"><code>Melbourne_housing_FULL %&gt;% select(Suburb, Price) %&gt;% filter(!is.na(Price)) %&gt;% head</code></pre>
+<pre><code>##       Suburb   Price
+## 1 Abbotsford 1480000
+## 2 Abbotsford 1035000
+## 3 Abbotsford 1465000
+## 4 Abbotsford  850000
+## 5 Abbotsford 1600000
+## 6 Abbotsford  941000</code></pre>
+<blockquote>
+<p><strong>Q:</strong> What’s the point of the exclamation point? Also, why can’t we just type in Price != NA?</p>
+</blockquote>
+<p>Let’s check the mean price of our new dataset. We shouldn’t need to include any <TT>na.rm</TT> argument.</p>
+<pre class="r"><code>newmel = Melbourne_housing_FULL %&gt;% select(Suburb, Price) %&gt;% filter(!is.na(Price)) 
+
+mean(newmel$Price)</code></pre>
+<pre><code>## [1] 1050173</code></pre>
+</div>
+<div id="imputation-by-single-value" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Imputation by single value</h1>
+<p>If we would like to plug in values, a quick fix is to simply plug in the mean or median value. This is often done with modeling. We may, for instance, like to estimate what suburb a house is located in given all of our other variables as input. The fifth of the dataset not containing prices contains other information that could be worthwhile for building the model, so it might be better to put in a shoddy guess for price rather than throwing the entire row away. Let’s create a new dataset containing such a column:</p>
+<pre class="r"><code>#Let&#39;s copy the original dataset in preparation for making
+#a new one
+
+newermel = Melbourne_housing_FULL
+
+#create a for loop that replaces NA with mean
+
+impprice = rep(0, dim(newermel)[1])
+
+for (i in 1:length(impprice)){
+  
+  if (is.na(Melbourne_housing_FULL$Price[i])){
+    
+    impprice[i] = mean(Melbourne_housing_FULL$Price, na.rm = TRUE)
+    
+  } else{
+    impprice[i] = Melbourne_housing_FULL$Price[i]
+  }
+  
+}
+
+#Making a new row now is easy.  
+
+newermel$impprice = impprice
+
+
+mean(Melbourne_housing_FULL$Price, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 1050173</code></pre>
+<pre class="r"><code>mean(newermel$impprice)</code></pre>
+<pre><code>## [1] 1050173</code></pre>
+<blockquote>
+<p><strong>Q:</strong> Can you convince yourself that the means should be the same?</p>
+</blockquote>
+<p>This is a nice feature about imputing with the mean for every value. However, things look a bit quirky when looking at the new distribution of housing prices.</p>
+<pre class="r"><code>Melbourne_housing_FULL %&gt;%  ggplot()+ geom_histogram(aes(Price), bins = 100)</code></pre>
+<pre><code>## Warning: Removed 7610 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="newlab9_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>newermel %&gt;% ggplot()+ geom_histogram(aes(impprice), bins = 100) </code></pre>
+<p><img src="newlab9_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<p>Maybe now’s a good time to talk about getting better x labels. Clearly, we need fewer ticks</p>
+<pre class="r"><code>Melbourne_housing_FULL %&gt;%  ggplot()+ geom_histogram(aes(Price), bins = 100)+xlim(0, 10^7)</code></pre>
+<pre><code>## Warning: Removed 7611 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<p><img src="newlab9_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>newermel %&gt;% ggplot()+ geom_histogram(aes(impprice), bins = 100) +xlim(0, 10^7)</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_bin).
+
+## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<p><img src="newlab9_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<blockquote>
+<p><strong>Q:</strong> What happens when you adjust the number of bins? Any guesses on what type of quantity would capture what happens when data clumps together?</p>
+</blockquote>
+<p>The clumping we see could be explained by the <strong>variance</strong>, or its cousin, the <strong>standard deviation</strong>, which is simply the square root of the variance.</p>
+<pre class="r"><code>sqrt(var(Melbourne_housing_FULL$Price, na.rm = TRUE))</code></pre>
+<pre><code>## [1] 641467.1</code></pre>
+<pre class="r"><code>sqrt(var(newermel$impprice))</code></pre>
+<pre><code>## [1] 567135.7</code></pre>
+<p>The main rule of thumb: the larger the variance, the more spread out the data. Plugging in a single value over and over again at the mean is going to make values more scrunched up on average.</p>
+</div>
+<div id="imputing-with-sampling" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Imputing with sampling</h1>
+<p>One way to get around producing the unsightly point mass in the last example is to randomly sample your data.</p>
+<pre class="r"><code>newestmel = Melbourne_housing_FULL
+
+sampprice = rep(0, dim(newestmel)[1])
+
+for (i in 1:length(sampprice)){
+  
+  if (is.na(Melbourne_housing_FULL$Price[i])){
+    
+    
+    sampprice[i] = sample(newmel$Price, 1)
+    
+  } else{
+    sampprice[i] = Melbourne_housing_FULL$Price[i]
+  }
+  
+}
+
+
+#Making a new row now is easy
+
+newestmel$sampprice = sampprice
+
+
+mean(newestmel$sampprice)</code></pre>
+<pre><code>## [1] 1050711</code></pre>
+<pre class="r"><code>mean(Melbourne_housing_FULL$Price, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 1050173</code></pre>
+<pre class="r"><code>sqrt(var(newestmel$sampprice))</code></pre>
+<pre><code>## [1] 645043.9</code></pre>
+<pre class="r"><code>sqrt(var(Melbourne_housing_FULL$Price, na.rm = TRUE))</code></pre>
+<pre><code>## [1] 641467.1</code></pre>
+<p>There’s minor bad news and substantial good news. The bad news is that sampling is going to result in a slightly different mean than what we originally have. It’s possible to prove that the difference approaches zero as the size of the dataset gets larger and larger. Our dataset is pretty large (about 35,000 rows), so our average is pretty small, on the order of a couple of thousands. The good news is quite nice. The variances between the two datasets are also quite small. We can also take a look at the histograms to get a better picture:</p>
+<pre class="r"><code>Melbourne_housing_FULL %&gt;%  ggplot()+ geom_histogram(aes(Price), bins = 100)+xlim(0, 10^7)</code></pre>
+<pre><code>## Warning: Removed 7611 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<p><img src="newlab9_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>newestmel %&gt;% ggplot()+ geom_histogram(aes(sampprice), bins = 100) +xlim(0, 10^7)</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_bin).
+
+## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<p><img src="newlab9_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

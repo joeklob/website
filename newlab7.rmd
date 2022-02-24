@@ -1,0 +1,356 @@
+---
+title: "Data Transformations"
+
+---
+
+
+
+
+Data science reminds us that life is imperfect.  Errors abound.  There is error of measurement in a dataset, error in data entry, error in processing data to a workable file, error from the data scientist analyzing the dataset (the course of this class is to reduce this type of error as much as possible), and finally, error in the interpretation of the data analysis from the audience.  Carrying a healthy skepticism when dealing with data is always a good idea, and the more you work with data, the more you see the imperfections that seem to invade from every direction.  Of course, some errors are completely harmless.  Having _Heght_ instead of _Height_ for the name of a variable is certainly a mistake, but the audience _knows_ what you mean.  Corrupting the value of an entry, however, is a much worse offense.  For a variety of reasons, a data collector could put down something wrong. Some examples of why a bad data entry occurs include `fat fingering' (just typing in the wrong number), using incorrect units, and lack of interest.  To address the last point, imagine being a nurse in 1995 who is told to record height and weight for "the database".  You don't know what a database is, and you have sick patients to tend to.  With that in mind, should we be surprised to find medical datasets with patients having a height of _Thursday_?
+
+> __Q:__ Can you think of at least three other reasons why a datapoint may be corrupted?
+
+
+## Expressing uncertainty with certainty
+ 
+In science, if you are uncertain of something, it's best to make that fact very clear.  Granted, this is easier said than done.  Every human wants to be recognized as being knowledgeable.  The pressure for a scientist is even greater.  Corrupted datasets could mean a ruined study, which could translate to a lost grant or worse.  The temptation to fudge data could be very great, and there are many examples of prestigious labs caught red-handed.  While we won't get too into the weeds with ethics, it's very easy to say the following: when it comes to incorporating false data without making it crystal clear to your audience,
+
+<div style="text-align: center"> <span style="color: red;"> <font size="15"> Don't do it. </font> </span> </div>
+
+
+
+
+Alright, alright, enough with the lecturing, let's get to business.  We'll be working with the <TT>ggplot2</TT> and <TT>dplyr</TT> packages again, so make sure that they are loaded before starting this section.
+
+```{r include=FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+
+We're also working again with the <TT>PimaIndiansDiabetes</TT> dataset.  This time, we are interested in the dataset's flaws. From previous labs, we learned that this dataset has been registering people with a BMI of zero.
+
+```{r include=FALSE}
+library(mlbench)
+data("PimaIndiansDiabetes")
+```
+
+```{r}
+
+ggplot(PimaIndiansDiabetes,aes(x = mass)) + geom_histogram()
+
+```
+
+It is clear that we don't know the actual BMI of our entries with values of 0.  Let's write a function that converts 0's (and in general, nonpositive values) to <TT>NA</TT>. The value NA in a dataset is essentially a placeholder for “I don’t know”. Of course, in real life, “I don’t know” could mean many things: e.g.  “I didn’t record the value”, “I recorded the value, but it doesn’t make sense”, “The value is censored by a company, government, etc.”, “I’d just flat out rather not tell you because it would make my dataset look bad for whatever reason”, and so on.
+
+
+
+
+```{r}
+pos = function(x){
+  
+  if(x > 0){
+    
+    return(x)
+  } else{
+    return(NA)
+  }
+}
+```
+
+
+## An aside regarding working with \texttt{NA}'s
+
+<TT>NA</TT>'s are like Christmas lights: if one goes out, the whole thing goes out. In other words, if I have an unknown number, I certainly won’t know what it is when it’s divided by two! Here are some examples of <TT>NA</TT>'s performing under popular functions:
+
+```{r}
+NA + 7
+
+NA*NA
+
+NA^0
+
+NA <= Inf
+
+NA*0
+
+mean(c(5,4,NA))
+
+max(c(5,4,NA))
+```
+
+> __Q:__ The fourth and fifth examples have answers which have generated some controversy.  Why is that?
+
+If we want to compute things like the mean or the max of a vector restricted to non-<TT>NA</TT> entries, we need to use <TT>na.rm</TT> as an additional argument
+
+
+```{r}
+
+mean(c(5,4,NA), na.rm = TRUE)
+
+max(c(5,4,NA), na.rm = TRUE)
+```
+
+## Back to our dataset
+
+Using our function <TT>pos</TT>, let's apply it to every element in the <TT>mass</TT> variable
+
+```{r}
+newpima = PimaIndiansDiabetes %>% mutate(posmass = pos(mass))
+
+```
+
+We've been given a warning: our function has only been applied to the first element!  The reason why this is the case is because our function <TT>pos</TT> isn't __vectorized__, meaning that you can only insert one element into <TT>pos</TT> at a time.  There are a few ways around this
+
+```{r}
+vecpos = function(x){
+  
+  return( sapply(x,pos))
+}
+
+vec2pos = Vectorize(pos)
+
+vecpos( c(-1, 3, 0))
+
+vec2pos( c(-1, 3, 0))
+
+```
+
+Let's try again
+
+```{r}
+newpima = PimaIndiansDiabetes %>% mutate(posmass = vecpos(mass))
+
+```
+
+
+Success!  Let's extend our analysis to the entire dataset.  If we look at the variables in <TT>PimaIndiansDiabetes</TT>, we note that besides <TT>pregnant</TT> and <TT>diabetes</TT>, every variable should be positive.  Just how corrupted is our dataset?  There are many ways to specifically ask this question, but here are two extremes:
+
+1. Which patients have at least one corrupted datapoint?
+2. Which patients have corrupted entries for _all_ datapoints?
+
+
+We'll need some vector logic to answer these questions.
+
+
+```{r}
+ind1 = which(PimaIndiansDiabetes$pregnant == 0 |
+PimaIndiansDiabetes$mass == 0 |
+PimaIndiansDiabetes$insulin == 0 | PimaIndiansDiabetes$glucose ==0|
+PimaIndiansDiabetes$pressure ==0|
+PimaIndiansDiabetes$triceps == 0 ) 
+
+length(ind1)/dim(PimaIndiansDiabetes)[1]
+
+
+ind2 =  which(PimaIndiansDiabetes$pregnant == 0 & PimaIndiansDiabetes$mass == 0 & 
+PimaIndiansDiabetes$insulin == 0 &
+PimaIndiansDiabetes$glucose == 0 & PimaIndiansDiabetes$pressure ==0 & PimaIndiansDiabetes$triceps == 0 ) 
+
+length(ind2)/dim(PimaIndiansDiabetes)[1]
+
+```
+
+Observe the types of operators that we are using.  The vertical bars <TT>||</TT> means 'or', and ampersands <TT>\&\&</TT> means 'and'.  For vector quantities, we use single <TT>|</TT> and <TT>\&</TT>.
+Here's a quick review of __logic tables__, which give values when considering binary logical operators, and an example of what happens when using vector booleans. 
+
+```{r}
+
+0 || 1
+
+1 || 0
+
+1 || 1
+
+0 || 0
+
+0 && 1
+
+1 && 0
+
+1 && 1
+
+0 && 0
+
+c(0,1) & c(1,1)
+
+c(0,1) | c(1,1)
+
+
+
+```
+
+Also observe that there's a pretty stark difference between using 'and' versus 'or'!  Most patients have a corrupted entry, but there's not a single patient that has corrupted data for every variable.  If you were running a study or trying to build a model, it would be pretty expensive to throw away half of your dataset.  On the other hand, it would be a very, very bad idea just to plug in entries that seem correct and then not say anything about it.  A happy medium is __data imputation__, in which we try to estimate what type of entry should be included, and then make sure that you make this point crystal clear when explaining your model.  We will look at data imputation methods more closely in future labs.  
+
+
+
+# Data Transformation: picking flowers with the iris dataset
+
+Let's take a look at the <TT>iris</TT> dataset, a built-in dataset in R commonly used as an example in _clustering
+algorithms_. Near the end of this course, we will revisit <TT>iris</TT>  when we look at methods in machine learning.  This is also an opportunity to get some practice with the pipe operator.
+
+Here's a peek of <TT>iris</TT> 
+
+```{r}
+head(iris)
+```
+This contains five variables: the length and width for sepal and petal lengths, and the a species classification.  The major question asked for classification algorithms is this: give the first four columns of petal and sepal information, can we predict the species?  
+
+
+## Filter
+
+Let's use the <TT>filter</TT>  function to create a subset of the <TT>iris</TT> 
+dataset which only shows the setosa species of iris.
+
+```{r}
+
+head(iris %>% filter(Species == 'versicolor'))
+```
+
+Notice that the operations that we perform these operations with dplyr do __not__ change the original dataset.  Indeed, if we type in iris again, we get
+
+```{r}
+
+head(iris)
+```
+
+We can demand two or more qualifications of the dataset as well.  For instance, let's demand that we have versicolors with sepal widths between 3.0 and 3.5 cm.  
+
+```{r}
+
+head(iris %>% filter(Species == 'versicolor' & Sepal.Width >= 3 & Sepal.Width <= 3.5))
+```
+
+> __Q:__ What would happen if we used double ampersands?
+
+
+
+## Arrange
+
+The <TT>arrange</TT>  function is used to sort a dataset with respect to a variable.  Let's first arrange by species.
+
+
+
+> __Q:__ Use the \texttt{arrange} function to sort the \texttt{iris} dataset by species.  How is this set arranged?  How can we arrange this in the opposite
+order?
+
+```{r}
+
+iris %>% arrange(Species ) %>% head
+```
+
+> __Q:__ How is this being sorted?
+
+
+We can also arrange by species and then something else, say petal width
+
+
+
+```{r}
+
+iris %>% 
+  arrange(Species, Petal.Width) %>% head
+```
+
+Finally, to arrange in descending order
+
+```{r}
+
+iris %>% 
+  arrange(desc(Species),Petal.Width) %>%
+  head
+```
+
+
+
+## Select
+
+(i) Use the <TT>select</TT>  function to create a subset of the <TT>iris</TT> dataset which only contains the species and sepal widths.  
+
+> __Q:__ How is select different from filter? Aren't both just paring down the dataset?
+
+```{r }
+
+head(iris %>% select(Sepal.Width, Species))
+```
+
+
+## Mutate
+
+This one's quite important. In fact, we've used it a bunch already. You'll be needing <TT>mutate</TT>  to make new variables quite often when given a dataset. Mutate allows you do add new columns based on previous column information through passing columns variables with a function.
+
+If you gave a dataset of physical quantities with dimensions to an engineer or scientist, the first order of business would be to create ``dimensionless variables".  These often help when trying to compare two different objects which only differ by a scaling.  For instance, we can all recognize an airplane being displayed on a television set, even if the image of the airplane being shown isn't as large as a real life airplane.
+ One of the simplest dimensionless variables is an `aspect ratio', which divides
+two length variables.  In our case, let's figure out the __sepal aspect
+ratio__ between the length and width of sepals. Using the <TT>muatate</TT>  function, we'll create a new variable called __sepal aspect ratio__ and denote it as <TT>sar</TT> . For each flower, <TT>sar</TT>  gives the sepal aspect ratio for each flower.
+
+```{r }
+
+iris %>% mutate(sar = Sepal.Length/Sepal.Width) %>%  head
+```
+Let's sort our dataset with respect to <TT>sar</TT>.  This will take yet another pipe.
+
+```{r }
+
+iris %>% mutate(sar = Sepal.Length/Sepal.Width) %>% arrange(sar)  %>%  head
+```
+
+Now, let's only include <TT>sar</TT> and <TT>Species</TT>, and furthermore let's restrict to those flowers with a sepal aspect ratio between 1.4 and 1.45.
+
+```{r }
+
+iris %>% mutate(sar = Sepal.Length/Sepal.Width) %>% select(sar, Species) %>% 
+filter(sar>= 1.4 & sar <= 1.45) %>% 
+arrange(sar)  
+```
+
+> __Q:__ As an exercise in agony, try performing this action without using the pipe operator!
+
+
+## Summarize
+
+
+The <TT>summarize</TT>
+
+(i) Use the <TT>summarize</TT> (you can also use <TT>summarise</TT>, many of the developers are from British English speaking countries) function to create a variable called <TT>skinny</TT>
+which returns a 1x1 _tibble_ of the mean of the aspect ratios.  A tibble should just be seen as a special type of data frame.  
+
+Now let's  use <TT>summarize</TT> along with <TT>group\_by</TT> to create a tibble
+which gives an average aspect ratio for each species.
+
+```{r }
+
+
+iris %>% 
+mutate(sar = Sepal.Length/Sepal.Width) %>% 
+summarize(skinny = mean(sar))
+
+
+
+
+```
+
+> __Q:__ Big whoop!  What could we have typed to get the mean of the sepal aspect ratio without so much work?
+
+The nice thing is that we can group statistics based on different values of another variables.  For instance, we can create a 3x1 tibble that gives mean sepal aspect ration for each species.  This is done with the <TT>group\_by</TT> function.  This simply tells the data frame to separate each calculation with regards to different types of species.
+
+
+```{r }
+
+
+iris %>% mutate(sar = Sepal.Length/Sepal.Width)%>% group_by(Species) %>% 
+summarize(skinny = mean(sar))
+
+
+```
+An important point is we didn't create any new variables to create this list!  For very large datasets, this is a great feature, since we don't have to replicate datasets at each point in our data analysis process.
+
+
+
+
+
+
+
+
+
+

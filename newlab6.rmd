@@ -1,0 +1,345 @@
+---
+title: '<TT>ggplot2</TT>: Pretty pictures made prettier'
+---
+
+
+# The <TT>ggplot2</TT> and <TT>dplyr</TT> packages
+
+Now that we've made a good and honest attempt at understanding R from a programming point of view, let's return to making some nice looking figures. Our focus is on the <TT>ggplot2</TT> package, which allows us to create more professional looking figures than the basic graphing tools included in R.  A __package__, by the way, is an extension of R's programming language.  It makes sense that RStudio wouldn't have the thousands and thousands of commands written by the R community on command.  This would be far too large for a standard laptop to store.  Instead, we call on packages by using the <TT>library</TT> function.
+
+The dataset we'll be using is the <TT>PimaIndiansDiabetes</TT> dataset.  Loading this dataset also requires calling on another package called  <TT>mlbench</TT>.  Let's load it up and call on the dataset:
+
+```{r}
+library(mlbench)
+data("PimaIndiansDiabetes")
+```
+
+It is also possible to load a library by clicking on the "Packages" tab in the lower right pane of RStudio, searching for your package, and clicking on the appropriate box.  Sometimes your desired package won't be installed, so you'll need to click on the "Install" icon at the top of the packages window and look for it there.
+
+
+What does our dataset look like?
+
+```{r}
+?PimaIndiansDiabetes
+str(PimaIndiansDiabetes)
+```
+
+
+A main goal of this section is to get you associated with two packages found in R:  <TT>dplyr</TT>, a set of tools and functions used for manipulating data,  and <TT>ggplot2</TT>, a very clean format for creating attractive visuals.  Both of these packages are true gems, and make data visualization downright enjoyable.  
+
+So let's load them up:
+
+```{r message=FALSE, warning=FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+__Note__: if R is getting mad at you and claiming that such packages don't exist, then it could be one of two things.  First, under the packages tab on the bottom right of RStudio, search to see if your packages exist.  If not, click on the "Install" icon at the top left of the same pane, and download whatever package you need.  It can also be the case that your current version of R is old.  If this is the case, click [here](https://www.rstudio.com/products/rstudio/download/) and follow the instructions for getting the newest version of R and RStudio.  
+
+
+# Types of visuals
+
+## Scatter plots
+
+
+Let's take a look at a scatter plot which compares triceps skin fold versus glucose levels:
+
+
+
+```{r}
+ggplot(data = PimaIndiansDiabetes) + 
+  geom_point(mapping = aes(x = triceps, y = glucose))
+```
+
+Let's break down each of these parts step by step.  First, note that <TT>ggplot2</TT> uses what's called a __grammar of graphics__.  Bits and pieces of visuals are strung together using a plus sign.  The first such step is to write <TT>ggplot</TT>, and to include your dataset as the first argument. The next function tells us what type of visual we are interested in.  In our case, we want a scatter plot, which is given by <TT>geom_point</TT>.  Inside this function, we include our __aesthetic mapping argument__, which tells us which variables to include (triceps fold vs glucose levels).  
+
+The visual we see is helpful in that we note its warts immediately.  In particular, our scatter plot is suggesting that multiple people have a triceps fold of 0.  This isn't the result of a new diet.  Rather, this dataset, like many datasets encountered in real life, contains some obvious errors.  When finding data with errors, there are several ways to confront it.  One is to just play with the hand your dealt, and tell your audience what you find as suspicious.  You can also remove suspicious datapoints, in which case you should certainly tell your audience.  Other methods for dealing with __data cleaning__ will be dealt with in future labs.
+
+Do you see any  trends in the previous visual?  If so, your eyes are probably pretty strained, as the author certainly doesn't see anything on note.  Let's look at something a little clearer and compare mass and glucose levels.
+
+
+```{r}
+ggplot(data = PimaIndiansDiabetes) + 
+  geom_point(mapping = aes(x = mass, y = glucose))
+
+```  
+  
+This isn't exactly a perfect correlation (we'll get to what that means later), but the data does suggest to a certain degree that larger mass trends with higher glucose levels.  We also have some clear errors: people with zero mass or glucose levels can't exist.
+
+
+The aesthetic argument can include additional variable in different forms.  For example, let's color datapoints corresponding to whether a person has diabetes.
+
+```{r}
+ggplot(data = PimaIndiansDiabetes) + 
+  geom_point(mapping = aes(x = mass, y = glucose, color = diabetes))
+
+``` 
+
+
+> __Q:__ What does this graph suggest about diabetes and glucose levels?  Diabetes and mass?
+
+
+
+Now let's take a look between the diabetes pedigree function and the mass.  
+
+> __Q:__ What on earth is the diabetes pedigree function?  Note that just looking at \texttt{?PimaIndiansDiabetes} is not very helpful in actually defining this.  You'll have to consult the internet instead.
+
+```{r}
+ggplot(data = PimaIndiansDiabetes) + 
+  geom_point(mapping = aes(x = pedigree, y = mass))
+``` 
+
+
+Now let's add an indicator for diabetes:
+
+
+```{r}
+
+ggplot(data = PimaIndiansDiabetes) + 
+  geom_point(mapping = aes(x = pedigree, y = mass, color = diabetes))
+
+``` 
+
+> __Q:__ One could imagine that the diabetes pedigree function could be used to detect whether a patient has diabetes.  Does this seem to be the case?
+
+
+The <TT>color</TT> aesthetic that we used can be changed to <TT>alpha</TT>, which gives a shading level as the diabetes variable changes.  But beware!  It's not advised to use alpha for discrete variables.  In our case, <TT>diabetes</TT> isn't just discrete, it's binary, meaning that there are only two possible outputs (positive or negative).  
+
+```{r}
+
+ggplot(data = PimaIndiansDiabetes) + 
+  geom_point(mapping = aes(x = pedigree, y = mass, alpha = diabetes))
+
+``` 
+
+R is even nice enough to give us a warning that that we shouldn't be using alpha for discrete variables.
+
+> __Q:__ Hold on though.  What if you just want to plot the diabetes variable in the grey scale?  After all, many journals require black and white photos, both for ease in production and as a friendly gesture to colorblind folks.  
+
+```{r}
+
+ggplot(data = PimaIndiansDiabetes) + 
+  geom_point(mapping = aes(x = pedigree, y = mass, color = diabetes)) +
+  scale_colour_grey()
+
+``` 
+Still a bit messy, but getting there.  Some more information on how to tweak with the grey scale is provided [here](https://ggplot2.tidyverse.org/reference/scale_grey.html).
+
+## Curve fitting
+
+One of the best features of <TT>ggplot2</TT> is that you can keep adding layers for more detailed visuals.  For instance, we can include both a scatter plot and also a fitting of the points into a smooth function.
+
+
+```{r}
+
+ggplot(data = PimaIndiansDiabetes, mapping = aes(x = pressure, y = mass)) + 
+  geom_point()+
+  geom_smooth()
+``` 
+
+> __Q:__ Any thoughts on how this curve is generated?  We'll address a bunch of _regression methods_ later, but for now just think of this curve as an approximation of what value of BMI is found on average for an input of pressure. 
+
+Observe that for a new layer, we just add a plus sign.  Where you put the plus sign is important.  Make sure to place it at the end of a line rather than the beginning.
+
+> __Q:__ Place a plus sign at the beginning of a line rather than at the end.  What happens?
+
+
+## An aggrevating example
+
+_Motivational aside_: As lovely as <TT>ggplot2</TT> is, it is still in the realm of programming, meaning that you will find yourself banging your head against the wall trying to fit what you want with what R is giving you.  As with much of learning, __be prepared to be wrong most of the time, especially when starting out__.  When (not if) R keeps giving you the wrong answer, the best option is to keep digging away.  Programming requires thick skin, and the only way you're going to achieve that is by working on problems that force you to change your initial solution strategies.  
+
+For a case in point, suppose I would like to make a series of box plots for BMI under each number of pregnancies.    
+
+The <TT>ggplot2</TT> function for the box plot is given by  <TT>geom_boxplot</TT>.  A first guess would be
+```{r}
+
+ggplot(data = PimaIndiansDiabetes, mapping = aes(x = pregnant, y = mass))+geom_boxplot()
+``` 
+
+This is _not_ what we're looking for.  Instead of giving a box plot for each number of pregnancies from 0 to 17, we're given a single box plot.  From the warning message, it appears that the problem is that the $x$-variable cannot be _continuous_.  Clearly number of pregnancies is a discrete variable, but R doesn't know that.  It's just seeing numbers as the inputs.  So it looks like we need to change this variable into characters.
+
+To do so, let's take a peek into the <TT>mutate</TT> function.  This adds a new variables into the data frame (we'll talk more about this soon).  For our case, we need to create a new variable which is just pregnancies, but expressed as characters rather than numbers (e.g. `7' instead of 7).
+
+
+
+```{r}
+
+ggplot(data = mutate(PimaIndiansDiabetes, numpreg = as.character(pregnant)), 
+       mapping = aes(x = numpreg, y = mass))+geom_boxplot()
+
+``` 
+
+Oh, come on!  
+
+> __Q:__ What do you mean `Oh, come on!'?  Isn't this exactly what we wanted?
+
+Sure, we technically have produced what was asked for.  We have a collection of box plots corresponding to each number of pregnancies.  But this graph still looks _awful_.  The numbers are all jumbled below.  
+
+> __Q:__ How is R ordering the numbers?
+
+The ordering below is called __lexicographic__, in which the first appearing characters are ordered first, then the second characters, and so forth. This is how a dictionary orders words.  Thus we get an ordering $\lesssim$ where 
+
+"13" $\lesssim$ "2" 
+
+because the first character in "13", which is "1", is less than the first and only character in "2".
+
+While there must be something cleaner out there, here's a `hack' to get around this.  The idea is to insert the "correct" ordering into the <TT>pregnant</TT> variable using the <TT>levels</TT> function.  
+
+```{r}
+
+PimaIndiansDiabetes$pregnant = ordered(PimaIndiansDiabetes$pregnant, 
+levels = as.character(sort(unique(PimaIndiansDiabetes$pregnant))))
+
+ggplot(data = PimaIndiansDiabetes, mapping = aes(x = pregnant, y = mass))+geom_boxplot()
+``` 
+
+
+> __Q:__ Explain in detail why the ordering invoked in the levels argument makes sense.
+
+
+> __Q:__ An open question: am I just being ridiculous here?  Is there another way to get to this solution which is shorter or more elegant?  Please tinker around and find out!
+
+
+
+## Some more box plots
+
+Suppose we'd like to create boxplots based on continuous data.  As an example, let's say that we're interested in looking at boxplots for glucose under different intervals of BMI.  As we saw before, <TT>ggplot2</TT> has issues with taking in continuous $x$-variables for box plots.  To handle this, we add a new variable that bins continuous variables into different intervals, and then converts these intervals to character arguments.  Here goes:
+
+```{r}
+
+ggplot(data = mutate(PimaIndiansDiabetes,  mass=cut_width(mass,width=20)))+
+  geom_boxplot(mapping = aes(x=mass, y=glucose) )
+``` 
+
+
+Note that our code is starting to get a bit hairy.  We have to deal with nested arguments to create a new variable, and then place this inside the <TT>ggplot</TT> function to get our visual.  Let's take a look at a rather clever notational trick, courtesy of the <TT>dplyr</TT> package.
+
+# An important aside: the pipe operator
+
+The pipe operator addresses a perennial irritation of mathematics: describing the composition of two functions.  Suppose we take some number $x$, apply the function $f$ to it, and then apply another function $g$ to our result.  The resulting output is written as
+$$g(f(x))$$
+or perhaps
+$$g \circ f (x).$$
+Both expressions are read as "$g$ of $f$ of $x$".  This is a bit of a pain when looking at the order of things.  We are used to putting things in order from left to right (perhaps with the exception of those associated with the Hebrew language).  However, $f$ is written to the right of $g$, even though $f$ is the first thing we _do_ to $x$.  In fact, the composition really goes as 
+$$ x \hbox{ then apply } f \hbox{ then apply } g$$
+<TT>dplyr</TT> has supplied us with an operator which roughly translates to "then apply".  This is called the __pipe operator__, written as \texttt{\%>\%}.  For an input $x$ and a  function $f$, we have
+
+<TT>f(x)</TT> =<TT>x \%>\% f</TT> 
+
+For example, let $f(x) = x^2$ and $g(x) = x+1$.
+
+
+
+> __Q:__ Compute $g(f(x))$, using the traditional composition notation and also with a pipe operator.
+
+
+```{r}
+f = function(x){
+  
+x^2
+}
+
+g = function(x){
+  
+x+1
+}
+
+
+f(g(3))
+
+3 %>% g %>% f
+```
+
+Note the lack of parenthesis needed for the pipe.  This really helps when putting several pipe operations together, as it can be confusing to nest several pairs of parentheses together.  
+
+
+## Returning to our example
+
+Now that we have the know how for composing functions in a clean way, let's apply this to our previous graph
+
+
+```{r}
+
+PimaIndiansDiabetes %>% 
+  mutate( mass=cut_width(mass,width=20) )   %>% ggplot+ geom_boxplot(mapping = aes(x=mass,y=glucose) )
+
+``` 
+
+It helps to read the pipe operator as "then".  In the above, we start off with the <TT>PimaIndiansDiabetes</TT> dataset.  The next step is to change the datset, allowing for the renaming of <TT>mass</TT> to be binned.  _Then_ we are finally ready for using ggplot.  Note the empty parenthesis.  Note when we use parentheses.  If a function originally has two arguments, then the pipe operator applies to the first argument.  In other words, for functions $g(x)$ and $f(x,y)$, <TT>f(g(x),y) = g \%>\% f(y)</TT>.
+
+
+## Histograms and frequencies
+
+Let's take a look at the number of pregnancies.
+
+
+
+```{r}
+ggplot(data = PimaIndiansDiabetes , mapping = aes(x=pregnant) )+geom_bar()
+
+``` 
+
+What if we want to look at percentages instead?  In other words, we would like for the sum of values of the bars to sum to one.  This would give an example of a __probability mass function__.  One workaround for this is to use <TT>count</TT>  and <TT>sumcount</TT>
+
+
+
+```{r}
+ggplot(PimaIndiansDiabetes, aes(x = pregnant)) + 
+  geom_bar(aes(y = (..count..)/sum(..count..))) +
+  xlab('Number of pregnancies') + ylab('Density')+ggtitle("Frequency of pregnancies")
+``` 
+
+A quick shortcut here is to simply use <TT>..prop..</TT>
+
+> __Q:__ Verify that using <TT>..prop..</TT> in the aesthetic argument gives the same graph.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
