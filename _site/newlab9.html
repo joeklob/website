@@ -320,29 +320,59 @@ div.tocify {
         <li>
   <a href="index.html">Home</a>
 </li>
-<li>
-  <a href="newlab2.html">Intro to R</a>
-</li>
-<li>
-  <a href="newlab3.html">Commands and functions</a>
-</li>
-<li>
-  <a href="newlab4.html">Data massaging: basics</a>
-</li>
-<li>
-  <a href="newlab5.html">Intro to programming</a>
-</li>
-<li>
-  <a href="newlab6.html">ggplot2</a>
-</li>
-<li>
-  <a href="newlab7.html">Data transformations I</a>
-</li>
-<li>
-  <a href="newlab8.html">Data transformations II</a>
-</li>
-<li>
-  <a href="newlab9.html">Data Cleaning</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Sections
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="newlab2.html">Intro to R</a>
+    </li>
+    <li>
+      <a href="newlab3.html">Commands and functions</a>
+    </li>
+    <li>
+      <a href="newlab4.html">Data massaging: basics</a>
+    </li>
+    <li>
+      <a href="newlab5.html">Intro to programming</a>
+    </li>
+    <li>
+      <a href="newlab6.html">ggplot2</a>
+    </li>
+    <li>
+      <a href="newlab7.html">Data transformations I</a>
+    </li>
+    <li>
+      <a href="newlab8.html">Data transformations II</a>
+    </li>
+    <li>
+      <a href="newlab9.html">Data cleaning</a>
+    </li>
+    <li>
+      <a href="newlab10.html">Random variables</a>
+    </li>
+    <li>
+      <a href="newlab11.html">Discrete and continous random variables</a>
+    </li>
+    <li>
+      <a href="newlab12.html">Mean and variance</a>
+    </li>
+    <li>
+      <a href="newlab14.html">Confidence Intervals</a>
+    </li>
+    <li>
+      <a href="newlab15.html">Hypothesis Testing</a>
+    </li>
+    <li>
+      <a href="newlab16.html">Regression</a>
+    </li>
+    <li>
+      <a href="newlab18.html">Machine learning</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -492,11 +522,11 @@ newestmel$sampprice = sampprice
 
 
 mean(newestmel$sampprice)</code></pre>
-<pre><code>## [1] 1050711</code></pre>
+<pre><code>## [1] 1049747</code></pre>
 <pre class="r"><code>mean(Melbourne_housing_FULL$Price, na.rm = TRUE)</code></pre>
 <pre><code>## [1] 1050173</code></pre>
 <pre class="r"><code>sqrt(var(newestmel$sampprice))</code></pre>
-<pre><code>## [1] 645043.9</code></pre>
+<pre><code>## [1] 641288.3</code></pre>
 <pre class="r"><code>sqrt(var(Melbourne_housing_FULL$Price, na.rm = TRUE))</code></pre>
 <pre><code>## [1] 641467.1</code></pre>
 <p>There’s minor bad news and substantial good news. The bad news is that sampling is going to result in a slightly different mean than what we originally have. It’s possible to prove that the difference approaches zero as the size of the dataset gets larger and larger. Our dataset is pretty large (about 35,000 rows), so our average is pretty small, on the order of a couple of thousands. The good news is quite nice. The variances between the two datasets are also quite small. We can also take a look at the histograms to get a better picture:</p>
@@ -505,7 +535,7 @@ mean(newestmel$sampprice)</code></pre>
 <pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
 <p><img src="newlab9_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <pre class="r"><code>newestmel %&gt;% ggplot()+ geom_histogram(aes(sampprice), bins = 100) +xlim(0, 10^7)</code></pre>
-<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_bin).
+<pre><code>## Warning: Removed 2 rows containing non-finite values (stat_bin).
 
 ## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
 <p><img src="newlab9_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>

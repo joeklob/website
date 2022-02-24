@@ -320,50 +320,59 @@ div.tocify {
         <li>
   <a href="index.html">Home</a>
 </li>
-<li>
-  <a href="newlab2.html">Intro to R</a>
-</li>
-<li>
-  <a href="newlab3.html">Commands and functions</a>
-</li>
-<li>
-  <a href="newlab4.html">Data massaging: basics</a>
-</li>
-<li>
-  <a href="newlab5.html">Intro to programming</a>
-</li>
-<li>
-  <a href="newlab6.html">ggplot2</a>
-</li>
-<li>
-  <a href="newlab7.html">Data transformations I</a>
-</li>
-<li>
-  <a href="newlab8.html">Data transformations II</a>
-</li>
-<li>
-  <a href="newlab9.html">Data cleaning</a>
-</li>
-<li>
-  <a href="newlab10.html">Random variables</a>
-</li>
-<li>
-  <a href="newlab11.html">Discrete and continous random variables</a>
-</li>
-<li>
-  <a href="newlab12.html">Mean and variance</a>
-</li>
-<li>
-  <a href="newlab14.html">Confidence Intervals</a>
-</li>
-<li>
-  <a href="newlab15.html">Hypothesis Testing</a>
-</li>
-<li>
-  <a href="newlab16.html">Regression</a>
-</li>
-<li>
-  <a href="newlab18.html">Machine learning</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Sections
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="newlab2.html">Intro to R</a>
+    </li>
+    <li>
+      <a href="newlab3.html">Commands and functions</a>
+    </li>
+    <li>
+      <a href="newlab4.html">Data massaging: basics</a>
+    </li>
+    <li>
+      <a href="newlab5.html">Intro to programming</a>
+    </li>
+    <li>
+      <a href="newlab6.html">ggplot2</a>
+    </li>
+    <li>
+      <a href="newlab7.html">Data transformations I</a>
+    </li>
+    <li>
+      <a href="newlab8.html">Data transformations II</a>
+    </li>
+    <li>
+      <a href="newlab9.html">Data cleaning</a>
+    </li>
+    <li>
+      <a href="newlab10.html">Random variables</a>
+    </li>
+    <li>
+      <a href="newlab11.html">Discrete and continous random variables</a>
+    </li>
+    <li>
+      <a href="newlab12.html">Mean and variance</a>
+    </li>
+    <li>
+      <a href="newlab14.html">Confidence Intervals</a>
+    </li>
+    <li>
+      <a href="newlab15.html">Hypothesis Testing</a>
+    </li>
+    <li>
+      <a href="newlab16.html">Regression</a>
+    </li>
+    <li>
+      <a href="newlab18.html">Machine learning</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -463,7 +472,7 @@ Bperm = Cperm[31:60]</code></pre>
 <pre class="r"><code>permdiff = mean(Aperm)-mean(Bperm)
 
 permdiff</code></pre>
-<pre><code>## [1] 1.633333</code></pre>
+<pre><code>## [1] 0.8333333</code></pre>
 <p>#Now let’s do this many times</p>
 <pre class="r"><code>samps = 100000
 Tdist = rep(0, samps)
@@ -487,7 +496,7 @@ abline(v = -Tnaught, col = &#39;red&#39;, lwd = 2)</code></pre>
 pval = sum(abs(T)&gt;=abs(Tnaught) )/samps
 
 pval</code></pre>
-<pre><code>## [1] 0.00132</code></pre>
+<pre><code>## [1] 0.00163</code></pre>
 <blockquote>
 <p><strong>Q:</strong> How many permutations are available in our dataset? Can you ever hope to generate all the permutations?</p>
 </blockquote>
@@ -500,7 +509,7 @@ C = c(A,B)
 
 Tnaught = mean(A)-mean(B)
 print(Tnaught)</code></pre>
-<pre><code>## [1] -0.9927366</code></pre>
+<pre><code>## [1] -0.9972473</code></pre>
 <pre class="r"><code>samps = 10000
 Tdist = rep(0, samps)
 for (j in 1:samps){
@@ -531,7 +540,7 @@ C = c(A,B)
 
 Tnaught = mean(A)-mean(B)
 print(Tnaught)</code></pre>
-<pre><code>## [1] -0.002127178</code></pre>
+<pre><code>## [1] -0.0241551</code></pre>
 <pre class="r"><code>samps = 10000
 Tdist = rep(0, samps)
 for (j in 1:samps){
@@ -552,7 +561,7 @@ abline(v = -Tnaught, col = &#39;red&#39;, lwd = 2)</code></pre>
 <pre class="r"><code>pval = sum(abs(Tdist) &gt;= abs(Tnaught) )/samps
 
 pval</code></pre>
-<pre><code>## [1] 0.7869</code></pre>
+<pre><code>## [1] 0.0023</code></pre>
 <blockquote>
 <p><strong>Q:</strong> Run this permutation test several times. Why do we sometimes get large p values, and why are the p values sometimes small?</p>
 </blockquote>

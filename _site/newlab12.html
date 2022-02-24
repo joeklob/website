@@ -320,38 +320,59 @@ div.tocify {
         <li>
   <a href="index.html">Home</a>
 </li>
-<li>
-  <a href="newlab2.html">Intro to R</a>
-</li>
-<li>
-  <a href="newlab3.html">Commands and functions</a>
-</li>
-<li>
-  <a href="newlab4.html">Data massaging: basics</a>
-</li>
-<li>
-  <a href="newlab5.html">Intro to programming</a>
-</li>
-<li>
-  <a href="newlab6.html">ggplot2</a>
-</li>
-<li>
-  <a href="newlab7.html">Data transformations I</a>
-</li>
-<li>
-  <a href="newlab8.html">Data transformations II</a>
-</li>
-<li>
-  <a href="newlab9.html">Data cleaning</a>
-</li>
-<li>
-  <a href="newlab10.html">Random variables</a>
-</li>
-<li>
-  <a href="newlab11.html">Discrete and continous random variables</a>
-</li>
-<li>
-  <a href="newlab12.html">Mean and variance</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Sections
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="newlab2.html">Intro to R</a>
+    </li>
+    <li>
+      <a href="newlab3.html">Commands and functions</a>
+    </li>
+    <li>
+      <a href="newlab4.html">Data massaging: basics</a>
+    </li>
+    <li>
+      <a href="newlab5.html">Intro to programming</a>
+    </li>
+    <li>
+      <a href="newlab6.html">ggplot2</a>
+    </li>
+    <li>
+      <a href="newlab7.html">Data transformations I</a>
+    </li>
+    <li>
+      <a href="newlab8.html">Data transformations II</a>
+    </li>
+    <li>
+      <a href="newlab9.html">Data cleaning</a>
+    </li>
+    <li>
+      <a href="newlab10.html">Random variables</a>
+    </li>
+    <li>
+      <a href="newlab11.html">Discrete and continous random variables</a>
+    </li>
+    <li>
+      <a href="newlab12.html">Mean and variance</a>
+    </li>
+    <li>
+      <a href="newlab14.html">Confidence Intervals</a>
+    </li>
+    <li>
+      <a href="newlab15.html">Hypothesis Testing</a>
+    </li>
+    <li>
+      <a href="newlab16.html">Regression</a>
+    </li>
+    <li>
+      <a href="newlab18.html">Machine learning</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -418,7 +439,7 @@ p = .5
 samps = rgeom(numsamps, p)
 
 mean(samps)</code></pre>
-<pre><code>## [1] 1.0041</code></pre>
+<pre><code>## [1] 0.9868</code></pre>
 <p>We can guess that, on average, we will flip one tail before obtaining our first head. If we need more confidence about that statement, we can always ramp up the number of samples. The greatest confidence, of course, is to compute exactly the expected value. The explicit expression is <span class="math display">\[\begin{equation}
 \mathbb E[G_p] = \frac{1-p}p
 \end{equation}\]</span> which means <span class="math inline">\(\mathbb E[G_{.5}] = \frac{1-.5}{.5} = 1\)</span>.</p>
@@ -438,7 +459,7 @@ mean(samps)</code></pre>
 samps = rnorm(numsamps, 0,1)
 
 mean(samps)</code></pre>
-<pre><code>## [1] 0.006682856</code></pre>
+<pre><code>## [1] 0.01025896</code></pre>
 </div>
 <div id="the-standard-deviation" class="section level1" number="2">
 <h1 number="2"><span class="header-section-number">2</span> The standard deviation</h1>
@@ -464,7 +485,7 @@ mean(samps)</code></pre>
 samps = rnorm(numsamps, 0,1)
 
 sd(samps)</code></pre>
-<pre><code>## [1] 1.016378</code></pre>
+<pre><code>## [1] 0.9819466</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li><em>Geometric</em></li>
 </ol>
@@ -474,7 +495,7 @@ p = .5
 samps = rgeom(numsamps, p)
 
 sd(samps)</code></pre>
-<pre><code>## [1] 1.400319</code></pre>
+<pre><code>## [1] 1.424213</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li><em>Uniform</em></li>
 </ol>
@@ -485,7 +506,7 @@ b = 6
 samps = runif(numsamps, a,b)
 
 sd(samps)</code></pre>
-<pre><code>## [1] 0.5757275</code></pre>
+<pre><code>## [1] 0.5758384</code></pre>
 <blockquote>
 <p><strong>Q:</strong> What happens to the standard deviation of <span class="math inline">\(Z_{0,b}\)</span> as <span class="math inline">\(b\rightarrow \infty\)</span>? What about <span class="math inline">\(Z_{a,1}\)</span> as <span class="math inline">\(a\rightarrow \infty\)</span>? What about <span class="math inline">\(G_p\)</span> as <span class="math inline">\(p\rightarrow 0\)</span>? <span class="math inline">\(p \rightarrow 1\)</span>?</p>
 </blockquote>

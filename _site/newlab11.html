@@ -320,32 +320,59 @@ div.tocify {
         <li>
   <a href="index.html">Home</a>
 </li>
-<li>
-  <a href="newlab2.html">Intro to R</a>
-</li>
-<li>
-  <a href="newlab3.html">Commands and functions</a>
-</li>
-<li>
-  <a href="newlab4.html">Data massaging: basics</a>
-</li>
-<li>
-  <a href="newlab5.html">Intro to programming</a>
-</li>
-<li>
-  <a href="newlab6.html">ggplot2</a>
-</li>
-<li>
-  <a href="newlab7.html">Data transformations I</a>
-</li>
-<li>
-  <a href="newlab8.html">Data transformations II</a>
-</li>
-<li>
-  <a href="newlab9.html">Data Cleaning</a>
-</li>
-<li>
-  <a href="newlab10.html">Random Variables</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Sections
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="newlab2.html">Intro to R</a>
+    </li>
+    <li>
+      <a href="newlab3.html">Commands and functions</a>
+    </li>
+    <li>
+      <a href="newlab4.html">Data massaging: basics</a>
+    </li>
+    <li>
+      <a href="newlab5.html">Intro to programming</a>
+    </li>
+    <li>
+      <a href="newlab6.html">ggplot2</a>
+    </li>
+    <li>
+      <a href="newlab7.html">Data transformations I</a>
+    </li>
+    <li>
+      <a href="newlab8.html">Data transformations II</a>
+    </li>
+    <li>
+      <a href="newlab9.html">Data cleaning</a>
+    </li>
+    <li>
+      <a href="newlab10.html">Random variables</a>
+    </li>
+    <li>
+      <a href="newlab11.html">Discrete and continous random variables</a>
+    </li>
+    <li>
+      <a href="newlab12.html">Mean and variance</a>
+    </li>
+    <li>
+      <a href="newlab14.html">Confidence Intervals</a>
+    </li>
+    <li>
+      <a href="newlab15.html">Hypothesis Testing</a>
+    </li>
+    <li>
+      <a href="newlab16.html">Regression</a>
+    </li>
+    <li>
+      <a href="newlab18.html">Machine learning</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -416,7 +443,7 @@ answer
 
 
 bpsamp(20, .8)</code></pre>
-<pre><code>##  [1] 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1</code></pre>
+<pre><code>##  [1] 1 0 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 0</code></pre>
 <blockquote>
 <p><strong>Q:</strong> Fix a number <span class="math inline">\(0 \le p \le 1\)</span>. If a random number between 0 and 1 is generated, what is the probability that this number is less than <span class="math inline">\(p\)</span>? In light of this fact, what is the expression  doing in the code above?</p>
 </blockquote>
@@ -426,7 +453,7 @@ bpsamp(20, .8)</code></pre>
 </blockquote>
 <pre class="r"><code>A = bpsamp(10000, .5)
 mean(A)</code></pre>
-<pre><code>## [1] 0.4951</code></pre>
+<pre><code>## [1] 0.4994</code></pre>
 <p>The value that is being approached is called the <strong>expected value</strong> of <span class="math inline">\(B_p\)</span>. For some random variable <span class="math inline">\(X\)</span>, the expected value is often denoted as <span class="math inline">\(\mathbb E[X]\)</span> or <span class="math inline">\(\mu_X\)</span>.</p>
 <blockquote>
 <p><strong>Q:</strong> What should <span class="math inline">\(\mathbb E[B_{.9}]\)</span> be?</p>
@@ -435,9 +462,9 @@ mean(A)</code></pre>
 <pre class="r"><code>B = rbinom(10000, 1, .5) 
 
 B[1:20]</code></pre>
-<pre><code>##  [1] 1 1 0 1 1 1 0 1 0 1 0 1 0 1 0 1 0 0 0 0</code></pre>
+<pre><code>##  [1] 1 0 0 0 1 1 0 1 0 1 1 0 1 1 1 1 0 1 0 1</code></pre>
 <pre class="r"><code>mean(B)</code></pre>
-<pre><code>## [1] 0.5019</code></pre>
+<pre><code>## [1] 0.4924</code></pre>
 </div>
 </div>
 <div id="the-geometric-distribution" class="section level1" number="2">

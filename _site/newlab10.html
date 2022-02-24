@@ -320,32 +320,59 @@ div.tocify {
         <li>
   <a href="index.html">Home</a>
 </li>
-<li>
-  <a href="newlab2.html">Intro to R</a>
-</li>
-<li>
-  <a href="newlab3.html">Commands and functions</a>
-</li>
-<li>
-  <a href="newlab4.html">Data massaging: basics</a>
-</li>
-<li>
-  <a href="newlab5.html">Intro to programming</a>
-</li>
-<li>
-  <a href="newlab6.html">ggplot2</a>
-</li>
-<li>
-  <a href="newlab7.html">Data transformations I</a>
-</li>
-<li>
-  <a href="newlab8.html">Data transformations II</a>
-</li>
-<li>
-  <a href="newlab9.html">Data Cleaning</a>
-</li>
-<li>
-  <a href="newlab10.html">Random Variables</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Sections
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="newlab2.html">Intro to R</a>
+    </li>
+    <li>
+      <a href="newlab3.html">Commands and functions</a>
+    </li>
+    <li>
+      <a href="newlab4.html">Data massaging: basics</a>
+    </li>
+    <li>
+      <a href="newlab5.html">Intro to programming</a>
+    </li>
+    <li>
+      <a href="newlab6.html">ggplot2</a>
+    </li>
+    <li>
+      <a href="newlab7.html">Data transformations I</a>
+    </li>
+    <li>
+      <a href="newlab8.html">Data transformations II</a>
+    </li>
+    <li>
+      <a href="newlab9.html">Data cleaning</a>
+    </li>
+    <li>
+      <a href="newlab10.html">Random variables</a>
+    </li>
+    <li>
+      <a href="newlab11.html">Discrete and continous random variables</a>
+    </li>
+    <li>
+      <a href="newlab12.html">Mean and variance</a>
+    </li>
+    <li>
+      <a href="newlab14.html">Confidence Intervals</a>
+    </li>
+    <li>
+      <a href="newlab15.html">Hypothesis Testing</a>
+    </li>
+    <li>
+      <a href="newlab16.html">Regression</a>
+    </li>
+    <li>
+      <a href="newlab18.html">Machine learning</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -391,9 +418,9 @@ div.tocify {
 samps = samplex(100)
 
 samps</code></pre>
-<pre><code>##   [1] 5 4 4 4 5 5 4 5 7 5 4 5 4 5 4 4 5 4 9 7 7 5 5 7 4 5 5 5 5 5 4 9 7 7 5 5 4
-##  [38] 4 5 5 4 5 5 4 5 4 4 9 4 5 7 4 5 5 5 4 5 9 4 4 9 5 4 5 7 4 4 4 5 5 5 4 7 5
-##  [75] 5 4 5 4 5 5 4 5 5 4 7 4 9 5 5 5 5 7 5 4 5 5 4 7 5 5</code></pre>
+<pre><code>##   [1] 4 5 5 4 4 4 5 5 9 7 7 5 7 4 4 4 5 5 5 4 4 4 5 5 5 5 5 4 5 5 4 5 5 4 5 5 5
+##  [38] 7 5 4 5 4 5 4 4 7 4 4 4 5 5 5 5 4 5 5 4 4 5 4 4 4 5 5 9 5 5 5 7 4 9 5 4 9
+##  [75] 9 7 5 5 5 9 4 5 5 7 4 4 5 5 5 4 5 4 5 5 5 5 5 5 5 7</code></pre>
 <blockquote>
 <p><strong>Q:</strong> What do you think each part of the code does?</p>
 </blockquote>
@@ -402,17 +429,17 @@ samps</code></pre>
 
 str(samps)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    100 obs. of  1 variable:
-##  $ samps: num  5 4 4 4 5 5 4 5 7 5 ...</code></pre>
+##  $ samps: num  4 5 5 4 4 4 5 5 9 7 ...</code></pre>
 <p>We’ll give the column a name of “Trial”, since we performed 100 trials of <span class="math inline">\(X\)</span>.</p>
 <pre class="r"><code>colnames(samps) = &quot;Trial&quot;
 head(samps)</code></pre>
 <pre><code>##   Trial
-## 1     5
-## 2     4
-## 3     4
+## 1     4
+## 2     5
+## 3     5
 ## 4     4
-## 5     5
-## 6     5</code></pre>
+## 5     4
+## 6     4</code></pre>
 <p>Now we can make some basic visuals with <TT>ggplot2</TT>. Let’s take a look at a histogram:</p>
 <pre class="r"><code>samps %&gt;% ggplot()+geom_bar(aes(x = Trial, y = ..count../sum(..count..))) +
   labs(x = &#39;Value&#39;, y = &#39;Proportion&#39;)</code></pre>
@@ -429,13 +456,13 @@ samps %&gt;% ggplot()+geom_bar(aes(x = Trial
                                 , y = stat(prop)))</code></pre>
 <p><img src="newlab10_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="r"><code>sum(samps == 4)/dim(samps)[1]</code></pre>
-<pre><code>## [1] 0.300043</code></pre>
+<pre><code>## [1] 0.300222</code></pre>
 <pre class="r"><code>sum(samps == 5)/dim(samps)[1]</code></pre>
-<pre><code>## [1] 0.499667</code></pre>
+<pre><code>## [1] 0.50005</code></pre>
 <pre class="r"><code>sum(samps == 7)/dim(samps)[1]</code></pre>
-<pre><code>## [1] 0.100676</code></pre>
+<pre><code>## [1] 0.099975</code></pre>
 <pre class="r"><code>sum(samps == 9)/dim(samps)[1]</code></pre>
-<pre><code>## [1] 0.099614</code></pre>
+<pre><code>## [1] 0.099753</code></pre>
 <p>Now our fractions are much closer to the actual probabilities. Something about this process is a bit artificial, however. In the real world, of course, we don’t have the luxury of generating infinite amounts of data to find out the value of a probability. This is where statistics comes into play. If we have only finitely many datapoints, then we need to make a best guess about what probability. We may also want some type of statement about how good our guess is, as well. This will be covered with the concept of <strong>confidence intervals</strong>. Much more on this later.</p>
 </div>
 

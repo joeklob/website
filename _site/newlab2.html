@@ -320,17 +320,59 @@ div.tocify {
         <li>
   <a href="index.html">Home</a>
 </li>
-<li>
-  <a href="newlab2.html">Intro to R</a>
-</li>
-<li>
-  <a href="newlab3.html">Commands and functions</a>
-</li>
-<li>
-  <a href="newlab4.html">Data massaging: basics</a>
-</li>
-<li>
-  <a href="newlab5.html">Intro to programming</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Sections
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="newlab2.html">Intro to R</a>
+    </li>
+    <li>
+      <a href="newlab3.html">Commands and functions</a>
+    </li>
+    <li>
+      <a href="newlab4.html">Data massaging: basics</a>
+    </li>
+    <li>
+      <a href="newlab5.html">Intro to programming</a>
+    </li>
+    <li>
+      <a href="newlab6.html">ggplot2</a>
+    </li>
+    <li>
+      <a href="newlab7.html">Data transformations I</a>
+    </li>
+    <li>
+      <a href="newlab8.html">Data transformations II</a>
+    </li>
+    <li>
+      <a href="newlab9.html">Data cleaning</a>
+    </li>
+    <li>
+      <a href="newlab10.html">Random variables</a>
+    </li>
+    <li>
+      <a href="newlab11.html">Discrete and continous random variables</a>
+    </li>
+    <li>
+      <a href="newlab12.html">Mean and variance</a>
+    </li>
+    <li>
+      <a href="newlab14.html">Confidence Intervals</a>
+    </li>
+    <li>
+      <a href="newlab15.html">Hypothesis Testing</a>
+    </li>
+    <li>
+      <a href="newlab16.html">Regression</a>
+    </li>
+    <li>
+      <a href="newlab18.html">Machine learning</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -368,7 +410,7 @@ div.tocify {
 <pre><code>## [1] 20</code></pre>
 <p>For another example, let’s look at randomly generated numbers, a concept that we will run into quite often. To draw a single random number, we use</p>
 <pre class="r"><code>runif(1)</code></pre>
-<pre><code>## [1] 0.9273334</code></pre>
+<pre><code>## [1] 0.3328911</code></pre>
 <blockquote>
 <p><strong>Q:</strong> If I ran  again, should I expect to produce the same number again?</p>
 </blockquote>
@@ -378,8 +420,8 @@ div.tocify {
 </blockquote>
 <p>In this case, R makes things quite easy. The <TT>runif</TT> function actually has three arguments. The first gives you the number of random numbers to generate. The second and third give you a range of the lower and upper numbers from which you choose uniformly.</p>
 <pre class="r"><code>runif(10, 3, 5)</code></pre>
-<pre><code>##  [1] 3.194632 4.536187 4.958865 3.731961 3.520843 3.506919 3.645003 3.711089
-##  [9] 3.151063 3.174583</code></pre>
+<pre><code>##  [1] 4.220551 3.737474 3.606614 3.993987 4.949165 4.967508 4.818483 3.297522
+##  [9] 4.554884 3.792002</code></pre>
 <p>If you move your cursor over a function, it will give you arguments. Sometimes you can omit arguments, and R will just provide <TT>default values</TT>. What appear to be the default values of <TT>runif</TT>?</p>
 <blockquote>
 <p><strong>Q:</strong> By hovering your cursor over <TT>runif</TT>, can you tell whether an argument can be omitted, and what default value will be inserted for omitted arguments?</p>

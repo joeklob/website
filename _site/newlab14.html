@@ -320,41 +320,59 @@ div.tocify {
         <li>
   <a href="index.html">Home</a>
 </li>
-<li>
-  <a href="newlab2.html">Intro to R</a>
-</li>
-<li>
-  <a href="newlab3.html">Commands and functions</a>
-</li>
-<li>
-  <a href="newlab4.html">Data massaging: basics</a>
-</li>
-<li>
-  <a href="newlab5.html">Intro to programming</a>
-</li>
-<li>
-  <a href="newlab6.html">ggplot2</a>
-</li>
-<li>
-  <a href="newlab7.html">Data transformations I</a>
-</li>
-<li>
-  <a href="newlab8.html">Data transformations II</a>
-</li>
-<li>
-  <a href="newlab9.html">Data cleaning</a>
-</li>
-<li>
-  <a href="newlab10.html">Random variables</a>
-</li>
-<li>
-  <a href="newlab11.html">Discrete and continous random variables</a>
-</li>
-<li>
-  <a href="newlab12.html">Mean and variance</a>
-</li>
-<li>
-  <a href="newlab14.html">Confidence Intervals</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Sections
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="newlab2.html">Intro to R</a>
+    </li>
+    <li>
+      <a href="newlab3.html">Commands and functions</a>
+    </li>
+    <li>
+      <a href="newlab4.html">Data massaging: basics</a>
+    </li>
+    <li>
+      <a href="newlab5.html">Intro to programming</a>
+    </li>
+    <li>
+      <a href="newlab6.html">ggplot2</a>
+    </li>
+    <li>
+      <a href="newlab7.html">Data transformations I</a>
+    </li>
+    <li>
+      <a href="newlab8.html">Data transformations II</a>
+    </li>
+    <li>
+      <a href="newlab9.html">Data cleaning</a>
+    </li>
+    <li>
+      <a href="newlab10.html">Random variables</a>
+    </li>
+    <li>
+      <a href="newlab11.html">Discrete and continous random variables</a>
+    </li>
+    <li>
+      <a href="newlab12.html">Mean and variance</a>
+    </li>
+    <li>
+      <a href="newlab14.html">Confidence Intervals</a>
+    </li>
+    <li>
+      <a href="newlab15.html">Hypothesis Testing</a>
+    </li>
+    <li>
+      <a href="newlab16.html">Regression</a>
+    </li>
+    <li>
+      <a href="newlab18.html">Machine learning</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -385,7 +403,7 @@ votes = rbinom(n, 1, .7 )</code></pre>
 <p>This is a binary vector (consisting of 0’s and 1’s). The 1’s correspond to ‘vanilla’, and the 0’s for ‘chocolate’. We can find the percentage of vanilla voters by simply taking the sample mean</p>
 <pre class="r"><code>xbar = mean(votes)
 xbar</code></pre>
-<pre><code>## [1] 0.63</code></pre>
+<pre><code>## [1] 0.65</code></pre>
 <p>We will denote this quantity as <span class="math inline">\(\bar X = \sum X_i/n\)</span>. This quantity is our best guess for the true population proportion <span class="math inline">\(p\)</span>, if we asked every person in the world what their preference is.</p>
 <p>So if <span class="math inline">\(\bar X &gt; .5\)</span>, then we’re done, right? Not quite, unfortunately. It’s true that in this one poll vanilla is the preferred flavor, but perhaps our random sample is not representative of the larger population of ice cream consumers. Ideally, we’d like to figure out how <em>confident</em> we are about our single poll.</p>
 <p>This will require a computation which will incorporate the central limit theorem. Previously, we showed that</p>
@@ -430,14 +448,14 @@ SE(\bar X) = \sqrt{p(1-p)/n}
 <pre class="r"><code>eps = .02
 se = sqrt(xbar*(1-xbar)/n)
 se</code></pre>
-<pre><code>## [1] 0.04828043</code></pre>
+<pre><code>## [1] 0.04769696</code></pre>
 <p>So then the probability that our estimate is with 2% is then given by</p>
 <p><span class="math display">\[\begin{equation}
 \mathbb P (|\bar X- p| &lt; .02) \approx \mathbb P (Z_{0,1}\le  .02/\widehat{SE}(\bar X))- \mathbb P (Z_{0,1}\le  -.02/\widehat{SE}(\bar X))
 \end{equation}\]</span></p>
 <p>In R, this is given by</p>
 <pre class="r"><code>pnorm(eps/se)- pnorm(-eps/se)</code></pre>
-<pre><code>## [1] 0.3213064</code></pre>
+<pre><code>## [1] 0.3250133</code></pre>
 <p>Here, we used the function &lt;<T>&gt;pnorm&lt;</T>&gt;, which computes the cumulative probability for the standard normal.</p>
 <blockquote>
 <p><strong>Q:</strong> What happens when we let <span class="math inline">\(\epsilon\)</span> get larger? Smaller?</p>
@@ -475,7 +493,7 @@ X-\epsilon \le  p \le  \bar X +\epsilon  \Longleftrightarrow p \in [\bar X-\epsi
 <pre class="r"><code>conflow = xbar-1.96*se
 confhigh = xbar +1.96*se
 c(conflow, confhigh)</code></pre>
-<pre><code>## [1] 0.5353704 0.7246296</code></pre>
+<pre><code>## [1] 0.556514 0.743486</code></pre>
 <p>One last point: when doing a poll, we’re often more interested in the spread. If Candidate A has 45% and Candidate B has 55%, then the spread is <span class="math inline">\(.45-.55 = -.1\)</span>. In general, if Candidate A has a fraction <span class="math inline">\(p\)</span> of the vote, then candidate B has a fraction <span class="math inline">\(1-p\)</span>, and the spread is <span class="math inline">\(p- (1-p) = 2p-1\)</span>. If our best guess for <span class="math inline">\(p\)</span> is <span class="math inline">\(\bar X\)</span>, then certainly our best guess for the spread is <span class="math inline">\(2\bar X-1\)</span>. The factor of two will cause our confidence interval to be twice as large.</p>
 <p>(Question: what about the -1 term? Shouldn’t that cause a change in the confidence interval too?)</p>
 </div>
@@ -519,7 +537,7 @@ conflow = p_hat-1.96*se
 confhigh = p_hat+1.96*se</code></pre>
 <p>The percentage of confidence intervals which contain the true parameter is then</p>
 <pre class="r"><code>print(sum( (p &gt; conflow) &amp; (p&lt;confhigh))/numelections)</code></pre>
-<pre><code>## [1] 0.93</code></pre>
+<pre><code>## [1] 0.95</code></pre>
 <p>Note that we’re not going to get exactly 95 %. Confidence intervals are random objects, and the statement of coverage provided by a confidence interval is probabilistic. What is true, by the law of large numbers, is that if we ran more and more polls, then the percentage of confidence intervals containing <span class="math inline">\(p\)</span> would indeed converge to .95.</p>
 <div id="plotting-segments-of-confidence-intervals" class="section level2" number="1.1">
 <h2 number="1.1"><span class="header-section-number">1.1</span> Plotting segments of confidence intervals</h2>
