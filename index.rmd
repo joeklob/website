@@ -3,4 +3,7 @@ title: "Data Science Notes"
 
 ---
 
-Welcome to the main page for Data Science 201!  These notes were used as the main reading material for the class DS 201: Introduction to Data Science at the University of Scranton.  
+Welcome to the main page for Data Science Notes!  These notes were used as the main reading material for the class DS 201: Introduction to Data Science at the University of Scranton.  You'll find a variety of data science topics covered using the R programming language.  The notes themselves were written with the help of RStudio And RShiny.
+
+
+Text and figures are licensed under Creative Commons Attribution CC BY-NC 4.0. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".
