@@ -10,7 +10,7 @@ title: "Basic commands and functions with R"
 Here's a classic question from discrete mathematics: how should one go about summing  the integers from 1 to 1000?  Using summation notation, we can express this sum as 
 
 \begin{equation}
-\sum_{i = 1}^{1000} i = 1+2 + \dots + 999 +1000
+\sum_{i = 1}^{1000} i = 1+2 + \dots + 999 +1000.
 \end{equation}
 
 > __Q:__ What does each part in the above formula correspond to? 
@@ -30,12 +30,12 @@ Now you can just sum the elements by writing:
 sum(V)
 ```
 
-A simpler method comes from using a __closed formula__.  You've hopefully encountered (and remembered!) this formula in calculus when evaluating Riemann sums
+A simpler method comes from using a __closed formula__.  You've hopefully encountered (and remembered!) the following formula in calculus when evaluating Riemann sums:
 \begin{equation}
 \sum_{i = 1}^{n} i = \frac{n(n+1)}2
 \end{equation}
 
-> __Q:__ Do you know how to show this formula?  If not, especially if you're a computer science or math major, you should take a look at __mathematical induction__, for which the above formula is a textbook example.  There's also a classic story about how Gauss solved summing 1 to 100 as a schoolboy by ``folding" the list of numbers.  Whether the story is actually true is unknown.
+> __Q:__ Do you know how to show this formula?  If not, especially if you're a computer science or math major, you should take a look at __mathematical induction__. The (most common) proof of the above formula is a textbook example of using induction.  An alternate proof is given in the old chestnut about how Gauss solved summing 1 to 100 as a schoolboy by ``folding" the list of numbers.  Whether the story is actually true is unknown.
 
 The beauty of this closed formula is that you don't need an entire list of numbers to find what you want.  Here, we simply write
 
@@ -45,7 +45,7 @@ s = n*(n+1)/2
 s
 ```
 
-The above is a first example of _computational complexity_ encountered in _algorithms_.  The first formula requires summing $n$ numbers (technically, $n-1$ sums), while the second simply has two multiplications and one sum, regardless of what $n$ is!  We would say that the first method is $O(n)$ (`order $n$') while the second is $O(1)$ ('order $1$').  The goal in developing algorithms is to make the number of operations as small as possible.  
+The above is a first example of _computational complexity_ encountered in _algorithms_.  The first formula requires summing $n$ numbers (technically, $n-1$ sums), while the second simply has two multiplications and one sum, regardless of what $n$ is!  We would say that the first method is $O(n)$ ("order $n$") while the second is $O(1)$ ("order $1$").  The goal in developing algorithms is to make the number of operations as small as possible.  
 
 What about summing the first 1000 squares? This would be given by the sum
 

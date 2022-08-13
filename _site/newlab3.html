@@ -13,8 +13,8 @@
 
 <title>Basic commands and functions with R</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -83,6 +84,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -308,7 +312,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -321,7 +325,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Sections
      
     <span class="caret"></span>
@@ -392,73 +396,129 @@ div.tocify {
 
 
 <div id="functions" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Functions</h1>
-<div id="a-few-examples-of-basic-functions-in-mathematics" class="section level2" number="1.1">
-<h2 number="1.1"><span class="header-section-number">1.1</span> A few examples of basic functions in mathematics</h2>
-<p>Here’s a classic question from discrete mathematics: how should one go about summing the integers from 1 to 1000? Using summation notation, we can express this sum as</p>
+<h1><span class="header-section-number">1</span> Functions</h1>
+<div id="a-few-examples-of-basic-functions-in-mathematics"
+class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> A few examples of
+basic functions in mathematics</h2>
+<p>Here’s a classic question from discrete mathematics: how should one
+go about summing the integers from 1 to 1000? Using summation notation,
+we can express this sum as</p>
 <p><span class="math display">\[\begin{equation}
-\sum_{i = 1}^{1000} i = 1+2 + \dots + 999 +1000
+\sum_{i = 1}^{1000} i = 1+2 + \dots + 999 +1000.
 \end{equation}\]</span></p>
 <blockquote>
-<p><strong>Q:</strong> What does each part in the above formula correspond to?</p>
+<p><strong>Q:</strong> What does each part in the above formula
+correspond to?</p>
 </blockquote>
-<p>There are two ways to go about evaluating this sum. First you can always just use the <strong>brute force method</strong> by listing the numbers you want to sum in a vector. We use a colon to write the sequence from 1 to n. </p>
+<p>There are two ways to go about evaluating this sum. First you can
+always just use the <strong>brute force method</strong> by listing the
+numbers you want to sum in a vector. We use a colon to write the
+sequence from 1 to n. </p>
 <pre class="r"><code>V = 1:1000</code></pre>
 <p>Now you can just sum the elements by writing:</p>
 <pre class="r"><code>sum(V)</code></pre>
 <pre><code>## [1] 500500</code></pre>
-<p>A simpler method comes from using a <strong>closed formula</strong>. You’ve hopefully encountered (and remembered!) this formula in calculus when evaluating Riemann sums <span class="math display">\[\begin{equation}
+<p>A simpler method comes from using a <strong>closed formula</strong>.
+You’ve hopefully encountered (and remembered!) the following formula in
+calculus when evaluating Riemann sums: <span
+class="math display">\[\begin{equation}
 \sum_{i = 1}^{n} i = \frac{n(n+1)}2
 \end{equation}\]</span></p>
 <blockquote>
-<p><strong>Q:</strong> Do you know how to show this formula? If not, especially if you’re a computer science or math major, you should take a look at <strong>mathematical induction</strong>, for which the above formula is a textbook example. There’s also a classic story about how Gauss solved summing 1 to 100 as a schoolboy by ``folding" the list of numbers. Whether the story is actually true is unknown.</p>
+<p><strong>Q:</strong> Do you know how to show this formula? If not,
+especially if you’re a computer science or math major, you should take a
+look at <strong>mathematical induction</strong>. The (most common) proof
+of the above formula is a textbook example of using induction. An
+alternate proof is given in the old chestnut about how Gauss solved
+summing 1 to 100 as a schoolboy by ``folding” the list of numbers.
+Whether the story is actually true is unknown.</p>
 </blockquote>
-<p>The beauty of this closed formula is that you don’t need an entire list of numbers to find what you want. Here, we simply write</p>
+<p>The beauty of this closed formula is that you don’t need an entire
+list of numbers to find what you want. Here, we simply write</p>
 <pre class="r"><code>n = 1000
 s = n*(n+1)/2
 s</code></pre>
 <pre><code>## [1] 500500</code></pre>
-<p>The above is a first example of <em>computational complexity</em> encountered in <em>algorithms</em>. The first formula requires summing <span class="math inline">\(n\)</span> numbers (technically, <span class="math inline">\(n-1\)</span> sums), while the second simply has two multiplications and one sum, regardless of what <span class="math inline">\(n\)</span> is! We would say that the first method is <span class="math inline">\(O(n)\)</span> (`order <span class="math inline">\(n\)</span>‘) while the second is <span class="math inline">\(O(1)\)</span> (’order <span class="math inline">\(1\)</span>’). The goal in developing algorithms is to make the number of operations as small as possible.</p>
-<p>What about summing the first 1000 squares? This would be given by the sum</p>
+<p>The above is a first example of <em>computational complexity</em>
+encountered in <em>algorithms</em>. The first formula requires summing
+<span class="math inline">\(n\)</span> numbers (technically, <span
+class="math inline">\(n-1\)</span> sums), while the second simply has
+two multiplications and one sum, regardless of what <span
+class="math inline">\(n\)</span> is! We would say that the first method
+is <span class="math inline">\(O(n)\)</span> (“order <span
+class="math inline">\(n\)</span>”) while the second is <span
+class="math inline">\(O(1)\)</span> (“order <span
+class="math inline">\(1\)</span>”). The goal in developing algorithms is
+to make the number of operations as small as possible.</p>
+<p>What about summing the first 1000 squares? This would be given by the
+sum</p>
 <p><span class="math display">\[\begin{equation}
 \sum_{i = 1}^{1000} i^2 = 1^2+2^2 + \dots + 999^2 +1000^2.
 \end{equation}\]</span></p>
-<p>To list squares of integers, we could write something that would look quite ghastly to a mathematician:</p>
+<p>To list squares of integers, we could write something that would look
+quite ghastly to a mathematician:</p>
 <pre class="r"><code>s = (1:1000)**2
 s[1:10]</code></pre>
 <pre><code>##  [1]   1   4   9  16  25  36  49  64  81 100</code></pre>
 <pre class="r"><code>sum(s)</code></pre>
 <pre><code>## [1] 333833500</code></pre>
 <blockquote>
-<p><strong>Q:</strong> Why would such an expression raise eyebrows for a mathematician?</p>
+<p><strong>Q:</strong> Why would such an expression raise eyebrows for a
+mathematician?</p>
 </blockquote>
-<p>Like the first sum we looked at, we can also use induction to show <span class="math display">\[\begin{equation}
+<p>Like the first sum we looked at, we can also use induction to show
+<span class="math display">\[\begin{equation}
 \sum_{i = 1}^{n} i = \frac{n(n+1)(2n+1)}6.
 \end{equation}\]</span></p>
-<p>This is another closed form, meaning we have the <span class="math inline">\(O(1)\)</span> solution</p>
+<p>This is another closed form, meaning we have the <span
+class="math inline">\(O(1)\)</span> solution</p>
 <pre class="r"><code>n = 1000
 s = n*(n+1)*(2*n+1)/6
 s</code></pre>
 <pre><code>## [1] 333833500</code></pre>
 </div>
 <div id="matrices" class="section level2" number="1.2">
-<h2 number="1.2"><span class="header-section-number">1.2</span> Matrices</h2>
-<p><strong>Matrices</strong> are the main currency of dealing with multiple dimensions. A fancy term for a matrix is a <strong>linear transformation</strong>, which means that matrices are functions that take in lists of numbers (vectors) and spit out another list of numbers. The linear part means that the function has very nice properties. I won’t go into the details now, but I strongly, strongly recommend that you take bone up on linear algebra, regardless of your discipline. For now, we will essentially view matrices as `numbers in a box’, as much as this phrase is an insult to the discipline. Matrices have <strong>rows</strong> and <strong>columns</strong>, and each number we put in a matrix is called an <strong>entry</strong>. For instance, let’s define the matrix</p>
+<h2><span class="header-section-number">1.2</span> Matrices</h2>
+<p><strong>Matrices</strong> are the main currency of dealing with
+multiple dimensions. A fancy term for a matrix is a <strong>linear
+transformation</strong>, which means that matrices are functions that
+take in lists of numbers (vectors) and spit out another list of numbers.
+The linear part means that the function has very nice properties. I
+won’t go into the details now, but I strongly, strongly recommend that
+you take bone up on linear algebra, regardless of your discipline. For
+now, we will essentially view matrices as `numbers in a box’, as much as
+this phrase is an insult to the discipline. Matrices have
+<strong>rows</strong> and <strong>columns</strong>, and each number we
+put in a matrix is called an <strong>entry</strong>. For instance, let’s
+define the matrix</p>
 <p><span class="math display">\[\begin{equation}
 M = \begin{bmatrix}1 &amp; 3 \\
 5 &amp; 2 \\
 6 &amp; 8 \\
 \end{bmatrix}
 \end{equation}\]</span></p>
-<p>The matrix <span class="math inline">\(M\)</span> has three rows and two columns. The <span class="math inline">\(i,j\)</span>th entry of <span class="math inline">\(M\)</span>, often writen as <span class="math inline">\(M_{i,j}\)</span>, corresponds to the entry in the <span class="math inline">\(i\)</span>th row and <span class="math inline">\(j\)</span>th column. So entry <span class="math inline">\(M_{3,1} = 6\)</span>. In R, the matrix is written out as</p>
+<p>The matrix <span class="math inline">\(M\)</span> has three rows and
+two columns. The <span class="math inline">\(i,j\)</span>th entry of
+<span class="math inline">\(M\)</span>, often writen as <span
+class="math inline">\(M_{i,j}\)</span>, corresponds to the entry in the
+<span class="math inline">\(i\)</span>th row and <span
+class="math inline">\(j\)</span>th column. So entry <span
+class="math inline">\(M_{3,1} = 6\)</span>. In R, the matrix is written
+out as</p>
 <pre class="r"><code>M = matrix(c(1,5,6,3,2,8), 3,2)
 M</code></pre>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    3
 ## [2,]    5    2
 ## [3,]    6    8</code></pre>
-<p>Note a few things here: the data is represented as a single vector in the first argument, where the first entries correspond to the first column, and then the second, etc. The second and third arguments give the shape of the matrix (rows then columns).</p>
-<p>Summing matrices is what you would expect (element-wise multiplication). This only makes sense if the two matrices we’re adding have the same size:</p>
+<p>Note a few things here: the data is represented as a single vector in
+the first argument, where the first entries correspond to the first
+column, and then the second, etc. The second and third arguments give
+the shape of the matrix (rows then columns).</p>
+<p>Summing matrices is what you would expect (element-wise
+multiplication). This only makes sense if the two matrices we’re adding
+have the same size:</p>
 <pre class="r"><code>M = matrix(c(1,5,6,3,2,8), 3,2)
 N = matrix(c(2,1,4,3,6,-1), 3,2)
 M+N</code></pre>
@@ -466,7 +526,10 @@ M+N</code></pre>
 ## [1,]    3    6
 ## [2,]    6    8
 ## [3,]   10    7</code></pre>
-<p>Subtracting is essentially the same, but multiplication is not, at least in the traditional sense. For those who know how to properly multiply matrices, multiplication is given by the operator <TT>%*%</TT>.</p>
+<p>Subtracting is essentially the same, but multiplication is not, at
+least in the traditional sense. For those who know how to properly
+multiply matrices, multiplication is given by the operator
+<TT>%*%</TT>.</p>
 <pre class="r"><code>M = matrix(c(1,5,6,3,2,8), 3,2)
 N = matrix(c(2,1,4,3,6,-1), 2,3)
 M %*% N</code></pre>
@@ -474,7 +537,9 @@ M %*% N</code></pre>
 ## [1,]    5   13    3
 ## [2,]   12   26   28
 ## [3,]   20   48   28</code></pre>
-<p>The `naive product’ of multiplying elements entry by entry (known as the Hadamard product), denoted <span class="math inline">\(M \circ N\)</span>, is again what you’d expect:</p>
+<p>The `naive product’ of multiplying elements entry by entry (known as
+the Hadamard product), denoted <span class="math inline">\(M \circ
+N\)</span>, is again what you’d expect:</p>
 <pre class="r"><code>M = matrix(c(1,5,6,3,2,8), 3,2)
 N = matrix(c(2,1,4,3,6,-1), 3,2)
 M*N</code></pre>
@@ -484,8 +549,13 @@ M*N</code></pre>
 ## [3,]   24   -8</code></pre>
 </div>
 <div id="fun-with-mtcars" class="section level2" number="1.3">
-<h2 number="1.3"><span class="header-section-number">1.3</span> Fun with <TT>mtcars</TT></h2>
-<p>Thus far, we’ve been going through basic information on different datatypes in R. But recall, we’re in a data science class, so let’s take a look at some data. We’ll obtain data from all different sources, but for now, we will use built in datasets provided by R. For our first dataset, we’ll be looking at the <TT>mtcars</TT> dataset.</p>
+<h2><span class="header-section-number">1.3</span> Fun with
+<TT>mtcars</TT></h2>
+<p>Thus far, we’ve been going through basic information on different
+datatypes in R. But recall, we’re in a data science class, so let’s take
+a look at some data. We’ll obtain data from all different sources, but
+for now, we will use built in datasets provided by R. For our first
+dataset, we’ll be looking at the <TT>mtcars</TT> dataset.</p>
 <pre class="r"><code>mtcars</code></pre>
 <pre><code>##                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb
 ## Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
@@ -520,9 +590,15 @@ M*N</code></pre>
 ## Ferrari Dino        19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
 ## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
 ## Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</code></pre>
-<p>There’s a bunch to take in here. It looks like there’s a list of cars representing rows, and then a large collection of variables which describe different features for each car. What do they stand for? For built in datasets, we can simply type in</p>
+<p>There’s a bunch to take in here. It looks like there’s a list of cars
+representing rows, and then a large collection of variables which
+describe different features for each car. What do they stand for? For
+built in datasets, we can simply type in</p>
 <pre class="r"><code>?mtcars</code></pre>
-<p>On the bottom right of the RStudio window, we get a summary description of <TT>mtcars</TT>. This includes a quick description (we’re looking at cars from a 1974 <em>Motor Trend</em> magazine), what the variables stand for, and where the dataset comes from (the source).</p>
+<p>On the bottom right of the RStudio window, we get a summary
+description of <TT>mtcars</TT>. This includes a quick description (we’re
+looking at cars from a 1974 <em>Motor Trend</em> magazine), what the
+variables stand for, and where the dataset comes from (the source).</p>
 <blockquote>
 <p><strong>Q:</strong> What kind of an object is <TT>mtcars</TT>?</p>
 </blockquote>
@@ -539,25 +615,37 @@ M*N</code></pre>
 ##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
 ##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
 ##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
-<p>The object type is a <strong>data frame</strong>, which is the main form of representing datsets for R, at least for the purposes of this class. Data frames allow us to represent different types of variables for each column (although in this case, <TT>mtcars</TT> is all numeric variables).</p>
-<p>To look at a specific variable, we use the <strong>accessor</strong> symbol <TT>$</TT>. So, for instance, if we’d like to look at the miles per gallon of each vehicle, we type</p>
+<p>The object type is a <strong>data frame</strong>, which is the main
+form of representing datsets for R, at least for the purposes of this
+class. Data frames allow us to represent different types of variables
+for each column (although in this case, <TT>mtcars</TT> is all numeric
+variables).</p>
+<p>To look at a specific variable, we use the <strong>accessor</strong>
+symbol <TT>$</TT>. So, for instance, if we’d like to look at the miles
+per gallon of each vehicle, we type</p>
 <pre class="r"><code>mtcars$mpg</code></pre>
 <pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2 10.4
 ## [16] 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4 15.8 19.7
 ## [31] 15.0 21.4</code></pre>
 <blockquote>
-<p><strong>Q:</strong> What is the highest mpg for all the cars? Which car does it belong to?</p>
+<p><strong>Q:</strong> What is the highest mpg for all the cars? Which
+car does it belong to?</p>
 </blockquote>
-<p>This is found using the <TT>max</TT> and <TT>which.max</TT> functions.</p>
+<p>This is found using the <TT>max</TT> and <TT>which.max</TT>
+functions.</p>
 <pre class="r"><code>max(mtcars$mpg)</code></pre>
 <pre><code>## [1] 33.9</code></pre>
 <pre class="r"><code>which.max(mtcars$mpg)</code></pre>
 <pre><code>## [1] 20</code></pre>
-<p>While <TT>max</TT> gives the largest value, <TT>which.max</TT> gives what’s called the <em>argmax</em>, meaning the argument which provides the maximum value. In our case, the maximum occurs at the 20th element. To get a name, we type</p>
+<p>While <TT>max</TT> gives the largest value, <TT>which.max</TT> gives
+what’s called the <em>argmax</em>, meaning the argument which provides
+the maximum value. In our case, the maximum occurs at the 20th element.
+To get a name, we type</p>
 <pre class="r"><code>rownames(mtcars)[which.max(mtcars$mpg)]</code></pre>
 <pre><code>## [1] &quot;Toyota Corolla&quot;</code></pre>
 <blockquote>
-<p><strong>Q:</strong> Why did we use brackets in one place in parentheses in others?</p>
+<p><strong>Q:</strong> Why did we use brackets in one place in
+parentheses in others?</p>
 </blockquote>
 <p>We can do the same thing for gears:</p>
 <pre class="r"><code>max(mtcars$gear)</code></pre>
@@ -565,17 +653,23 @@ M*N</code></pre>
 <pre class="r"><code>rownames(mtcars)[which.max(mtcars$gear)]</code></pre>
 <pre><code>## [1] &quot;Porsche 914-2&quot;</code></pre>
 <blockquote>
-<p><strong>Q:</strong> Notice anything fishy here? How can we fix it?</p>
+<p><strong>Q:</strong> Notice anything fishy here? How can we fix
+it?</p>
 </blockquote>
-<p>The problem here is that there are several cars that have 5 gears. How to list all of them? One way is to index by a boolean statement</p>
+<p>The problem here is that there are several cars that have 5 gears.
+How to list all of them? One way is to index by a boolean statement</p>
 <pre class="r"><code>b = mtcars$gear == max(mtcars$gear)
 rownames(mtcars)[b]</code></pre>
 <pre><code>## [1] &quot;Porsche 914-2&quot;  &quot;Lotus Europa&quot;   &quot;Ford Pantera L&quot; &quot;Ferrari Dino&quot;  
 ## [5] &quot;Maserati Bora&quot;</code></pre>
 <blockquote>
-<p><strong>Q:</strong> Return a list giving a list of cars from the least mpg to the most mpg.</p>
+<p><strong>Q:</strong> Return a list giving a list of cars from the
+least mpg to the most mpg.</p>
 </blockquote>
-<p>As we explore different <strong>packages</strong> for R (these are additional sets of tools we can download for various purposes), solving this question will be a one-liner. For now, we use the <TT>order</TT> function.</p>
+<p>As we explore different <strong>packages</strong> for R (these are
+additional sets of tools we can download for various purposes), solving
+this question will be a one-liner. For now, we use the <TT>order</TT>
+function.</p>
 <pre class="r"><code>b =  order(mtcars$mpg)
 rownames(mtcars)[b][1:10]</code></pre>
 <pre><code>##  [1] &quot;Cadillac Fleetwood&quot;  &quot;Lincoln Continental&quot; &quot;Camaro Z28&quot;         
@@ -583,10 +677,12 @@ rownames(mtcars)[b][1:10]</code></pre>
 ##  [7] &quot;Merc 450SLC&quot;         &quot;AMC Javelin&quot;         &quot;Dodge Challenger&quot;   
 ## [10] &quot;Ford Pantera L&quot;</code></pre>
 <blockquote>
-<p><strong>Q:</strong> What does the <TT>order</TT> function do? How about the  function?</p>
+<p><strong>Q:</strong> What does the <TT>order</TT> function do? How
+about the function?</p>
 </blockquote>
 <blockquote>
-<p><strong>Q:</strong> What if we wanted to list to be ordered from most mpg to least mpg?</p>
+<p><strong>Q:</strong> What if we wanted to list to be ordered from most
+mpg to least mpg?</p>
 </blockquote>
 </div>
 </div>
