@@ -13,8 +13,8 @@
 
 <title>Data Science Notes</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -83,6 +84,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -308,7 +312,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -321,7 +325,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Sections
      
     <span class="caret"></span>
@@ -391,8 +395,27 @@ div.tocify {
 </div>
 
 
-<p>Welcome to the main page for Data Science Notes! These notes were used as the main reading material for the class DS 201: Introduction to Data Science at the University of Scranton. You’ll find a variety of data science topics covered using the R programming language. The notes themselves were written with the help of RStudio And RShiny.</p>
-<p>Text and figures are licensed under Creative Commons Attribution CC BY-NC 4.0. The figures that have been reused from other sources don’t fall under this license and can be recognized by a note in their caption: “Figure from …”.</p>
+<p>Welcome to the main page for Data Science Notes! These notes were
+used as the main reading material for the class DS 201: Introduction to
+Data Science at the University of Scranton. You’ll find a variety of
+data science topics covered using the R programming language. The notes
+were written with the help of RStudio And RShiny.</p>
+<center>
+<p><img src="images/irisimage.png" /></p>
+</center>
+<p>The above image is used in classifying the famous iris dataset by
+plotting sepal lengths and widths as a scatterplot. Such a method works
+great for identifying setosas, but more advanced methods will be needed
+for successfully distinguishing between versicolors and virginicas (in
+particular, we’ll use k-nearest neighbors on a higher dimensional
+dataset). In these notes, you will gain methods for visualizing data,
+and also some methods for making meaningful statements about data. This
+requires a basic understanding of statistics and probability, which is
+also covered, with a bent toward ``proof by simulation”.</p>
+<p>Text and figures are licensed under Creative Commons Attribution CC
+BY-NC 4.0. The figures that have been reused from other sources don’t
+fall under this license and can be recognized by a note in their
+caption: “Figure from …”.</p>
 
 
 
