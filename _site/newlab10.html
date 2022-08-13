@@ -13,8 +13,8 @@
 
 <title>Random variables</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -83,6 +84,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -308,7 +312,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -321,7 +325,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Sections
      
     <span class="caret"></span>
@@ -391,24 +395,80 @@ div.tocify {
 </div>
 
 
-<p>For the next few sections, we’ll be concerned with datasets of a single variable. It will be necessary that we learn some basic stuff from <strong>probability</strong> and <strong>statistics</strong>. This is be introductory, and some explanations will be <em>very</em> hand-wavy. In particular, while we’ll dip our toes into some probability notation, and perform a few calculations, we will mostly verify all of our claims through sampling with R. Of course, this is no substitute for the real thing, so we strongly recommend is taking a probability (and a statistics) course in the future. Hopefully the next few sections will serve as a motivation for what probability and statistics looks like thorugh a sampling perspective.</p>
-<p>In probability, a major object is the <strong>random variable</strong>. There’s a precise way to define this, but for now, we just imagine that a random variable <span class="math inline">\(X\)</span> is just some random quantity. For instance, <span class="math inline">\(X\)</span> could be the result of a coin flip, or the number of points the Scranton lacrosse team scores, or the number of Coronavirus cases in a particular day.</p>
-<p>Of course, one may object that none of these quantities are actually random. Theoretically, with enough information, we ought to be able to compute all of these things with pure certainty. Well, even that is a contentious point, and if we were allow ourselves down the philosophical rabbit hole, we’d find ourselves arguing about determinism and free will and a whole host of deep questions. One quick way out of this is to say that probability is the mathematics based on having partial information. Sure, perhaps we can get into the brains of every lacrosse player and figure out exactly what’s going to happen in a game. But given some basic facts (previous record of games, age of players, weather conditions, etc.), what’s the best guess we can make? Our limited information is  a dataset.</p>
-<p>Let’s focus on a random variable <span class="math inline">\(X\)</span> (usually random variables are denoted by capital letters) which spit out real numbers. Some useful things to ask about <span class="math inline">\(X\)</span> are</p>
+<p>For the next few sections, we’ll be concerned with datasets of a
+single variable. It will be necessary that we learn some basic stuff
+from <strong>probability</strong> and <strong>statistics</strong>. This
+is be introductory, and some explanations will be <em>very</em>
+hand-wavy. In particular, while we’ll dip our toes into some probability
+notation, and perform a few calculations, we will mostly verify all of
+our claims through sampling with R. Of course, this is no substitute for
+the real thing, so we strongly recommend is taking a probability (and a
+statistics) course in the future. Hopefully the next few sections will
+serve as a motivation for what probability and statistics looks like
+thorugh a sampling perspective.</p>
+<p>In probability, a major object is the <strong>random
+variable</strong>. There’s a precise way to define this, but for now, we
+just imagine that a random variable <span
+class="math inline">\(X\)</span> is just some random quantity. For
+instance, <span class="math inline">\(X\)</span> could be the result of
+a coin flip, or the number of points the Scranton lacrosse team scores,
+or the number of Coronavirus cases in a particular day.</p>
+<p>Of course, one may object that none of these quantities are actually
+random. Theoretically, with enough information, we ought to be able to
+compute all of these things with pure certainty. Well, even that is a
+contentious point, and if we were allow ourselves down the philosophical
+rabbit hole, we’d find ourselves arguing about determinism and free will
+and a whole host of deep questions. One quick way out of this is to say
+that probability is the mathematics based on having partial information.
+Sure, perhaps we can get into the brains of every lacrosse player and
+figure out exactly what’s going to happen in a game. But given some
+basic facts (previous record of games, age of players, weather
+conditions, etc.), what’s the best guess we can make? Our limited
+information is a dataset.</p>
+<p>Let’s focus on a random variable <span
+class="math inline">\(X\)</span> (usually random variables are denoted
+by capital letters) which spit out real numbers. Some useful things to
+ask about <span class="math inline">\(X\)</span> are</p>
 <ol style="list-style-type: decimal">
-<li>What’s an average value for what <span class="math inline">\(X\)</span> should return?</li>
-<li>How frequently, or what is the probability, that <span class="math inline">\(X\)</span> is less than some number <span class="math inline">\(b\)</span>, or greater than some number <span class="math inline">\(a\)</span>?</li>
-<li>How ``Spread out" is <span class="math inline">\(X\)</span>. Does <span class="math inline">\(X\)</span> return numbers which are very close to each other, or do I get a wide variety of results?</li>
+<li>What’s an average value for what <span
+class="math inline">\(X\)</span> should return?</li>
+<li>How frequently, or what is the probability, that <span
+class="math inline">\(X\)</span> is less than some number <span
+class="math inline">\(b\)</span>, or greater than some number <span
+class="math inline">\(a\)</span>?</li>
+<li>How ``Spread out” is <span class="math inline">\(X\)</span>. Does
+<span class="math inline">\(X\)</span> return numbers which are very
+close to each other, or do I get a wide variety of results?</li>
 </ol>
-<p>We’ll answer each of these questions through the notion of <strong>distributions</strong>. We’ll be using <strong>synthetic data</strong> for a bit, which is generated through a random number generator from R.</p>
+<p>We’ll answer each of these questions through the notion of
+<strong>distributions</strong>. We’ll be using <strong>synthetic
+data</strong> for a bit, which is generated through a random number
+generator from R.</p>
 <div id="discrete-distributions" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Discrete distributions</h1>
-<p>In this exercise, we are going to generate a random variable <span class="math inline">\(X\)</span> which has the possible values <span class="math inline">\(S = \{4,5,7,9\}\)</span> (the set <span class="math inline">\(S\)</span> of possible values for <span class="math inline">\(X\)</span> is called a <strong>state space</strong>. The random variable <span class="math inline">\(X\)</span> is a <strong>discrete random variable</strong>, meaning that it can takes only finitely many values (well, it could technically be <em>countably infinite</em>, but let’s not worry about that for now). For discrete random variables, we can describe <span class="math inline">\(X\)</span> by the probability that it takes for each value, denoted by the `blackboard script’ <span class="math inline">\(\mathbb P\)</span>. Let’s say the probabilities for values of <span class="math inline">\(X\)</span> are given by</p>
+<h1><span class="header-section-number">1</span> Discrete
+distributions</h1>
+<p>In this exercise, we are going to generate a random variable <span
+class="math inline">\(X\)</span> which has the possible values <span
+class="math inline">\(S = \{4,5,7,9\}\)</span> (the set <span
+class="math inline">\(S\)</span> of possible values for <span
+class="math inline">\(X\)</span> is called a <strong>state
+space</strong>. The random variable <span
+class="math inline">\(X\)</span> is a <strong>discrete random
+variable</strong>, meaning that it can takes only finitely many values
+(well, it could technically be <em>countably infinite</em>, but let’s
+not worry about that for now). For discrete random variables, we can
+describe <span class="math inline">\(X\)</span> by the probability that
+it takes for each value, denoted by the `blackboard script’ <span
+class="math inline">\(\mathbb P\)</span>. Let’s say the probabilities
+for values of <span class="math inline">\(X\)</span> are given by</p>
 <p><span class="math display">\[\begin{equation}
-\mathbb P(X = 4) = .3, \quad \mathbb P(X = 5) = .5, \quad \mathbb P(X = 7)
+\mathbb P(X = 4) = .3, \quad \mathbb P(X = 5) = .5, \quad \mathbb P(X =
+7)
 = .1, \quad \mathbb P(X = 9) = .1,
 \end{equation}\]</span></p>
-<p>Here is a function using <TT>sample</TT> that will generate <span class="math inline">\(n\)</span> random instances of <span class="math inline">\(X\)</span>:</p>
+<p>Here is a function using <TT>sample</TT> that will generate <span
+class="math inline">\(n\)</span> random instances of <span
+class="math inline">\(X\)</span>:</p>
 <pre class="r"><code>samplex = function(n){
   
   sample(x = c(4,5,7,9), n, replace = T, prob = c(.3,.5,.1,.1))
@@ -418,9 +478,9 @@ div.tocify {
 samps = samplex(100)
 
 samps</code></pre>
-<pre><code>##   [1] 4 5 5 4 4 4 5 5 9 7 7 5 7 4 4 4 5 5 5 4 4 4 5 5 5 5 5 4 5 5 4 5 5 4 5 5 5
-##  [38] 7 5 4 5 4 5 4 4 7 4 4 4 5 5 5 5 4 5 5 4 4 5 4 4 4 5 5 9 5 5 5 7 4 9 5 4 9
-##  [75] 9 7 5 5 5 9 4 5 5 7 4 4 5 5 5 4 5 4 5 5 5 5 5 5 5 7</code></pre>
+<pre><code>##   [1] 5 9 5 5 5 4 7 9 4 7 4 5 4 7 4 5 5 5 4 5 5 7 7 5 4 9 4 5 5 4 5 5 5 4 4 7 5
+##  [38] 4 7 5 4 5 5 5 5 9 4 7 5 5 4 5 5 5 5 5 7 4 9 4 4 5 4 5 4 5 4 5 5 5 5 5 4 5
+##  [75] 7 5 4 4 4 4 5 4 4 9 5 5 9 4 4 9 9 9 4 5 7 5 5 5 5 7</code></pre>
 <blockquote>
 <p><strong>Q:</strong> What do you think each part of the code does?</p>
 </blockquote>
@@ -429,22 +489,30 @@ samps</code></pre>
 
 str(samps)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    100 obs. of  1 variable:
-##  $ samps: num  4 5 5 4 4 4 5 5 9 7 ...</code></pre>
-<p>We’ll give the column a name of “Trial”, since we performed 100 trials of <span class="math inline">\(X\)</span>.</p>
+##  $ samps: num  5 9 5 5 5 4 7 9 4 7 ...</code></pre>
+<p>We’ll give the column a name of “Trial”, since we performed 100
+trials of <span class="math inline">\(X\)</span>.</p>
 <pre class="r"><code>colnames(samps) = &quot;Trial&quot;
 head(samps)</code></pre>
 <pre><code>##   Trial
-## 1     4
-## 2     5
+## 1     5
+## 2     9
 ## 3     5
-## 4     4
-## 5     4
+## 4     5
+## 5     5
 ## 6     4</code></pre>
-<p>Now we can make some basic visuals with <TT>ggplot2</TT>. Let’s take a look at a histogram:</p>
+<p>Now we can make some basic visuals with <TT>ggplot2</TT>. Let’s take
+a look at a histogram:</p>
 <pre class="r"><code>samps %&gt;% ggplot()+geom_bar(aes(x = Trial, y = ..count../sum(..count..))) +
   labs(x = &#39;Value&#39;, y = &#39;Proportion&#39;)</code></pre>
 <p><img src="newlab10_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>Note that the fractions that each of the possible values in <span class="math inline">\(S\)</span> takes is pretty close to the probabilities assigned from before. This illustrates an important theme: as the number of samples increases, these fractions will converge to the assigned probabilities. Such a phenomenon is called the <strong>law of large numbers</strong>, and we’ll talk about this in more detail soon.</p>
+<p>Note that the fractions that each of the possible values in <span
+class="math inline">\(S\)</span> takes is pretty close to the
+probabilities assigned from before. This illustrates an important theme:
+as the number of samples increases, these fractions will converge to the
+assigned probabilities. Such a phenomenon is called the <strong>law of
+large numbers</strong>, and we’ll talk about this in more detail
+soon.</p>
 <p>Let’s ramp up the number of samples and see what happens</p>
 <pre class="r"><code>samps =  samplex(1000000)
 
@@ -456,14 +524,22 @@ samps %&gt;% ggplot()+geom_bar(aes(x = Trial
                                 , y = stat(prop)))</code></pre>
 <p><img src="newlab10_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="r"><code>sum(samps == 4)/dim(samps)[1]</code></pre>
-<pre><code>## [1] 0.300222</code></pre>
+<pre><code>## [1] 0.300657</code></pre>
 <pre class="r"><code>sum(samps == 5)/dim(samps)[1]</code></pre>
-<pre><code>## [1] 0.50005</code></pre>
+<pre><code>## [1] 0.498838</code></pre>
 <pre class="r"><code>sum(samps == 7)/dim(samps)[1]</code></pre>
-<pre><code>## [1] 0.099975</code></pre>
+<pre><code>## [1] 0.100233</code></pre>
 <pre class="r"><code>sum(samps == 9)/dim(samps)[1]</code></pre>
-<pre><code>## [1] 0.099753</code></pre>
-<p>Now our fractions are much closer to the actual probabilities. Something about this process is a bit artificial, however. In the real world, of course, we don’t have the luxury of generating infinite amounts of data to find out the value of a probability. This is where statistics comes into play. If we have only finitely many datapoints, then we need to make a best guess about what probability. We may also want some type of statement about how good our guess is, as well. This will be covered with the concept of <strong>confidence intervals</strong>. Much more on this later.</p>
+<pre><code>## [1] 0.100272</code></pre>
+<p>Now our fractions are much closer to the actual probabilities.
+Something about this process is a bit artificial, however. In the real
+world, of course, we don’t have the luxury of generating infinite
+amounts of data to find out the value of a probability. This is where
+statistics comes into play. If we have only finitely many datapoints,
+then we need to make a best guess about what probability. We may also
+want some type of statement about how good our guess is, as well. This
+will be covered with the concept of <strong>confidence
+intervals</strong>. Much more on this later.</p>
 </div>
 
 

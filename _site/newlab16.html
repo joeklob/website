@@ -13,8 +13,8 @@
 
 <title>Regression and its many forms</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -83,6 +84,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -308,7 +312,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -321,7 +325,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Sections
      
     <span class="caret"></span>
@@ -391,42 +395,82 @@ div.tocify {
 </div>
 
 
-<p>This lab will be focused on the many ways to perform <strong>regression</strong> on single variable data. From the previous notes, we learned about <strong>linear regression</strong>. For a dataset <span class="math inline">\(\{(x_1, y_1), \dots, (x_n, y_n)\}\)</span>, linear regression uses the linear model of <span class="math display">\[\begin{equation}
-y = \alpha+\beta x, \quad \alpha = \bar y-\frac{\rho s_y}{s_x}\bar x, \quad
+<p>This lab will be focused on the many ways to perform
+<strong>regression</strong> on single variable data. From the previous
+notes, we learned about <strong>linear regression</strong>. For a
+dataset <span class="math inline">\(\{(x_1, y_1), \dots, (x_n,
+y_n)\}\)</span>, linear regression uses the linear model of <span
+class="math display">\[\begin{equation}
+y = \alpha+\beta x, \quad \alpha = \bar y-\frac{\rho s_y}{s_x}\bar x,
+\quad
 \beta = \frac{\rho s_y}{s_x}.
 \end{equation}\]</span></p>
 <p>where we use the <strong>correlation coefficient</strong></p>
 <p><span class="math display">\[\begin{equation}
-\rho_{X,Y} = \frac{\sum (x_i-\bar x)(y_i- \bar y)}{\sqrt{\sum (x_i-\bar x)^2}
+\rho_{X,Y} = \frac{\sum (x_i-\bar x)(y_i- \bar y)}{\sqrt{\sum (x_i-\bar
+x)^2}
 \sqrt{\sum (x_i-\bar x)^2}}
 \end{equation}\]</span></p>
-<p>Recall that <span class="math inline">\(\rho\)</span> gives us a measure of the <em>linear</em> relationship between input and output. For nonlinear relations (parabolas, circles, etc.), the correlation coefficient will not be as effective (you may even get something near 0!). The terms <span class="math inline">\(\bar x, \bar y\)</span> are means of the input and output, respectively, and <span class="math inline">\(s_x, s_y\)</span> their sample standard deviations.</p>
-<p>Let’s take a quick look at some more subtle points regarding correlation and linear regression.</p>
-<div id="corrupting-rho-with-a-single-point" class="section level2" number="0.1">
-<h2 number="0.1"><span class="header-section-number">0.1</span> Corrupting <span class="math inline">\(\rho\)</span> with a single point</h2>
-<p>Unfortunately, correlations and linear fits are sensitive to outliers. To see this, let’s make some <em>noise</em>!<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> By this, generate independent samples of input and output.</p>
+<p>Recall that <span class="math inline">\(\rho\)</span> gives us a
+measure of the <em>linear</em> relationship between input and output.
+For nonlinear relations (parabolas, circles, etc.), the correlation
+coefficient will not be as effective (you may even get something near
+0!). The terms <span class="math inline">\(\bar x, \bar y\)</span> are
+means of the input and output, respectively, and <span
+class="math inline">\(s_x, s_y\)</span> their sample standard
+deviations.</p>
+<p>Let’s take a quick look at some more subtle points regarding
+correlation and linear regression.</p>
+<div id="corrupting-rho-with-a-single-point" class="section level2"
+number="0.1">
+<h2><span class="header-section-number">0.1</span> Corrupting <span
+class="math inline">\(\rho\)</span> with a single point</h2>
+<p>Unfortunately, correlations and linear fits are sensitive to
+outliers. To see this, let’s make some <em>noise</em>!<a href="#fn1"
+class="footnote-ref" id="fnref1"><sup>1</sup></a> By this, generate
+independent samples of input and output.</p>
 <pre class="r"><code>X = runif(100)
 Y = runif(100)
 
 cor(X,Y)</code></pre>
-<pre><code>## [1] 0.04736932</code></pre>
+<pre><code>## [1] 0.1051301</code></pre>
 <blockquote>
-<p><strong>Q:</strong> Shouldn’t we be expecting exactly 0 as an answer? Why or why not?</p>
+<p><strong>Q:</strong> Shouldn’t we be expecting exactly 0 as an answer?
+Why or why not?</p>
 </blockquote>
-<p>By adding a single point, we can boost our correlation to be as near to 1 as we wish.</p>
+<p>By adding a single point, we can boost our correlation to be as near
+to 1 as we wish.</p>
 <pre class="r"><code>X[101] = 10^5
 Y[101] = 10^5
 
 cor(X,Y)</code></pre>
 <pre><code>## [1] 1</code></pre>
-<p>What on earth is going on? How can one point mess things up so much? Looking at the formula for <span class="math inline">\(\rho\)</span> can help. For the augmented dataset</p>
+<p>What on earth is going on? How can one point mess things up so much?
+Looking at the formula for <span class="math inline">\(\rho\)</span> can
+help. For the augmented dataset</p>
 <p><span class="math display">\[\begin{equation}
-\mathbf x = \{x_1, \dots, x_n, x_{big}\}, \quad \mathbf x = \{y_1, \dots, y_n, y_{big}\}, 
-\end{equation}\]</span> with <span class="math inline">\(x_{big} \gg x_i\)</span>, <span class="math inline">\(y_{big} \gg y_i\)</span> The correlation coefficient is then approximated by just looking at those terms containing <span class="math inline">\(x_{big}\)</span> and <span class="math inline">\(y_{big}\)</span>.</p>
+\mathbf x = \{x_1, \dots, x_n, x_{big}\}, \quad \mathbf x = \{y_1,
+\dots, y_n, y_{big}\},
+\end{equation}\]</span> with <span class="math inline">\(x_{big} \gg
+x_i\)</span>, <span class="math inline">\(y_{big} \gg y_i\)</span> The
+correlation coefficient is then approximated by just looking at those
+terms containing <span class="math inline">\(x_{big}\)</span> and <span
+class="math inline">\(y_{big}\)</span>.</p>
 <blockquote>
-<p><strong>Q:</strong> Compute the <em>big terms</em> in the numerator and denominator in the formula for the correlation coefficient. In the numerator, you should be looking for terms containing <span class="math inline">\(x_{big}*y_{big}\)</span>, and in the denominator, you should be looking for terms <span class="math inline">\(x_{big}^2\)</span> and <span class="math inline">\(y_{big}^2\)</span>. Can you find these terms and show that their ratio approaches 1 for large positive values of <span class="math inline">\(x_{big}\)</span> and <span class="math inline">\(y_{big}\)</span>?</p>
+<p><strong>Q:</strong> Compute the <em>big terms</em> in the numerator
+and denominator in the formula for the correlation coefficient. In the
+numerator, you should be looking for terms containing <span
+class="math inline">\(x_{big}*y_{big}\)</span>, and in the denominator,
+you should be looking for terms <span
+class="math inline">\(x_{big}^2\)</span> and <span
+class="math inline">\(y_{big}^2\)</span>. Can you find these terms and
+show that their ratio approaches 1 for large positive values of <span
+class="math inline">\(x_{big}\)</span> and <span
+class="math inline">\(y_{big}\)</span>?</p>
 </blockquote>
-<p>Without doing the <em>asymptotics</em> of the previous question, we can get a visual of what our line should look like. Let’s plot our points and the line of best fit.</p>
+<p>Without doing the <em>asymptotics</em> of the previous question, we
+can get a visual of what our line should look like. Let’s plot our
+points and the line of best fit.</p>
 <pre class="r"><code>rho = cor(X,Y)
 sx = sd(X)
 sy = sd(Y)
@@ -441,15 +485,38 @@ return (alpha + beta*x)}
 
 riggeddata %&gt;% ggplot(aes(X,Y)) + geom_point()+stat_function(fun = linefit, col = &#39;red&#39;)</code></pre>
 <p><img src="newlab16_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>The other 100 points are so scrunched that they appear to be a single point in this graph. This graph, in a sense, is <em>zooming</em> out, and from this perspective, the line of best fit seems to do a pretty good job. Recall that correlations are invariant under <em>affine transmations</em> <span class="math inline">\(x \mapsto ax+b\)</span>, so the scaling in the <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> variables doesn’t really matter when looking at something like a correlation.</p>
+<p>The other 100 points are so scrunched that they appear to be a single
+point in this graph. This graph, in a sense, is <em>zooming</em> out,
+and from this perspective, the line of best fit seems to do a pretty
+good job. Recall that correlations are invariant under <em>affine
+transmations</em> <span class="math inline">\(x \mapsto ax+b\)</span>,
+so the scaling in the <span class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span> variables doesn’t really matter when
+looking at something like a correlation.</p>
 </div>
 <div id="x-vs.-y-vs.-y-vs.-x" class="section level2" number="0.2">
-<h2 number="0.2"><span class="header-section-number">0.2</span> (<span class="math inline">\(X\)</span> vs. <span class="math inline">\(Y\)</span>) vs. (<span class="math inline">\(Y\)</span> vs. <span class="math inline">\(X\)</span>)</h2>
-<p>One nice property about the correlation coefficient is that it is <strong>symmetric</strong>, meaning that <span class="math inline">\(\rho(\mathbf x,\mathbf y) = \rho(\mathbf y,\mathbf x)\)</span>.</p>
+<h2><span class="header-section-number">0.2</span> (<span
+class="math inline">\(X\)</span> vs. <span
+class="math inline">\(Y\)</span>) vs. (<span
+class="math inline">\(Y\)</span> vs. <span
+class="math inline">\(X\)</span>)</h2>
+<p>One nice property about the correlation coefficient is that it is
+<strong>symmetric</strong>, meaning that <span
+class="math inline">\(\rho(\mathbf x,\mathbf y) = \rho(\mathbf y,\mathbf
+x)\)</span>.</p>
 <blockquote>
-<p><strong>Q:</strong> Can you deduce that <span class="math inline">\(\rho\)</span> is symmetric by looking at its formula?</p>
+<p><strong>Q:</strong> Can you deduce that <span
+class="math inline">\(\rho\)</span> is symmetric by looking at its
+formula?</p>
 </blockquote>
-<p>Despite <span class="math inline">\(\rho\)</span> being symmetric, we have the curious fact that the line of best fit for <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> is in general not the same as the line for <span class="math inline">\(X\)</span> given <span class="math inline">\(Y\)</span>. To see this, let’s use our trusty &lt;<T>&gt;iris&lt;</T>&gt; dataset, and compare sepal lengths against sepal widths.</p>
+<p>Despite <span class="math inline">\(\rho\)</span> being symmetric, we
+have the curious fact that the line of best fit for <span
+class="math inline">\(Y\)</span> given <span
+class="math inline">\(X\)</span> is in general not the same as the line
+for <span class="math inline">\(X\)</span> given <span
+class="math inline">\(Y\)</span>. To see this, let’s use our trusty
+&lt;<T>&gt;iris&lt;</T>&gt; dataset, and compare sepal lengths against
+sepal widths.</p>
 <pre class="r"><code>X = iris$Sepal.Length
 Y = iris$Petal.Length
 
@@ -482,26 +549,53 @@ iris %&gt;% ggplot(aes(Sepal.Length, Petal.Length)) +
 geom_point()+stat_function(fun = linefit, col = &#39;red&#39;)+
   stat_function(fun = fliplinefit, col = &#39;green&#39;)</code></pre>
 <p><img src="newlab16_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>The main point here is that switching arguments produces two separate optimization problems. In the graph above, the red line is minimizing <strong>vertical residuals</strong>, whereas the green line minimizes <strong>horizontal residuals</strong>.</p>
+<p>The main point here is that switching arguments produces two separate
+optimization problems. In the graph above, the red line is minimizing
+<strong>vertical residuals</strong>, whereas the green line minimizes
+<strong>horizontal residuals</strong>.</p>
 <p>#Polynomial regression</p>
-<p>We can easily generalize linear regression to cover the class of <strong>polynomials</strong>, those functions which take the form <span class="math display">\[\begin{equation}
-\beta_Nx^d+\beta_{N-1}x^{N-1}+ \dots +\beta_1 x+ \beta_0 = \sum_{i = 0}^N \beta_i x^i
+<p>We can easily generalize linear regression to cover the class of
+<strong>polynomials</strong>, those functions which take the form <span
+class="math display">\[\begin{equation}
+\beta_Nx^d+\beta_{N-1}x^{N-1}+ \dots +\beta_1 x+ \beta_0 = \sum_{i =
+0}^N \beta_i x^i
 \end{equation}\]</span></p>
-<p>the variable <span class="math inline">\(N\)</span> is called the <strong>degree</strong> of the polynomial, and is the highest power that we take of the independent variable <span class="math inline">\(x\)</span>. For fitting a degree <span class="math inline">\(N\)</span> polynomial to a dataset, our task is to determine the best possible values for the <span class="math inline">\(N+1\)</span> coefficients <span class="math inline">\(\beta_0, \dots, \beta_N\)</span>. We can express this as the optimization problem</p>
+<p>the variable <span class="math inline">\(N\)</span> is called the
+<strong>degree</strong> of the polynomial, and is the highest power that
+we take of the independent variable <span
+class="math inline">\(x\)</span>. For fitting a degree <span
+class="math inline">\(N\)</span> polynomial to a dataset, our task is to
+determine the best possible values for the <span
+class="math inline">\(N+1\)</span> coefficients <span
+class="math inline">\(\beta_0, \dots, \beta_N\)</span>. We can express
+this as the optimization problem</p>
 <p><span class="math display">\[\begin{equation}
-(\hat \beta_0 , \dots, \hat \beta_N) = \mathrm{argmin}_{(\beta_0, \dots, \beta_d)} \sum_{i = 1}^d (y(\hat x_i)-\hat y_i)^2 = \mathrm{argmin}_{(\beta_0, \dots, \beta_N)} \sum_{i = 1}^d \left(\sum_{i
+(\hat \beta_0 , \dots, \hat \beta_N) = \mathrm{argmin}_{(\beta_0, \dots,
+\beta_d)} \sum_{i = 1}^d (y(\hat x_i)-\hat y_i)^2 =
+\mathrm{argmin}_{(\beta_0, \dots, \beta_N)} \sum_{i = 1}^d \left(\sum_{i
 = 0}^ N \beta_i  \hat x^i-\hat y_i\right)^2.
 \end{equation}\]</span></p>
-<p>The argmin tells you to find values of <span class="math inline">\((\hat \beta_0 , \dots, \hat \beta_N)\)</span> that produce a minimum <strong>root mean squared error</strong> <span class="math display">\[\begin{equation}
+<p>The argmin tells you to find values of <span
+class="math inline">\((\hat \beta_0 , \dots, \hat \beta_N)\)</span> that
+produce a minimum <strong>root mean squared error</strong> <span
+class="math display">\[\begin{equation}
 \mathrm{RMSE} = \sqrt{ \sum_{i = 1}^d (y(\hat x_i)-\hat
 y_i)^2/d}
 \end{equation}\]</span></p>
-<p>These are the constants you will use to plot your polynomial of best fit.</p>
+<p>These are the constants you will use to plot your polynomial of best
+fit.</p>
 </div>
-<div id="an-example-with-tracking-coronavirus-cases" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> An example with tracking coronavirus cases</h1>
-<p>Let’s take a look different regression models for tracking the total number of coronavirus cases in India. We will use the &lt;<T>&gt;coronavirus&lt;</T>&gt; library, which contains daily case and death tallies over most countries.</p>
-<p>First, let’s take a look at case counts from March 2020 to today. Note that we’ll be using the &lt;<T>&gt;filter&lt;</T>&gt;function to zero in on the data we find relevant for our problem.</p>
+<div id="an-example-with-tracking-coronavirus-cases"
+class="section level1" number="1">
+<h1><span class="header-section-number">1</span> An example with
+tracking coronavirus cases</h1>
+<p>Let’s take a look different regression models for tracking the total
+number of coronavirus cases in India. We will use the
+&lt;<T>&gt;coronavirus&lt;</T>&gt; library, which contains daily case
+and death tallies over most countries.</p>
+<p>First, let’s take a look at case counts from March 2020 to today.
+Note that we’ll be using the &lt;<T>&gt;filter&lt;</T>&gt;function to
+zero in on the data we find relevant for our problem.</p>
 <pre class="r"><code>newcor = coronavirus %&gt;% filter(country %in% c(&quot;US&quot;)
                                 &amp; type == &#39;confirmed&#39;&amp; date %in%  as.Date(1:450, origin=&quot;2020-04-01&quot;))
 
@@ -511,8 +605,20 @@ newcor %&gt;%
   geom_smooth(color = &#39;pink&#39;, span = .3)  </code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <p><img src="newlab16_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>The &lt;<T>&gt;geom_/smooth&lt;</T>&gt; function is using what’s called <em>Loess</em>, or <em>local regression</em>. We’ll get to what that is shortly, but for now let’s just take a look at the data. Like many things in the real world, it’s not clear what type of function would best fit a function like we see above. For sure, it’s not one of the usual suspects we encounter in calculus (exponential, sine, cosine, log, or any thing like that). Fortunately, though, it is the case that any continuous function can be approximated arbitrarily well by a polynomial, a result known as the <strong>Stone Weierstass Theorem</strong>. The issue is that the degree of the polynomial might be enormous. This is bad news for modeling, since we’d like to describe what’s going on with as few variables as possible.</p>
-<p>Just to make things look simpler, let’s work with a new variable which gives the number of days since April 1.</p>
+<p>The &lt;<T>&gt;geom_/smooth&lt;</T>&gt; function is using what’s
+called <em>Loess</em>, or <em>local regression</em>. We’ll get to what
+that is shortly, but for now let’s just take a look at the data. Like
+many things in the real world, it’s not clear what type of function
+would best fit a function like we see above. For sure, it’s not one of
+the usual suspects we encounter in calculus (exponential, sine, cosine,
+log, or any thing like that). Fortunately, though, it is the case that
+any continuous function can be approximated arbitrarily well by a
+polynomial, a result known as the <strong>Stone Weierstass
+Theorem</strong>. The issue is that the degree of the polynomial might
+be enormous. This is bad news for modeling, since we’d like to describe
+what’s going on with as few variables as possible.</p>
+<p>Just to make things look simpler, let’s work with a new variable
+which gives the number of days since April 1.</p>
 <pre class="r"><code>newcor$day = 1:dim(newcor)[1]
 
 newcor %&gt;%
@@ -521,7 +627,11 @@ newcor %&gt;%
   geom_smooth(color = &#39;pink&#39;, span = .3)  </code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <p><img src="newlab16_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>Now let’s do the unthinkable and actually try using linear regression! We should expect a pretty horrific result, but it’ll be good exercise on writing an explicit solution for an optimization problem, something that we won’t have on hand when looking at more complicated problems.</p>
+<p>Now let’s do the unthinkable and actually try using linear
+regression! We should expect a pretty horrific result, but it’ll be good
+exercise on writing an explicit solution for an optimization problem,
+something that we won’t have on hand when looking at more complicated
+problems.</p>
 <pre class="r"><code>X = newcor$day
 Y = newcor$cases
 rho = cor(X,Y)
@@ -543,8 +653,11 @@ newcor %&gt;%
   geom_smooth(color = &#39;green&#39;, span = .3) +
   stat_function(fun = linefit)</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<p><img src="newlab16_files/figure-html/unnamed-chunk-9-1.png" width="672" /> Hideous as expected.</p>
-<p>Let’s derive the result using a direct minimization. The idea here is that we can generalize this method to regression for polynomials of whatever degree we wish.</p>
+<p><img src="newlab16_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+Hideous as expected.</p>
+<p>Let’s derive the result using a direct minimization. The idea here is
+that we can generalize this method to regression for polynomials of
+whatever degree we wish.</p>
 <pre class="r"><code>model = function(a, data){
   
   a[1]+data$day*a[2]
@@ -556,13 +669,19 @@ rmsd = function(mod, data){
   diff = data$cases-model(mod, data)
   return(sqrt(mean(diff^2)))
 }</code></pre>
-<p>Now let’s find the minimum value of our parameters with <strong>Newton’s method</strong>, the insanely fast algorithm for finding <strong>zeros</strong> of a function (those numbers <span class="math inline">\(c\)</span> such that <span class="math inline">\(f(c) = 0\)</span>.)</p>
+<p>Now let’s find the minimum value of our parameters with
+<strong>Newton’s method</strong>, the insanely fast algorithm for
+finding <strong>zeros</strong> of a function (those numbers <span
+class="math inline">\(c\)</span> such that <span
+class="math inline">\(f(c) = 0\)</span>.)</p>
 <pre class="r"><code>#We&#39;ll just plug in random conditions in for the initial conditions.
 minparams = optim(c(0,0), rmsd, data = newcor)
 
 minparams$par</code></pre>
 <pre><code>## [1] 54052.49528    89.91705</code></pre>
-<p>We’re basically done. What remains is simply plugging in our optimal values into our linear model and comparing against the original function</p>
+<p>We’re basically done. What remains is simply plugging in our optimal
+values into our linear model and comparing against the original
+function</p>
 <pre class="r"><code>newcor %&gt;%
   ggplot(aes(x = day, y = cases))+ 
   geom_bar( stat = &#39;identity&#39;)+
@@ -573,9 +692,15 @@ minparams$par</code></pre>
 <p><img src="newlab16_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>Same awful line!</p>
 <blockquote>
-<p><strong>Q:</strong> Hold on a second! Do we get different answers if we plug in different initial conditions? The answer, sadly, is yes. Try plugging in (0,0) as your initial conditions and see what happens. Any ideas on what might be happening? If you get different answers for different initial conditions, how do you determine which answer is the best one?</p>
+<p><strong>Q:</strong> Hold on a second! Do we get different answers if
+we plug in different initial conditions? The answer, sadly, is yes. Try
+plugging in (0,0) as your initial conditions and see what happens. Any
+ideas on what might be happening? If you get different answers for
+different initial conditions, how do you determine which answer is the
+best one?</p>
 </blockquote>
-<p>Certainly adding some degrees should help. Let’s try a cubic model.</p>
+<p>Certainly adding some degrees should help. Let’s try a cubic
+model.</p>
 <pre class="r"><code>#This model2 has 4 parameters:
 model2 = function(a, data){
   
@@ -606,7 +731,9 @@ newcor %&gt;%
   stat_function(fun = mincubic)</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <p><img src="newlab16_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<p>Not perfect, but certainly better! Let’s keep moving, and look at a degree 8 model. That should help us capture the hills and valleys better.</p>
+<p>Not perfect, but certainly better! Let’s keep moving, and look at a
+degree 8 model. That should help us capture the hills and valleys
+better.</p>
 <pre class="r"><code>newercor = newcor
 newercor$day = newcor$day/dim(newcor)[1]
 newercor$cases = newcor$cases/max(newcor$cases)
@@ -654,29 +781,61 @@ newercor %&gt;%
 <p><img src="newlab16_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>Still not quite there.</p>
 <blockquote>
-<p><strong>Q:</strong> The code we wrote will apply for any polynomial we choose. Poke around with different degrees and see if you can get a better fit.</p>
+<p><strong>Q:</strong> The code we wrote will apply for any polynomial
+we choose. Poke around with different degrees and see if you can get a
+better fit.</p>
 </blockquote>
 <blockquote>
-<p><strong>Q:</strong> Poke around some more at different countries. What kinds of graphs do you think would be the easiest to fit? The hardest?</p>
+<p><strong>Q:</strong> Poke around some more at different countries.
+What kinds of graphs do you think would be the easiest to fit? The
+hardest?</p>
 </blockquote>
 </div>
 <div id="local-regression" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Local regression</h1>
-<p>We can also consider methods for building curves that approximate functions locally.This means for a particular point <span class="math inline">\(x\)</span>, my approximation <span class="math inline">\(\hat f(x)\)</span> is based on points within a neighborhood <span class="math inline">\(B_r(x) = [x-r, x+r]\)</span> of radius <span class="math inline">\(r\)</span> centered at <span class="math inline">\(x\)</span>.</p>
-<p>More precisely, given a dataset <span class="math inline">\(D = \{(x_1, y_1), \dots, (x_d, y_d)\}\)</span>, my estimated function takes the form</p>
+<h1><span class="header-section-number">2</span> Local regression</h1>
+<p>We can also consider methods for building curves that approximate
+functions locally.This means for a particular point <span
+class="math inline">\(x\)</span>, my approximation <span
+class="math inline">\(\hat f(x)\)</span> is based on points within a
+neighborhood <span class="math inline">\(B_r(x) = [x-r, x+r]\)</span> of
+radius <span class="math inline">\(r\)</span> centered at <span
+class="math inline">\(x\)</span>.</p>
+<p>More precisely, given a dataset <span class="math inline">\(D =
+\{(x_1, y_1), \dots, (x_d, y_d)\}\)</span>, my estimated function takes
+the form</p>
 <p><span class="math display">\[\begin{equation}
 \hat f(x)  = \frac{1}{|A_x(r)|}\sum_{i \in A_x(r)} y_i
 \end{equation}\]</span></p>
-<p>where <span class="math inline">\(A_x\)</span> is the set of indices such that <span class="math inline">\(i \in A_x\)</span> means that <span class="math inline">\(x_i\)</span> is an x-coordinate in the dataset <span class="math inline">\(D\)</span>.</p>
-<p>You might notice that smoothing tends to give nicer looking curves than something like polynomial regression. So why every bother with polynomial regression? In short, polynomial regression is a parametrization. At its best, regression builds a model which can be used to predict new data using only a small set of parameters, or numbers that describe my model.</p>
-<p>Here is a thought experiment for illustrating the utility of using parameters. Suppose you want to calculate the height <span class="math inline">\(h(t)\)</span> of a ball after dropping it from a tower.</p>
+<p>where <span class="math inline">\(A_x\)</span> is the set of indices
+such that <span class="math inline">\(i \in A_x\)</span> means that
+<span class="math inline">\(x_i\)</span> is an x-coordinate in the
+dataset <span class="math inline">\(D\)</span>.</p>
+<p>You might notice that smoothing tends to give nicer looking curves
+than something like polynomial regression. So why every bother with
+polynomial regression? In short, polynomial regression is a
+parametrization. At its best, regression builds a model which can be
+used to predict new data using only a small set of parameters, or
+numbers that describe my model.</p>
+<p>Here is a thought experiment for illustrating the utility of using
+parameters. Suppose you want to calculate the height <span
+class="math inline">\(h(t)\)</span> of a ball after dropping it from a
+tower.</p>
 <p>There are three ways to obtain this curve:</p>
 <ol style="list-style-type: decimal">
-<li><p>Begin with a theory of constant acceleration and derive position, and test against experiment.</p></li>
-<li><p>Take observations of the falling object and perform a quadratic regression</p></li>
+<li><p>Begin with a theory of constant acceleration and derive position,
+and test against experiment.</p></li>
+<li><p>Take observations of the falling object and perform a quadratic
+regression</p></li>
 <li><p>Perform local averaging with the same data as in (2)</p></li>
 </ol>
-<p>Method (1) is good because it gives us an explanation for our curve based on a simple assumption. Such an assumption can be used to try explaining other phenomena. Method (2) provides us with approximate constants for <span class="math inline">\(h(t)\)</span>, but regression doesn’t give us a satisfying explanation for what’s going on. Local averaging is very nice because it can be applied to basically any curve, but its predictive power is clunky at best. One would have to store the entire dataset to ensure a prediction if we have a new datapoint.</p>
+<p>Method (1) is good because it gives us an explanation for our curve
+based on a simple assumption. Such an assumption can be used to try
+explaining other phenomena. Method (2) provides us with approximate
+constants for <span class="math inline">\(h(t)\)</span>, but regression
+doesn’t give us a satisfying explanation for what’s going on. Local
+averaging is very nice because it can be applied to basically any curve,
+but its predictive power is clunky at best. One would have to store the
+entire dataset to ensure a prediction if we have a new datapoint.</p>
 <pre class="r"><code>newcor = coronavirus %&gt;% filter(country %in% c(&quot;US&quot;) 
                                 &amp; type == &#39;death&#39;&amp; date %in%  as.Date(1:400, origin=&quot;2020-04-01&quot;))
 newcor$day = 1:dim(newcor)[1]
@@ -701,13 +860,15 @@ newcor %&gt;% mutate(smooth = fit$y) %&gt;%
   geom_line(aes(date, smooth), color=&quot;red&quot;)</code></pre>
 <p><img src="newlab16_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <blockquote>
-<p><strong>Q:</strong> This certainly beats the polynomial regression models! Why would we ever bother with polynomial regression?</p>
+<p><strong>Q:</strong> This certainly beats the polynomial regression
+models! Why would we ever bother with polynomial regression?</p>
 </blockquote>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr />
 <ol>
-<li id="fn1"><p>No, I don’t mean this from the perspective of a cheerleader.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>No, I don’t mean this from the perspective of a
+cheerleader.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 

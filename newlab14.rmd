@@ -30,9 +30,9 @@ votes = rbinom(n, 1, .7 )
 
 ```
 
-However, let's act like we have no idea where this dataset came from (in particular, we will pretend to not know the actual value of $p$.)
+However, let's act like we have no idea where this dataset came from (in particular, we will pretend to not know the actual value of $p$).
 
-This is a binary vector (consisting of 0's and 1's).  The 1's correspond to 'vanilla', and the 0's for 'chocolate'. We can find the percentage of vanilla voters by simply taking the sample mean
+This is a binary vector (consisting of 0's and 1's).  The 1's correspond to "vanilla", and the 0's for "chocolate". We can find the percentage of vanilla voters by simply taking the sample mean
 
 ```{r}
 xbar = mean(votes)
@@ -124,7 +124,7 @@ In R, this is given by
 pnorm(eps/se)- pnorm(-eps/se)
 ```
 
-Here, we used the function <<T>>pnorm<</T>>, which computes the cumulative probability for the standard normal.  
+Here, we used the function <TT>pnorm</TT>, which computes the cumulative probability for the standard normal.  
 
 > __Q:__ What happens when we let $\epsilon$ get larger? Smaller?
 
@@ -235,7 +235,7 @@ Now let us imagine that Parameter Valhalla has allowed us to peek, and let us kn
 
 
 
-In fact, Loki has even provided us with a vote generator, the <<T>>rbinom<</T>>  function we have been using in the probability section.  With this generator, let's simulate 1000 elections, each of which polls 300 people.  Let's confirm that about 95\% of the confidence intervals we generate contain our true value $p = .72$.
+In fact, Loki has even provided us with a vote generator, the <TT>rbinom</TT>  function we have been using in the probability section.  With this generator, let's simulate 1000 elections, each of which polls 300 people.  Let's confirm that about 95\% of the confidence intervals we generate contain our true value $p = .72$.
 
 
 ```{r}

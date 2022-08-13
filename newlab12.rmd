@@ -107,8 +107,7 @@ Let's verify that the mean of a standard normal $Z_{0,1}$ is 0.  The expected va
 
 > __Q:__ This integral looks pretty awful, but there are at least two quick ways to show that the integral is zero.  What are they?
 
-Without knowing how to compute the integral, we can still show this numerically:
-(iii) Verify that the normal variable $Z_{0,1}$ indeed has a mean of 0.
+Even without knowing how to compute the integral, we can still show that it's at least very close to zero via sampling:
 
 
 ```{r}
@@ -225,12 +224,12 @@ path with enter the $\varepsilon$-tube and never leave for all eternity!   Given
 
 eps = .01
 
-samps = rbinom(10000, 1, .5)
+samps = rbinom(100000, 1, .5)
 
 Xbar = cumsum(samps)/1:length(samps)
 
-Xbar = data.frame(Xbar)
-Xbar$trial = 1:10000
+Xbar = data.frame(Xbar[100:100000])
+Xbar$trial = 100:100000
 colnames(Xbar) = c('value', 'trial')
 
 
@@ -299,8 +298,9 @@ eps = .01
 samps = rnorm(runs, 0, 1)/rnorm(runs, 0, 1)
 
 
-trials = 1:runs
+trials = 100:runs
 Xbar = cumsum(samps)/1:length(samps)
+Xbar = Xbar[100:runs]
 
 C = data.frame(trials, Xbar)
 
@@ -389,7 +389,7 @@ CLT %>% ggplot()+ geom_density(aes(Ber), fill = "red", alpha = 0.5, bins = 120, 
 } n\rightarrow \infty.
 \end{equation}
 
-There's a lot of  stuff flying around here.  To put it in less formal terms:
+To put the CLT in less formal terms:
 
 
 1. Take any random variable $X$
@@ -469,7 +469,6 @@ plot(ourbincdf)
 ```{r}
 
 
-plot(ecdf(samps), xlim = c(-.2,1.2), col = 'red')
 
 #Compare to cdf of Bernoulli (it's vectorized!)
 
@@ -477,8 +476,7 @@ graphs = data.frame(ecdf = ourbincdf(200:400/100), cdf = punif( 200:400/100, 2, 
 
 #Let's just use the alpha argument
 
-graphs %>% ggplot(aes(x = xcoord))+geom_line(aes(y = cdf), color = "red", alpha = .5)+
-  geom_line(aes(y = ecdf),  color = "blue",  alpha = .5)
+graphs %>% ggplot(aes(x = xcoord))+geom_line(aes(y = cdf), color = "red", alpha = .5)+ geom_line(aes(y = ecdf),  color = "blue",  alpha = .5)
 
 ```
 

@@ -13,8 +13,8 @@
 
 <title>Random variables: discrete and continuous</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -83,6 +84,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -308,7 +312,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -321,7 +325,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Sections
      
     <span class="caret"></span>
@@ -386,32 +390,77 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Random variables: discrete and continuous</h1>
+<h1 class="title toc-ignore">Random variables: discrete and
+continuous</h1>
 
 </div>
 
 
 <div id="discrete-random-variables" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Discrete random variables</h1>
-<p>For this section, we will investigate <strong>discrete</strong> random variables, having a range (or state space) which is either finite or countable. By <strong>countable</strong> we mean that we can describe the state space by listing elements in an indexed list, or sequence, <span class="math inline">\(S = \{a_i\}_{i = 1}^\infty\)</span>. With the natural numbers <span class="math inline">\(\mathbb N\)</span>, for instance, we can set <span class="math inline">\(a_1 = 1\)</span>, <span class="math inline">\(a_2 = 2\)</span>, and so on. With the integers, we can set <span class="math inline">\(a_1 = 0\)</span>, <span class="math inline">\(a_2 = -1\)</span>, <span class="math inline">\(a_3 = 1\)</span>, <span class="math inline">\(a_4 = -2\)</span>, <span class="math inline">\(a_5 = 2\)</span>.</p>
-<p>One might reasonably ask if we can just make such a listing for every set. Surprisingly, the answer is no! While sets of integers and even the rational numbers can be put in list form, the same is not true for the set of real numbers between 0 and 1, for instance. This was shown by Cantor in his famous <strong>diagonalization argument</strong>. In fact, the set of numbers contained in any interval for the form <span class="math inline">\([a,b]\)</span> or <span class="math inline">\((a,b)\)</span> is <strong>uncountable</strong>.</p>
-<p>This sounds like pure math nonsense, but it has a direct application when trying to list probabilities down. When we have a countable state space <span class="math inline">\(S\)</span> for the random variable <span class="math inline">\(X\)</span>, it makes sense to simply list the probabilities for each element of the state space. In other words, if <span class="math inline">\(s \in S\)</span> (this reads "<span class="math inline">\(s\)</span> is in <span class="math inline">\(S\)</span>, or ‘<span class="math inline">\(s\)</span> is contained in <span class="math inline">\(S\)</span>’ or ’<span class="math inline">\(s\)</span> is an element of <span class="math inline">\(S\)</span>), then we write define the <strong>probability mass function</strong>, or <strong>pmf</strong> as <span class="math display">\[\begin{equation}
+<h1><span class="header-section-number">1</span> Discrete random
+variables</h1>
+<p>For this section, we will investigate <strong>discrete</strong>
+random variables, having a range (or state space) which is either finite
+or countable. By <strong>countable</strong> we mean that we can describe
+the state space by listing elements in an indexed list, or sequence,
+<span class="math inline">\(S = \{a_i\}_{i = 1}^\infty\)</span>. With
+the natural numbers <span class="math inline">\(\mathbb N\)</span>, for
+instance, we can set <span class="math inline">\(a_1 = 1\)</span>, <span
+class="math inline">\(a_2 = 2\)</span>, and so on. With the integers, we
+can set <span class="math inline">\(a_1 = 0\)</span>, <span
+class="math inline">\(a_2 = -1\)</span>, <span class="math inline">\(a_3
+= 1\)</span>, <span class="math inline">\(a_4 = -2\)</span>, <span
+class="math inline">\(a_5 = 2\)</span>.</p>
+<p>One might reasonably ask if we can just make such a listing for every
+set. Surprisingly, the answer is no! While sets of integers and even the
+rational numbers can be put in list form, the same is not true for the
+set of real numbers between 0 and 1, for instance. This was shown by
+Cantor in his famous <strong>diagonalization argument</strong>. In fact,
+the set of numbers contained in any interval for the form <span
+class="math inline">\([a,b]\)</span> or <span
+class="math inline">\((a,b)\)</span> is
+<strong>uncountable</strong>.</p>
+<p>This sounds like pure math nonsense, but it has a direct application
+when trying to list probabilities down. When we have a countable state
+space <span class="math inline">\(S\)</span> for the random variable
+<span class="math inline">\(X\)</span>, it makes sense to simply list
+the probabilities for each element of the state space. In other words,
+if <span class="math inline">\(s \in S\)</span> (this reads “<span
+class="math inline">\(s\)</span> is in <span
+class="math inline">\(S\)</span>, or ‘<span
+class="math inline">\(s\)</span> is contained in <span
+class="math inline">\(S\)</span>’ or ’<span
+class="math inline">\(s\)</span> is an element of <span
+class="math inline">\(S\)</span>), then we write define the
+<strong>probability mass function</strong>, or <strong>pmf</strong> as
+<span class="math display">\[\begin{equation}
 p_s:= \mathbb P(X = s)
 \end{equation}\]</span></p>
 <blockquote>
-<p><strong>Q:</strong> What expression of the pmf would describe the probability that either <span class="math inline">\(X = s_1\)</span> or <span class="math inline">\(X = s_2\)</span>?</p>
+<p><strong>Q:</strong> What expression of the pmf would describe the
+probability that either <span class="math inline">\(X = s_1\)</span> or
+<span class="math inline">\(X = s_2\)</span>?</p>
 </blockquote>
-<div id="bernoulli-from-the-ground-up" class="section level2" number="1.1">
-<h2 number="1.1"><span class="header-section-number">1.1</span> Bernoulli from the ground up</h2>
-<p>The Bernoulli random variable is a simple discrete random variable. It simulates the result of a coin flip. For some <span class="math inline">\(0\le p \le 1\)</span>, the Bernoulli random variable <span class="math inline">\(B_p\)</span> is defined by <span class="math display">\[\begin{equation}
+<div id="bernoulli-from-the-ground-up" class="section level2"
+number="1.1">
+<h2><span class="header-section-number">1.1</span> Bernoulli from the
+ground up</h2>
+<p>The Bernoulli random variable is a simple discrete random variable.
+It simulates the result of a coin flip. For some <span
+class="math inline">\(0\le p \le 1\)</span>, the Bernoulli random
+variable <span class="math inline">\(B_p\)</span> is defined by <span
+class="math display">\[\begin{equation}
 \mathbb P(B_p = 1) = p, \quad \mathbb P(B_p = 0) = 1-p
 \end{equation}\]</span></p>
-<p>You can think of 1 as ‘Heads’, 0 as ‘Tails’, and <span class="math inline">\(p\)</span> as the chance of flipping heads. Writing a program that simulates the Bernoulli random variable is easy. Here’s how to construct it:</p>
+<p>You can think of 1 as ‘Heads’, 0 as ‘Tails’, and <span
+class="math inline">\(p\)</span> as the chance of flipping heads.
+Writing a program that simulates the Bernoulli random variable is easy.
+Here’s how to construct it:</p>
 <ol style="list-style-type: decimal">
 <li>First, write a program for the function</li>
 </ol>
 <p><span class="math display">\[\begin{equation}
-f(x,p) = \begin{cases} 1 &amp;\mbox{if } x \le p\\ 
+f(x,p) = \begin{cases} 1 &amp;\mbox{if } x \le p\\
 0 &amp; \mbox{if } x &gt; p.
 \end{cases}
 \end{equation}\]</span></p>
@@ -430,7 +479,11 @@ f(.3,.5)</code></pre>
 <pre><code>## [1] 1</code></pre>
 <pre class="r"><code>f(1,1)</code></pre>
 <pre><code>## [1] 1</code></pre>
-<p>Now let’s write up a function <TT>bpsamp(n, p)</TT> that generates <span class="math inline">\(n\)</span> samples of a Bernoulli random variable with argument <span class="math inline">\(p\)</span>. We’ll have to use <TT>runif</TT> for generating a random number between 0 and 1.</p>
+<p>Now let’s write up a function <TT>bpsamp(n, p)</TT> that generates
+<span class="math inline">\(n\)</span> samples of a Bernoulli random
+variable with argument <span class="math inline">\(p\)</span>. We’ll
+have to use <TT>runif</TT> for generating a random number between 0 and
+1.</p>
 <pre class="r"><code>bpsamp = function(n,p){
   #initialize answer, which is a vector of length n
   answer = rep(0,n)
@@ -443,38 +496,63 @@ answer
 
 
 bpsamp(20, .8)</code></pre>
-<pre><code>##  [1] 1 0 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 0</code></pre>
+<pre><code>##  [1] 1 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 0</code></pre>
 <blockquote>
-<p><strong>Q:</strong> Fix a number <span class="math inline">\(0 \le p \le 1\)</span>. If a random number between 0 and 1 is generated, what is the probability that this number is less than <span class="math inline">\(p\)</span>? In light of this fact, what is the expression  doing in the code above?</p>
+<p><strong>Q:</strong> Fix a number <span class="math inline">\(0 \le p
+\le 1\)</span>. If a random number between 0 and 1 is generated, what is
+the probability that this number is less than <span
+class="math inline">\(p\)</span>? In light of this fact, what is the
+expression doing in the code above?</p>
 </blockquote>
-<p>Now that we have our random flip generator, let’s flip a whole bunch of times for a fair coin (<span class="math inline">\(p = .5\)</span>).</p>
+<p>Now that we have our random flip generator, let’s flip a whole bunch
+of times for a fair coin (<span class="math inline">\(p =
+.5\)</span>).</p>
 <blockquote>
-<p><strong>Q:</strong> What should be the average value of our coin flips?</p>
+<p><strong>Q:</strong> What should be the average value of our coin
+flips?</p>
 </blockquote>
 <pre class="r"><code>A = bpsamp(10000, .5)
 mean(A)</code></pre>
-<pre><code>## [1] 0.4994</code></pre>
-<p>The value that is being approached is called the <strong>expected value</strong> of <span class="math inline">\(B_p\)</span>. For some random variable <span class="math inline">\(X\)</span>, the expected value is often denoted as <span class="math inline">\(\mathbb E[X]\)</span> or <span class="math inline">\(\mu_X\)</span>.</p>
+<pre><code>## [1] 0.5</code></pre>
+<p>The value that is being approached is called the <strong>expected
+value</strong> of <span class="math inline">\(B_p\)</span>. For some
+random variable <span class="math inline">\(X\)</span>, the expected
+value is often denoted as <span class="math inline">\(\mathbb
+E[X]\)</span> or <span class="math inline">\(\mu_X\)</span>.</p>
 <blockquote>
-<p><strong>Q:</strong> What should <span class="math inline">\(\mathbb E[B_{.9}]\)</span> be?</p>
+<p><strong>Q:</strong> What should <span class="math inline">\(\mathbb
+E[B_{.9}]\)</span> be?</p>
 </blockquote>
-<p>Now let’s take a shortcut, provided by built-in function <TT>rbinom</TT>, which takes in three arguments. The first argument gives the number of samples, the second is set to 1 if it is a Bernoulli distribution (and set to larger numbers when considering the <strong>binomial distribution</strong>), and the third gives the value <span class="math inline">\(p\)</span>.</p>
+<p>Now let’s take a shortcut, provided by built-in function
+<TT>rbinom</TT>, which takes in three arguments. The first argument
+gives the number of samples, the second is set to 1 if it is a Bernoulli
+distribution (and set to larger numbers when considering the
+<strong>binomial distribution</strong>), and the third gives the value
+<span class="math inline">\(p\)</span>.</p>
 <pre class="r"><code>B = rbinom(10000, 1, .5) 
 
 B[1:20]</code></pre>
-<pre><code>##  [1] 1 0 0 0 1 1 0 1 0 1 1 0 1 1 1 1 0 1 0 1</code></pre>
+<pre><code>##  [1] 1 0 1 0 1 1 0 1 1 1 1 0 1 0 1 0 1 0 0 0</code></pre>
 <pre class="r"><code>mean(B)</code></pre>
-<pre><code>## [1] 0.4924</code></pre>
+<pre><code>## [1] 0.4996</code></pre>
 </div>
 </div>
 <div id="the-geometric-distribution" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> The geometric distribution</h1>
-<p>If we flip a coin that has probability <span class="math inline">\(p\)</span> of being heads, how many tails must we flip until I obtain the first<br />
-head? This is given by the <strong>geometric random variable</strong>, denoted <span class="math inline">\(G_p\)</span>.</p>
+<h1><span class="header-section-number">2</span> The geometric
+distribution</h1>
+<p>If we flip a coin that has probability <span
+class="math inline">\(p\)</span> of being heads, how many tails must we
+flip until I obtain the first<br />
+head? This is given by the <strong>geometric random variable</strong>,
+denoted <span class="math inline">\(G_p\)</span>.</p>
 <blockquote>
-<p><strong>Q:</strong> What should be the state space of <span class="math inline">\(G_p\)</span>?</p>
+<p><strong>Q:</strong> What should be the state space of <span
+class="math inline">\(G_p\)</span>?</p>
 </blockquote>
-<p>Let’s use the R function <TT>rgeom(n, p)</TT> to generate <span class="math inline">\(n\)</span> samples of a geometric random variable with a coin having probability <span class="math inline">\(p\)</span> of being heads</p>
+<p>Let’s use the R function <TT>rgeom(n, p)</TT> to generate <span
+class="math inline">\(n\)</span> samples of a geometric random variable
+with a coin having probability <span class="math inline">\(p\)</span> of
+being heads</p>
 <pre class="r"><code>B = rgeom(10000, .5) 
 
 B = data.frame(B)
@@ -484,29 +562,69 @@ colnames(B) = &#39;trials&#39;
 
 B %&gt;% ggplot(aes(trials)) + geom_bar(aes(y = ..prop..))</code></pre>
 <p><img src="newlab11_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>Note the decay of the pmf values. The correct term of the decay rate, not surprisingly, is <em>geometric</em>, hence the name. A pretty straightforward argument shows that</p>
-<p><span class="math display">\[p_s = (1-p)^{s}p\]</span> Be careful with the  here: on the left hand side we have <span class="math inline">\(p\)</span> acting as the pmf, whereas the right hand side has <span class="math inline">\(p\)</span> as the probability of sampling a 1. For those of you familiar with geometric series in calculus (most often taught in a Calculus II course), one can show the elegant result that <span class="math display">\[ \mathbb E[G_p] = (1-p)/p\]</span>.</p>
+<p>Note the decay of the pmf values. The correct term of the decay rate,
+not surprisingly, is <em>geometric</em>, hence the name. A pretty
+straightforward argument shows that</p>
+<p><span class="math display">\[p_s = (1-p)^{s}p\]</span> Be careful
+with the here: on the left hand side we have <span
+class="math inline">\(p\)</span> acting as the pmf, whereas the right
+hand side has <span class="math inline">\(p\)</span> as the probability
+of sampling a 1. For those of you familiar with geometric series in
+calculus (most often taught in a Calculus II course), one can show the
+elegant result that <span class="math display">\[ \mathbb E[G_p] =
+(1-p)/p\]</span>.</p>
 <blockquote>
-<p><strong>Q:</strong> Can you write a function that directly simulates the geometric random variable by repeated coin flips?</p>
+<p><strong>Q:</strong> Can you write a function that directly simulates
+the geometric random variable by repeated coin flips?</p>
 </blockquote>
 </div>
 <div id="continuous-random-variables" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Continuous random variables</h1>
-<p>Let’s turn our attention to <strong>continuous random variables</strong> whose state space consists of intervals (e.g. <span class="math inline">\([0,1], (-\infty, 5), (-\infty, \infty)\)</span>. In contrast with discrete random variables, it no longer makes sense to assign probabilities of a random variable taking exact values. Instead, the main tool we will use is the be <strong>probability density function</strong> (pdf) <span class="math inline">\(f_X(x)\)</span>. The main point of having a probability density function is that it provides a formula for computing the probability that a random variable is contained in <span class="math inline">\([a,b]\)</span>. This is given by</p>
+<h1><span class="header-section-number">3</span> Continuous random
+variables</h1>
+<p>Let’s turn our attention to <strong>continuous random
+variables</strong> whose state space consists of intervals (e.g. <span
+class="math inline">\([0,1], (-\infty, 5), (-\infty, \infty)\)</span>).
+In contrast with discrete random variables, it no longer makes sense to
+assign probabilities of a random variable taking exact values. Instead,
+the main tool we will use is the be <strong>probability density
+function</strong> (pdf) <span class="math inline">\(f_X(x)\)</span>. The
+main point of having a probability density function is that it provides
+a formula for computing the probability that a random variable is
+contained in <span class="math inline">\([a,b]\)</span>. This is given
+by</p>
 <p><span class="math display">\[\begin{equation}
 \mathbb P(a \le X \le b) = \int_a^b f_X(s)ds
 \end{equation}\]</span></p>
-<p>The left hand side of the above formula is the probability a random variable falls between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, and the right hand side gives the area of the pdf between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>.</p>
+<p>The left hand side of the above formula is the probability a random
+variable falls between <span class="math inline">\(a\)</span> and <span
+class="math inline">\(b\)</span>, and the right hand side gives the area
+of the pdf between <span class="math inline">\(a\)</span> and <span
+class="math inline">\(b\)</span>.</p>
 <blockquote>
-<p><strong>Q:</strong> For any real valued continuous random variable <span class="math inline">\(X\)</span>, what should <span class="math inline">\(\int_{-\infty}^\infty f_X(s) ds\)</span> equal?</p>
+<p><strong>Q:</strong> For any real valued continuous random variable
+<span class="math inline">\(X\)</span>, what should <span
+class="math inline">\(\int_{-\infty}^\infty f_X(s) ds\)</span>
+equal?</p>
 </blockquote>
 <div id="the-uniform-distribution" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> The uniform distribution</h2>
-<p>The uniform random variable <span class="math inline">\(U(a,b)\)</span> returns a value between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> with equal probability.</p>
+<h2><span class="header-section-number">3.1</span> The uniform
+distribution</h2>
+<p>The uniform random variable <span
+class="math inline">\(U(a,b)\)</span> returns a value between <span
+class="math inline">\(a\)</span> and <span
+class="math inline">\(b\)</span> with equal probability.</p>
 <blockquote>
-<p><strong>Q:</strong> What is <span class="math inline">\(\mathbb{P}(U(0,1) = 1/2)\)</span>? More generally, what is the probability that a continuous random variable is equal to a single value? Why might this be unsettling?</p>
+<p><strong>Q:</strong> What is <span
+class="math inline">\(\mathbb{P}(U(0,1) = 1/2)\)</span>? More generally,
+what is the probability that a continuous random variable is equal to a
+single value? Why might this be unsettling?</p>
 </blockquote>
-<p>We’ve been using <TT>runif</TT> a bunch of times. This is simply a number generator for <span class="math inline">\(U(a,b)\)</span>. Here’s a histogram for 10000 samples of <span class="math inline">\(U(0,1)\)</span>. We’ll also use <TT>geom_density</TT> to plot an approximate density from our samples.</p>
+<p>We’ve been using <TT>runif</TT> a bunch of times. This is simply a
+number generator for <span class="math inline">\(U(a,b)\)</span>. Here’s
+a histogram for 10000 samples of <span
+class="math inline">\(U(0,1)\)</span>. We’ll also use
+<TT>geom_density</TT> to plot an approximate density from our
+samples.</p>
 <pre class="r"><code>C = runif(1000000, 0,1) 
 
 C = data.frame(C)
@@ -518,20 +636,38 @@ C %&gt;% ggplot(aes(trials)) + geom_histogram(aes(y = ..count../sum(..count..)),
 <pre class="r"><code>C %&gt;% ggplot(aes(trials)) + geom_density(adjust = .3)</code></pre>
 <p><img src="newlab11_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <blockquote>
-<p><strong>Q:</strong> What should the density for <span class="math inline">\(\mathbb{P}(U(0,1) = 1/2)\)</span> look like?</p>
+<p><strong>Q:</strong> What should the density for <span
+class="math inline">\(\mathbb{P}(U(0,1) = 1/2)\)</span> look like?</p>
 </blockquote>
-<p>The density plot is pretty lousy looking, especially near the edges. Like everything else, the more data, the better. If we ramped up the number of samples to <span class="math inline">\(10^6\)</span>, for instance, things would look better, but we’d still have boundary misbehavior. We can try addressing this by playing with the <TT>adjust</TT> parameter, which tells R how much <strong>smoothing</strong> to do, but there’s still trouble.</p>
+<p>The density plot is pretty lousy looking, especially near the edges.
+Like everything else, the more data, the better. If we ramped up the
+number of samples to <span class="math inline">\(10^6\)</span>, for
+instance, things would look better, but we’d still have boundary
+misbehavior. We can try addressing this by playing with the
+<TT>adjust</TT> parameter, which tells R how much
+<strong>smoothing</strong> to do, but there’s still trouble.</p>
 <blockquote>
-<p><strong>Q:</strong> Try the same experiment for <span class="math inline">\(U(4,7)\)</span>. What do you think the height of the pdf will be in this case?</p>
+<p><strong>Q:</strong> Try the same experiment for <span
+class="math inline">\(U(4,7)\)</span>. What do you think the height of
+the pdf will be in this case?</p>
 </blockquote>
 </div>
 <div id="the-normal-distribution" class="section level2" number="3.2">
-<h2 number="3.2"><span class="header-section-number">3.2</span> The normal distribution</h2>
-<p>Perhaps the most important random variable in all of probability is the beloved <strong>normal random variable</strong> <span class="math inline">\(Z(\mu, \sigma)\)</span>. Despite its popularity, its pdf is described by a <strong>Gaussian function</strong>, which isn’t the prettiest looking thing:</p>
+<h2><span class="header-section-number">3.2</span> The normal
+distribution</h2>
+<p>Perhaps the most important random variable in all of probability is
+the beloved <strong>normal random variable</strong> <span
+class="math inline">\(Z(\mu, \sigma)\)</span>. Despite its popularity,
+its pdf is described by a <strong>Gaussian function</strong>, which
+isn’t the prettiest looking thing:</p>
 <p><span class="math display">\[\begin{equation}
-f_Z(x; \mu, \sigma) = \frac{1}{\sigma \sqrt{2 \pi}}e^{-1/2[(x-\mu)/\sigma]^2}
+f_Z(x; \mu, \sigma) = \frac{1}{\sigma \sqrt{2
+\pi}}e^{-1/2[(x-\mu)/\sigma]^2}
 \end{equation}\]</span></p>
-<p>Nevertheless, normals appear everywhere, and have a surprisingly large amount of nice properties. Let’s plot a density for the <strong>standard normal variable</strong> <span class="math inline">\(N(0,1)\)</span> using <TT>rnorm</TT></p>
+<p>Nevertheless, normals appear everywhere, and have a surprisingly
+large amount of nice properties. Let’s plot a density for the
+<strong>standard normal variable</strong> <span
+class="math inline">\(N(0,1)\)</span> using <TT>rnorm</TT></p>
 <pre class="r"><code>C = rnorm(100000, 0,1) 
 
 C = data.frame(C)
@@ -539,7 +675,18 @@ C = data.frame(C)
 colnames(C) = &#39;trials&#39;
 
 C %&gt;% ggplot(aes(trials)) + geom_density()</code></pre>
-<p><img src="newlab11_files/figure-html/unnamed-chunk-9-1.png" width="672" /> This visual shows why we often refer to a Gaussian function as a <strong>bell curve</strong>. As you can see, Gaussians decay rapidly. The first parameter <span class="math inline">\(-\infty&lt;\mu&lt;\infty\)</span> gives the average value of the Gaussian, which is also the <strong>mode</strong> of the distribution, where the pdf obtains its highest value. The other parameter <span class="math inline">\(\sigma^2&gt;0\)</span> gives the <strong>variance</strong> of the random variable. The variance, as we discussed in the Melbourne housing dataset, is a measure that shows how `spread out’ a random variable is. Let’s plot a few normal densities on the same visual.</p>
+<p><img src="newlab11_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+This visual shows why we often refer to a Gaussian function as a
+<strong>bell curve</strong>. As you can see, Gaussians decay rapidly.
+The first parameter <span
+class="math inline">\(-\infty&lt;\mu&lt;\infty\)</span> gives the
+average value of the Gaussian, which is also the <strong>mode</strong>
+of the distribution, where the pdf obtains its highest value. The other
+parameter <span class="math inline">\(\sigma^2&gt;0\)</span> gives the
+<strong>variance</strong> of the random variable. The variance, as we
+discussed in the Melbourne housing dataset, is a measure that shows how
+`spread out’ a random variable is. Let’s plot a few normal densities on
+the same visual.</p>
 <pre class="r"><code>C1 = rnorm(100000, 0,1) 
 C2 = rnorm(100000, 0,4) 
 C3 = rnorm(100000, -2,.5) 
@@ -553,13 +700,32 @@ C %&gt;% ggplot() + geom_density(aes(t1))+geom_density(aes(t2))+
   geom_density(aes(t3))+ geom_density(aes(t4))</code></pre>
 <p><img src="newlab11_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <blockquote>
-<p><strong>Q:</strong> This graph can be shown using the  function from the  library. A summary of melting can be found <a href="https://www.statmethods.net/management/reshape.html">here</a>.</p>
+<p><strong>Q:</strong> This graph can be shown using the function from
+the library. A summary of melting can be found <a
+href="https://www.statmethods.net/management/reshape.html">here</a>.</p>
 </blockquote>
 </div>
 </div>
-<div id="closure-of-random-variables-under-addition" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> Closure of random variables under addition</h1>
-<p>When generating samples for random variables, we have assumed the important property of <strong>independence</strong>. There is a precise mathematical definition of independence (take a probability class to find out!), but for this class we will just say that two samples <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are independent if knowledge of the value of <span class="math inline">\(X_1\)</span> does not affect the value of <span class="math inline">\(X_2\)</span>. To see a simple example of dependence, let <span class="math inline">\(Z_1\)</span> be distributed with respect to <span class="math inline">\(N(0,1)\)</span>. Now let <span class="math inline">\(Z_2 = -Z_1\)</span>. Certainly, the value of <span class="math inline">\(Z_2\)</span> depends on <span class="math inline">\(Z_1\)</span>, so the two variables are not independent. However, <span class="math inline">\(Z_2\)</span> is also <span class="math inline">\(N(0,1)\)</span> distributed! Let’s show this numerically:</p>
+<div id="closure-of-random-variables-under-addition"
+class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Closure of random
+variables under addition</h1>
+<p>When generating samples for random variables, we have assumed the
+important property of <strong>independence</strong>. There is a precise
+mathematical definition of independence (take a probability class to
+find out!), but for this class we will just say that two samples <span
+class="math inline">\(X_1\)</span> and <span
+class="math inline">\(X_2\)</span> are independent if knowledge of the
+value of <span class="math inline">\(X_1\)</span> does not affect the
+value of <span class="math inline">\(X_2\)</span>. To see a simple
+example of dependence, let <span class="math inline">\(Z_1\)</span> be
+distributed with respect to <span class="math inline">\(N(0,1)\)</span>.
+Now let <span class="math inline">\(Z_2 = -Z_1\)</span>. Certainly, the
+value of <span class="math inline">\(Z_2\)</span> depends on <span
+class="math inline">\(Z_1\)</span>, so the two variables are not
+independent. However, <span class="math inline">\(Z_2\)</span> is also
+<span class="math inline">\(N(0,1)\)</span> distributed! Let’s show this
+numerically:</p>
 <pre class="r"><code>C1 = rnorm(100000, 0,1) 
 C2 = -C1 
 
@@ -569,8 +735,17 @@ C = data.frame(C1,C2)
 colnames(C) = c(&#39;t1&#39;, &#39;t2&#39;)
 
 C %&gt;% ggplot() + geom_density(aes(t1))+geom_density(aes(t2))</code></pre>
-<p><img src="newlab11_files/figure-html/unnamed-chunk-11-1.png" width="672" /> The densities are almost identical! Problems can crop up when discussing samples that are dependent. All of the synthetic data you generate data from R in this class from <TT>rnorm</TT> or <TT>runif</TT> or <TT>rwhatever</TT> (that’s not a real function) are independent.</p>
-<p>A simple question is the following: if <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are independent random variables, what does the sum <span class="math inline">\(X_1+X_2\)</span> look like. In particular, is the sum of two normals also a normal? Is the sum of two uniforms a uniform? Let’s take a look…</p>
+<p><img src="newlab11_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+The densities are almost identical! Problems can crop up when discussing
+samples that are dependent. All of the synthetic data you generate data
+from R in this class from <TT>rnorm</TT> or <TT>runif</TT> or
+<TT>rwhatever</TT> (that’s not a real function) are independent.</p>
+<p>A simple question is the following: if <span
+class="math inline">\(X_1\)</span> and <span
+class="math inline">\(X_2\)</span> are independent random variables,
+what does the sum <span class="math inline">\(X_1+X_2\)</span> look
+like. In particular, is the sum of two normals also a normal? Is the sum
+of two uniforms a uniform? Let’s take a look…</p>
 <pre class="r"><code>X1 = rnorm(100000,0,1)
 X2 = rnorm(100000,0,1)
 
@@ -580,9 +755,15 @@ Y = data.frame(Y)
 colnames(Y) = &#39;trials&#39;
 Y %&gt;% ggplot()+geom_density(aes(trials))</code></pre>
 <p><img src="newlab11_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p>Looks pretty normal! It is, in fact, true that summing two normal random variables gives another normal random variable.</p>
+<p>Looks pretty normal! It is, in fact, true that summing two normal
+random variables gives another normal random variable.</p>
 <blockquote>
-<p><strong>Q:</strong> if <span class="math inline">\(X_1\)</span> has a <span class="math inline">\(N(\mu_1, \sigma_1^2)\)</span> distribution, and <span class="math inline">\(X_2\)</span> has a <span class="math inline">\(N(\mu_2, \sigma_2^2)\)</span> distribution, any guesses for how <span class="math inline">\(X_1+X_2\)</span> is distributed?</p>
+<p><strong>Q:</strong> if <span class="math inline">\(X_1\)</span> has a
+<span class="math inline">\(N(\mu_1, \sigma_1^2)\)</span> distribution,
+and <span class="math inline">\(X_2\)</span> has a <span
+class="math inline">\(N(\mu_2, \sigma_2^2)\)</span> distribution, any
+guesses for how <span class="math inline">\(X_1+X_2\)</span> is
+distributed?</p>
 </blockquote>
 <p>Let’s repeat the same experiment for uniform random variables:</p>
 <pre class="r"><code>X1 = runif(100000,0,1)
@@ -593,14 +774,17 @@ Y = X1+X2
 Y = data.frame(Y)
 colnames(Y) = &#39;trials&#39;
 Y %&gt;% ggplot()+geom_density(aes(trials))</code></pre>
-<p><img src="newlab11_files/figure-html/unnamed-chunk-13-1.png" width="672" /> Whatever this is, it’s certainly not uniform! This is often the case with summing random variables. In other words, you shouldn’t assume that summing two random variables gives you another random variable in the same family.</p>
+<p><img src="newlab11_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+Whatever this is, it’s certainly not uniform! This is often the case
+with summing random variables. In other words, you shouldn’t assume that
+summing two random variables gives you another random variable in the
+same family.</p>
 <blockquote>
-<p><strong>Q:</strong> Can you think of a handwavy reason why we might expect the sum of two uniforms to peak in the middle? Hint: it’s the same reasoning for why throwing a 7 is more common than throwing a 12 when rolling two dice.</p>
+<p><strong>Q:</strong> Can you think of a handwavy reason why we might
+expect the sum of two uniforms to peak in the middle? Hint: it’s the
+same reasoning for why throwing a 7 is more common than throwing a 12
+when rolling two dice.</p>
 </blockquote>
-<ol style="list-style-type: lower-roman">
-<li><p>Is it the case the two sum of two independent normals is normal? Test with <span class="math inline">\(X \sim N(1,4)\)</span> and <span class="math inline">\(Y \sim N(2, 1)\)</span>.</p></li>
-<li><p>Is the sum of two independent uniforms also uniform? Test with <span class="math inline">\(X \sim Unif(0,1)\)</span>, <span class="math inline">\(Y \sim Unif(0,1)\)</span>.</p></li>
-</ol>
 </div>
 
 

@@ -13,8 +13,8 @@
 
 <title>Mean, variance, and the two major theorems in probability</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -83,6 +84,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -308,7 +312,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -321,7 +325,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Sections
      
     <span class="caret"></span>
@@ -386,52 +390,105 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Mean, variance, and the two major theorems in probability</h1>
+<h1 class="title toc-ignore">Mean, variance, and the two major theorems
+in probability</h1>
 
 </div>
 
 
-<p>For some random variable <span class="math inline">\(X\)</span>, it’s desirable to be able to describe its main features. For instance, what does a typical sample look like? Also, if we sample a bunch of times, should I expect samples to be very close to eachother, or do samples vary drastically? The two main quantities to answers these questions are the <strong>mean</strong> and <strong>variance</strong>. While the mean and variance are quantities related to a random quantity <span class="math inline">\(X\)</span>, they are both <strong>deterministic</strong> , meaning that they are not random. In most cases, one could think of these quantities as the two most informative numbers describing a random variable.</p>
+<p>For some random variable <span class="math inline">\(X\)</span>, it’s
+desirable to be able to describe its main features. For instance, what
+does a typical sample look like? Also, if we sample a bunch of times,
+should I expect samples to be very close to eachother, or do samples
+vary drastically? The two main quantities to answers these questions are
+the <strong>mean</strong> and <strong>variance</strong>. While the mean
+and variance are quantities related to a random quantity <span
+class="math inline">\(X\)</span>, they are both
+<strong>deterministic</strong> , meaning that they are not random. In
+most cases, one could think of these quantities as the two most
+informative numbers describing a random variable.</p>
 <blockquote>
-<p><strong>Q:</strong> Note the qualifier ``in most cases" in the last sentence. Can you think of a case where there is a more important quantity related to a random variable? For instance, think of a case where a maximum value of <span class="math inline">\(X\)</span> would be important.</p>
+<p><strong>Q:</strong> Note the qualifier ``in most cases” in the last
+sentence. Can you think of a case where there is a more important
+quantity related to a random variable? For instance, think of a case
+where a maximum value of <span class="math inline">\(X\)</span> would be
+important.</p>
 </blockquote>
-<p>Not only are the mean and variance of great practical value, but they are also at the center of two major theorems in probability: the <strong>law of large number</strong> and <strong>central limit theorem</strong>. These two theorems tell us how sums of many random variables act like, and play a vital role in statistics.</p>
+<p>Not only are the mean and variance of great practical value, but they
+are also at the center of two major theorems in probability: the
+<strong>law of large number</strong> and <strong>central limit
+theorem</strong>. These two theorems tell us how sums of many random
+variables act like, and play a vital role in statistics.</p>
 <div id="the-mean" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> The mean</h1>
-<p>For a continuous random variable <span class="math inline">\(X\)</span> with pdf <span class="math inline">\(f_X\)</span>, the <strong>expected value</strong> (or <strong>mean</strong>) is given by</p>
+<h1><span class="header-section-number">1</span> The mean</h1>
+<p>For a continuous random variable <span
+class="math inline">\(X\)</span> with pdf <span
+class="math inline">\(f_X\)</span>, the <strong>expected value</strong>
+(or <strong>mean</strong>) is given by</p>
 <p><span class="math display">\[\begin{equation}
 \mathbb E[X]= \int_{-\infty}^\infty f_X(s)\cdot sds
 \end{equation}\]</span></p>
 <blockquote>
-<p><strong>Q:</strong> Notice the factor of <span class="math inline">\(s\)</span> next to <span class="math inline">\(f_X\)</span>. What would the integral equal if that factor wasn’t there?</p>
+<p><strong>Q:</strong> Notice the factor of <span
+class="math inline">\(s\)</span> next to <span
+class="math inline">\(f_X\)</span>. What would the integral equal if
+that factor wasn’t there?</p>
 </blockquote>
-<p>For the discrete case, if <span class="math inline">\(p_x = \mathbb P(X = x)\)</span>, then <span class="math display">\[\begin{equation}
+<p>For the discrete case, if <span class="math inline">\(p_x = \mathbb
+P(X = x)\)</span>, then <span class="math display">\[\begin{equation}
 \mathbb E[X] = \sum_{x \in S(X)} xp_x,
-\end{equation}\]</span> where <span class="math inline">\(S(X)\)</span> is the state space of <span class="math inline">\(X\)</span>.</p>
-<p>We won’t be computing many theoretical means in this class (you’ll be doing plenty of that in a probability class), but it’s a good idea to go through two basic cases:</p>
-<p><em>(Expected value of Bernoulli)</em> For the Bernoulli random variable <span class="math inline">\(B_p\)</span>, the state space is <span class="math inline">\(S = \{0,1\}\)</span>, so then the expected value is</p>
+\end{equation}\]</span> where <span class="math inline">\(S(X)\)</span>
+is the state space of <span class="math inline">\(X\)</span>.</p>
+<p>We won’t be computing many theoretical means in this class (you’ll be
+doing plenty of that in a probability class), but it’s a good idea to go
+through two basic cases:</p>
+<p><em>(Expected value of Bernoulli)</em> For the Bernoulli random
+variable <span class="math inline">\(B_p\)</span>, the state space is
+<span class="math inline">\(S = \{0,1\}\)</span>, so then the expected
+value is</p>
 <p><span class="math display">\[\begin{equation}
-\mathbb E[B_p] = \sum_{x \in S(X)} xp_x = \sum_{0}^1 xp_x = 0\cdot p_0+1\cdot p_1 = 0(1-p)+1(p) = p
+\mathbb E[B_p] = \sum_{x \in S(X)} xp_x = \sum_{0}^1 xp_x = 0\cdot
+p_0+1\cdot p_1 = 0(1-p)+1(p) = p
 \end{equation}\]</span></p>
-<p><em>(Expected value of Uniform)</em> For the uniform random variable <span class="math inline">\(U(a,b)\)</span>, the state space is <span class="math inline">\(S = [a,b]\)</span> and the pdf if <span class="math display">\[\begin{equation}
+<p><em>(Expected value of Uniform)</em> For the uniform random variable
+<span class="math inline">\(U(a,b)\)</span>, the state space is <span
+class="math inline">\(S = [a,b]\)</span> and the pdf if <span
+class="math display">\[\begin{equation}
 p_U(x) = 1/(b-a) \quad x \in [a,b]
 \end{equation}\]</span> , so then the expected value is then</p>
 <p><span class="math display">\[\begin{equation}
-\mathbb E [U(a,b)] = \int_{a}^b xp_U(x)dx = \int_{a}^b x/(b-a)dx = \frac{1}{b-a}\int_a^b xdx = \frac{1}{b-a}\cdot \frac{b^2-a^2}{2} = \frac{a+b}{2}
+\mathbb E [U(a,b)] = \int_{a}^b xp_U(x)dx = \int_{a}^b x/(b-a)dx =
+\frac{1}{b-a}\int_a^b xdx = \frac{1}{b-a}\cdot \frac{b^2-a^2}{2} =
+\frac{a+b}{2}
 \end{equation}\]</span></p>
 <blockquote>
-<p><strong>Q:</strong> Sanity check: without computing anything, why does this answer make sense?</p>
+<p><strong>Q:</strong> Sanity check: without computing anything, why
+does this answer make sense?</p>
 </blockquote>
-<p>Here’s a sampling-based interpretation of <span class="math inline">\(\mathbb E[X]\)</span>: if I generate many, many instances of my random variable <span class="math inline">\(X_1, X_2, \dots, X_N\)</span> for some very large <span class="math inline">\(N\)</span>, then for <em>most</em> random variables, <span class="math display">\[\begin{equation}
+<p>Here’s a sampling-based interpretation of <span
+class="math inline">\(\mathbb E[X]\)</span>: if I generate many, many
+instances of my random variable <span class="math inline">\(X_1, X_2,
+\dots, X_N\)</span> for some very large <span
+class="math inline">\(N\)</span>, then for <em>most</em> random
+variables, <span class="math display">\[\begin{equation}
 \mathbb E[X] \approx (X_1+X_2+\dots+X_N)/N.
 \end{equation}\]</span></p>
-<p>In other words, a sample average of <span class="math inline">\(N\)</span> samples of my random variable should approximately give the expected value. So <span class="math inline">\(\mathbb E[X]\)</span> is an average value of <span class="math inline">\(X\)</span>.</p>
-<p>Given a fair coin, how many tails should we expect to flip before we obtain our first heads? The answer is simply <span class="math inline">\(\mathbb E[G_{.5}]\)</span>. By our definition, since <span class="math inline">\(S = \{0,1,2,\dots,\}\)</span>,</p>
+<p>In other words, a sample average of <span
+class="math inline">\(N\)</span> samples of my random variable should
+approximately give the expected value. So <span
+class="math inline">\(\mathbb E[X]\)</span> is an average value of <span
+class="math inline">\(X\)</span>.</p>
+<p>Given a fair coin, how many tails should we expect to flip before we
+obtain our first heads? The answer is simply <span
+class="math inline">\(\mathbb E[G_{.5}]\)</span>. By our definition,
+since <span class="math inline">\(S = \{0,1,2,\dots,\}\)</span>,</p>
 <p><span class="math display">\[\begin{equation}
-\mathbb E[G_{.5}] = \sum_{0}^\infty p_x \cdot x = 
-\sum_{0}^\infty (1-p)^x\cdot p \cdot x 
+\mathbb E[G_{.5}] = \sum_{0}^\infty p_x \cdot x =
+\sum_{0}^\infty (1-p)^x\cdot p \cdot x
 \end{equation}\]</span></p>
-<p>This takes some effort to compute (it involves knowledge of geometric series and the binomial theorem). But we can numerically compute the mean just by taking many samples and finding the sample mean:</p>
+<p>This takes some effort to compute (it involves knowledge of geometric
+series and the binomial theorem). But we can numerically compute the
+mean just by taking many samples and finding the sample mean:</p>
 <pre class="r"><code>numsamps = 10000
 
 p = .5
@@ -439,43 +496,77 @@ p = .5
 samps = rgeom(numsamps, p)
 
 mean(samps)</code></pre>
-<pre><code>## [1] 0.9868</code></pre>
-<p>We can guess that, on average, we will flip one tail before obtaining our first head. If we need more confidence about that statement, we can always ramp up the number of samples. The greatest confidence, of course, is to compute exactly the expected value. The explicit expression is <span class="math display">\[\begin{equation}
+<pre><code>## [1] 1.0068</code></pre>
+<p>We can guess that, on average, we will flip one tail before obtaining
+our first head. If we need more confidence about that statement, we can
+always ramp up the number of samples. The greatest confidence, of
+course, is to compute exactly the expected value. The explicit
+expression is <span class="math display">\[\begin{equation}
 \mathbb E[G_p] = \frac{1-p}p
-\end{equation}\]</span> which means <span class="math inline">\(\mathbb E[G_{.5}] = \frac{1-.5}{.5} = 1\)</span>.</p>
+\end{equation}\]</span> which means <span class="math inline">\(\mathbb
+E[G_{.5}] = \frac{1-.5}{.5} = 1\)</span>.</p>
 <blockquote>
-<p><strong>Q:</strong> Another sanity check: without computing anything, as <span class="math inline">\(p\)</span> increases, should the expected value increase or decrease?</p>
+<p><strong>Q:</strong> Another sanity check: without computing anything,
+as <span class="math inline">\(p\)</span> increases, should the expected
+value increase or decrease?</p>
 </blockquote>
-<p>Let’s verify that the mean of a standard normal <span class="math inline">\(Z_{0,1}\)</span> is 0. The expected value is given by</p>
+<p>Let’s verify that the mean of a standard normal <span
+class="math inline">\(Z_{0,1}\)</span> is 0. The expected value is given
+by</p>
 <p><span class="math display">\[\begin{equation}
-\mathbb E[Z(0,1)] = \int_{-\infty}^\infty x\frac{1}{\sqrt{2\pi}}e^{-x^2/2}
+\mathbb E[Z(0,1)] = \int_{-\infty}^\infty
+x\frac{1}{\sqrt{2\pi}}e^{-x^2/2}
 \end{equation}\]</span></p>
 <blockquote>
-<p><strong>Q:</strong> This integral looks pretty awful, but there are at least two quick ways to show that the integral is zero. What are they?</p>
+<p><strong>Q:</strong> This integral looks pretty awful, but there are
+at least two quick ways to show that the integral is zero. What are
+they?</p>
 </blockquote>
-<p>Without knowing how to compute the integral, we can still show this numerically: (iii) Verify that the normal variable <span class="math inline">\(Z_{0,1}\)</span> indeed has a mean of 0.</p>
+<p>Even without knowing how to compute the integral, we can still show
+that it’s at least very close to zero via sampling:</p>
 <pre class="r"><code>numsamps = 10000
 
 samps = rnorm(numsamps, 0,1)
 
 mean(samps)</code></pre>
-<pre><code>## [1] 0.01025896</code></pre>
+<pre><code>## [1] 0.002710268</code></pre>
 </div>
 <div id="the-standard-deviation" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> The standard deviation</h1>
-<p>On average, how far away is a sample <span class="math inline">\(X\)</span> away from its mean? This is what the variance measures. Formally</p>
+<h1><span class="header-section-number">2</span> The standard
+deviation</h1>
+<p>On average, how far away is a sample <span
+class="math inline">\(X\)</span> away from its mean? This is what the
+variance measures. Formally</p>
 <p><span class="math display">\[\begin{equation}
 \mathrm{Var}(X) = \mathbb{E}[(X-\mathbb{E}[X])^2]
 \end{equation}\]</span></p>
-<p>Formulas abound…we won’t get into them (if you take probability, on the other hand…). The main observation is that <span class="math inline">\(\mathrm{Var}(X)\)</span> is an expected value of the squared distance from the mean value to a sample of <span class="math inline">\(X\)</span>.</p>
+<p>Formulas abound…we won’t get into them (if you take probability, on
+the other hand…). The main observation is that <span
+class="math inline">\(\mathrm{Var}(X)\)</span> is an expected value of
+the squared distance from the mean value to a sample of <span
+class="math inline">\(X\)</span>.</p>
 <blockquote>
-<p><strong>Q:</strong> Think of an extremely boring case of where <span class="math inline">\(X = 17\)</span>. No randomness at all. Every time you sample, you get 17. From the definitions above, compute <span class="math inline">\(\mathbb E[X]\)</span> and <span class="math inline">\(\mathrm{Var}(X)\)</span> and the explain why your answers are reasonable.</p>
+<p><strong>Q:</strong> Think of an extremely boring case of where <span
+class="math inline">\(X = 17\)</span>. No randomness at all. Every time
+you sample, you get 17. From the definitions above, compute <span
+class="math inline">\(\mathbb E[X]\)</span> and <span
+class="math inline">\(\mathrm{Var}(X)\)</span> and the explain why your
+answers are reasonable.</p>
 </blockquote>
-<p>The standard deviation is simply given by <span class="math display">\[\begin{equation}
+<p>The standard deviation is simply given by <span
+class="math display">\[\begin{equation}
 \sigma_{X} = \sqrt{\mathrm{Var}(X)}
 \end{equation}\]</span></p>
-<p>The upshot for using the standard deviation is that <span class="math inline">\(\sigma_X\)</span> has the same <em>units</em> as <span class="math inline">\(X\)</span> (if <span class="math inline">\(X\)</span> is measured in inches, then so is <span class="math inline">\(\sigma_X\)</span>.)</p>
-<p>We will be using the <TT>sd</TT> function to compute the sample standard deviation of a finite collection of samples. The formula is quite ugly, but it’s easy to find the definition in a textbook or online. Again, we’re avoiding the weeds here (for the millionth time, take probability and statistics!)</p>
+<p>The upshot for using the standard deviation is that <span
+class="math inline">\(\sigma_X\)</span> has the same <em>units</em> as
+<span class="math inline">\(X\)</span> (if <span
+class="math inline">\(X\)</span> is measured in inches, then so is <span
+class="math inline">\(\sigma_X\)</span>.)</p>
+<p>We will be using the <TT>sd</TT> function to compute the sample
+standard deviation of a finite collection of samples. The formula is
+quite ugly, but it’s easy to find the definition in a textbook or
+online. Again, we’re avoiding the weeds here (for the millionth time,
+take probability and statistics!)</p>
 <p>Let’s compute some sample standard deviations:</p>
 <ol style="list-style-type: decimal">
 <li><em>Standard Normal</em></li>
@@ -485,7 +576,7 @@ mean(samps)</code></pre>
 samps = rnorm(numsamps, 0,1)
 
 sd(samps)</code></pre>
-<pre><code>## [1] 0.9819466</code></pre>
+<pre><code>## [1] 1.001845</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li><em>Geometric</em></li>
 </ol>
@@ -495,7 +586,7 @@ p = .5
 samps = rgeom(numsamps, p)
 
 sd(samps)</code></pre>
-<pre><code>## [1] 1.424213</code></pre>
+<pre><code>## [1] 1.401472</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li><em>Uniform</em></li>
 </ol>
@@ -506,75 +597,140 @@ b = 6
 samps = runif(numsamps, a,b)
 
 sd(samps)</code></pre>
-<pre><code>## [1] 0.5758384</code></pre>
+<pre><code>## [1] 0.5806143</code></pre>
 <blockquote>
-<p><strong>Q:</strong> What happens to the standard deviation of <span class="math inline">\(Z_{0,b}\)</span> as <span class="math inline">\(b\rightarrow \infty\)</span>? What about <span class="math inline">\(Z_{a,1}\)</span> as <span class="math inline">\(a\rightarrow \infty\)</span>? What about <span class="math inline">\(G_p\)</span> as <span class="math inline">\(p\rightarrow 0\)</span>? <span class="math inline">\(p \rightarrow 1\)</span>?</p>
+<p><strong>Q:</strong> What happens to the standard deviation of <span
+class="math inline">\(Z_{0,b}\)</span> as <span
+class="math inline">\(b\rightarrow \infty\)</span>? What about <span
+class="math inline">\(Z_{a,1}\)</span> as <span
+class="math inline">\(a\rightarrow \infty\)</span>? What about <span
+class="math inline">\(G_p\)</span> as <span
+class="math inline">\(p\rightarrow 0\)</span>? <span
+class="math inline">\(p \rightarrow 1\)</span>?</p>
 </blockquote>
 </div>
-<div id="big-theorem-1-the-law-of-large-numbers" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Big Theorem 1: the law of large numbers</h1>
-<p>The law of large numbers is a very formal way of saying “It all comes out in the wash.” Sampling a random variable many times will typically generate a few odd looking individual samples. But with mathematical certainty, there is a 100% probability that if we keep sampling, then we are guaranteed that sample means will converge to the expected value (if there <em>is</em> an expected value).</p>
-<div id="law-of-large-numbers-with-coin-flips" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> Law of large numbers with coin flips</h2>
-<p>Let <span class="math inline">\(N&gt;0\)</span> be a large integer, and <span class="math inline">\(B_{.5}^1, B_{.5}^2, \dots, B_{.5}^{N}\)</span> a collection of <span class="math inline">\(N\)</span> Bernoulli random variables with <span class="math inline">\(p = 1/2.\)</span> We also need to assume these random variables are <strong>independent</strong>, meaning that the result of one doesn’t affect the result of another (…there’s a rigorous definition of this). So, if there’s a 50% chance that each <span class="math inline">\(B_{.5}^i\)</span> is equal to 1, and there’s a 50% chance that it’s equal to 0, then we should expect that</p>
+<div id="big-theorem-1-the-law-of-large-numbers" class="section level1"
+number="3">
+<h1><span class="header-section-number">3</span> Big Theorem 1: the law
+of large numbers</h1>
+<p>The law of large numbers is a very formal way of saying “It all comes
+out in the wash.” Sampling a random variable many times will typically
+generate a few odd looking individual samples. But with mathematical
+certainty, there is a 100% probability that if we keep sampling, then we
+are guaranteed that sample means will converge to the expected value (if
+there <em>is</em> an expected value).</p>
+<div id="law-of-large-numbers-with-coin-flips" class="section level2"
+number="3.1">
+<h2><span class="header-section-number">3.1</span> Law of large numbers
+with coin flips</h2>
+<p>Let <span class="math inline">\(N&gt;0\)</span> be a large integer,
+and <span class="math inline">\(B_{.5}^1, B_{.5}^2, \dots,
+B_{.5}^{N}\)</span> a collection of <span
+class="math inline">\(N\)</span> Bernoulli random variables with <span
+class="math inline">\(p = 1/2.\)</span> We also need to assume these
+random variables are <strong>independent</strong>, meaning that the
+result of one doesn’t affect the result of another (…there’s a rigorous
+definition of this). So, if there’s a 50% chance that each <span
+class="math inline">\(B_{.5}^i\)</span> is equal to 1, and there’s a 50%
+chance that it’s equal to 0, then we should expect that</p>
 <p><span class="math display">\[\begin{equation}
 \sum_{i = 1}^N B_{.5}^i/N = (B_{.5}^1+\dots, B_{.5}^N)/N \approx \mathbb
 E[B_{.5}] = 1/2
-\end{equation}\]</span> if <span class="math inline">\(N\)</span> is large.</p>
-<p>In general, we will be dealing with iid sample <span class="math inline">\(X_1, \dots, X_N\)</span> (<strong>iid</strong> stands __i__ndenpendent and __i__dentically __d__istributed, meaning each sample is being generated from the same distribution). Here are two versions of the law of large numbers:</p>
-<p>(Weak LLN)<span class="math display">\[ \lim_{n\rightarrow \infty} \mathbb P(|\bar X_n - \mu_X|&gt;\varepsilon)
+\end{equation}\]</span> if <span class="math inline">\(N\)</span> is
+large.</p>
+<p>In general, we will be dealing with iid sample <span
+class="math inline">\(X_1, \dots, X_N\)</span> (<strong>iid</strong>
+stands __i__ndenpendent and __i__dentically __d__istributed, meaning
+each sample is being generated from the same distribution). Here are two
+versions of the law of large numbers:</p>
+<p>(Weak LLN)<span class="math display">\[ \lim_{n\rightarrow \infty}
+\mathbb P(|\bar X_n - \mu_X|&gt;\varepsilon)
 = 0.\]</span></p>
-<p>(Strong LLN) <span class="math display">\[\mathbb P( \lim_{n\rightarrow \infty} \bar X_n =  \mu_X) = 1\]</span></p>
-<p>Notice the location of the limit in each of these expressions. Weak LLN states that sample paths of <span class="math inline">\(\bar X_n\)</span> will increasingly land in an <span class="math inline">\(\varepsilon\)</span>-tube around <span class="math inline">\(\mu_X\)</span>, while strong LLN says that with probability one a sample path with enter the <span class="math inline">\(\varepsilon\)</span>-tube and never leave for all eternity! Given that we’re dealing with random quantities, this is quite the strong statement!</p>
+<p>(Strong LLN) <span class="math display">\[\mathbb P(
+\lim_{n\rightarrow \infty} \bar X_n =  \mu_X) = 1\]</span></p>
+<p>Notice the location of the limit in each of these expressions. Weak
+LLN states that sample paths of <span class="math inline">\(\bar
+X_n\)</span> will increasingly land in an <span
+class="math inline">\(\varepsilon\)</span>-tube around <span
+class="math inline">\(\mu_X\)</span>, while strong LLN says that with
+probability one a sample path with enter the <span
+class="math inline">\(\varepsilon\)</span>-tube and never leave for all
+eternity! Given that we’re dealing with random quantities, this is quite
+the strong statement!</p>
 </div>
 </div>
 <div id="tracking-lln" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> Tracking LLN</h1>
+<h1><span class="header-section-number">4</span> Tracking LLN</h1>
 <pre class="r"><code>#Creating an epsilon jail for coin flips
 
 eps = .01
 
-samps = rbinom(10000, 1, .5)
+samps = rbinom(100000, 1, .5)
 
 Xbar = cumsum(samps)/1:length(samps)
 
-Xbar = data.frame(Xbar)
-Xbar$trial = 1:10000
+Xbar = data.frame(Xbar[100:100000])
+Xbar$trial = 100:100000
 colnames(Xbar) = c(&#39;value&#39;, &#39;trial&#39;)
 
 
 Xbar %&gt;% ggplot() + geom_line(aes(trial,value)) + 
   geom_hline(yintercept = .5 +eps, color = &#39;red&#39;) +
   geom_hline(yintercept = .5 -eps, color = &#39;red&#39;)</code></pre>
-<p><img src="newlab12_files/figure-html/unnamed-chunk-7-1.png" width="672" /> &gt; <strong>Q:</strong> Is this plot demonstrating the weak or strong law of large numbers? What would a plot for the other case look like?</p>
+<p><img src="newlab12_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+&gt; <strong>Q:</strong> Is this plot demonstrating the weak or strong
+law of large numbers? What would a plot for the other case look
+like?</p>
 <ol style="list-style-type: lower-roman">
-<li><p>Generate 10000 samples of <span class="math inline">\(B_{.5}\)</span>.</p></li>
+<li><p>Generate 10000 samples of <span
+class="math inline">\(B_{.5}\)</span>.</p></li>
 <li><p>Plot a bar graph for the proportion of each sample.</p></li>
-<li><p>Write a function that returns <span class="math inline">\(S_N\)</span> for <span class="math inline">\(N \ge 1\)</span></p></li>
-<li><p>Plot a line graph the on the x-axis is <span class="math inline">\(N\)</span> and the y-axis is <span class="math inline">\(S_N\)</span>. Report on what you find.</p></li>
+<li><p>Write a function that returns <span
+class="math inline">\(S_N\)</span> for <span class="math inline">\(N \ge
+1\)</span></p></li>
+<li><p>Plot a line graph the on the x-axis is <span
+class="math inline">\(N\)</span> and the y-axis is <span
+class="math inline">\(S_N\)</span>. Report on what you find.</p></li>
 </ol>
 </div>
-<div id="the-cauchy-distribution-ruining-it-for-everybody" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> The Cauchy distribution: ruining it for everybody</h1>
-<p>For this exercise, we simulate the royal pain in the neck known as the Cauchy random variable <span class="math inline">\(C\)</span>. It has a PDF of</p>
+<div id="the-cauchy-distribution-ruining-it-for-everybody"
+class="section level1" number="5">
+<h1><span class="header-section-number">5</span> The Cauchy
+distribution: ruining it for everybody</h1>
+<p>For this exercise, we simulate the royal pain in the neck known as
+the Cauchy random variable <span class="math inline">\(C\)</span>. It
+has a PDF of</p>
 <p><span class="math display">\[\begin{equation}
 f(x) = \frac{1}{\pi} \frac{1}{1+x^2}
 \end{equation}\]</span></p>
-<p>You can generate a Cauchy random variable by dividing two independent <span class="math inline">\(Z_{0,1}\)</span> normal random variables. In probability speak,</p>
+<p>You can generate a Cauchy random variable by dividing two independent
+<span class="math inline">\(Z_{0,1}\)</span> normal random variables. In
+probability speak,</p>
 <p><span class="math display">\[\begin{equation}
 C \sim Z^1_{0,1}/Z^2_{0,1}
 \end{equation}\]</span></p>
-<p>The Cauchy <span class="math inline">\(C\)</span> random variable is a problem child. It’s a continuous random variable defined on whole line with a pdf of <span class="math display">\[\begin{equation}
+<p>The Cauchy <span class="math inline">\(C\)</span> random variable is
+a problem child. It’s a continuous random variable defined on whole line
+with a pdf of <span class="math display">\[\begin{equation}
 f(x) = \frac{1}{\pi} \frac{1}{1+x^2}
 \end{equation}\]</span></p>
 <blockquote>
-<p><strong>Q:</strong> What is the integral corresponding to the expected value? Show that the integral doesn’t exist!</p>
+<p><strong>Q:</strong> What is the integral corresponding to the
+expected value? Show that the integral doesn’t exist!</p>
 </blockquote>
-<p>If <span class="math inline">\(\mathbb E[C]\)</span> doesn’t exist, then the law of large numbers doesn’t apply. This means that we’re lost, in general, with regards to what happens to sample means. In terms of the <span class="math inline">\(\epsilon\)</span>-prison, the Cauchy distribution is able to make a jail break:</p>
-<p>Despite being so unruly, it’s not hard to generate Cauchy random variables. One way is to simply divide two standard normals <span class="math inline">\(Z_1, Z_2\)</span>. In probability speak, <span class="math display">\[\begin{equation}
+<p>If <span class="math inline">\(\mathbb E[C]\)</span> doesn’t exist,
+then the law of large numbers doesn’t apply. This means that we’re lost,
+in general, with regards to what happens to sample means. In terms of
+the <span class="math inline">\(\epsilon\)</span>-prison, the Cauchy
+distribution is able to make a jail break:</p>
+<p>Despite being so unruly, it’s not hard to generate Cauchy random
+variables. One way is to simply divide two standard normals <span
+class="math inline">\(Z_1, Z_2\)</span>. In probability speak, <span
+class="math display">\[\begin{equation}
 C \sim Z^1_{0,1}/Z^2_{0,1}
 \end{equation}\]</span></p>
-<p>Let’s repeat the same experiment that we just did with the normal.</p>
+<p>Let’s repeat the same experiment that we just did with the
+normal.</p>
 <pre class="r"><code>runs = 100000
 
 
@@ -583,29 +739,69 @@ eps = .01
 samps = rnorm(runs, 0, 1)/rnorm(runs, 0, 1)
 
 
-trials = 1:runs
+trials = 100:runs
 Xbar = cumsum(samps)/1:length(samps)
+Xbar = Xbar[100:runs]
 
 C = data.frame(trials, Xbar)
 
 C %&gt;% ggplot() + geom_line(aes(trials, Xbar))</code></pre>
 <p><img src="newlab12_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>You can see here the result of <strong>fat tails</strong>. A pdf for a Gaussian collapses to zero incredibly quickly, at a rate of <span class="math inline">\(e^{-x^2}\)</span>. Cauchy pdfs, on the other hand, really take their time, decaying at a rate of <span class="math inline">\(1/x^2\)</span>. Since the tails of a Cauchy are so fat, it isn’t insanely rare to draw a sample with an incredibly large magnitude. In the graph above, this corresponds to the big jumps. After each big jump, the sample mean tends to drift toward zero, but inevitably, a devastatingly large sample will be drawn, and ruin everything.</p>
+<p>You can see here the result of <strong>fat tails</strong>. A pdf for
+a Gaussian collapses to zero incredibly quickly, at a rate of <span
+class="math inline">\(e^{-x^2}\)</span>. Cauchy pdfs, on the other hand,
+really take their time, decaying at a rate of <span
+class="math inline">\(1/x^2\)</span>. Since the tails of a Cauchy are so
+fat, it isn’t insanely rare to draw a sample with an incredibly large
+magnitude. In the graph above, this corresponds to the big jumps. After
+each big jump, the sample mean tends to drift toward zero, but
+inevitably, a devastatingly large sample will be drawn, and ruin
+everything.</p>
 </div>
 <div id="the-central-limit-theorem" class="section level1" number="6">
-<h1 number="6"><span class="header-section-number">6</span> The central limit theorem</h1>
-<p>Perhaps the crown jewel of probability is the <strong>central limit theorem</strong>. This theorem shows that the normal distribution is, in a sense, <em>universal</em>. This theorem states that for (almost) every random variable, we can take average in the right way and obtain the distribution for <span class="math inline">\(Z_{0,1}\)</span>. That’s quite crazy, since our original distribution can be completely different from a normal. Its pdf can be arbitrarily weird looking. Heck, it could even be a discrete distribution!</p>
-<p>So what’s the correct way to take averages? Note that if I take averages like in the last section, <span class="math display">\[\begin{equation}
+<h1><span class="header-section-number">6</span> The central limit
+theorem</h1>
+<p>Perhaps the crown jewel of probability is the <strong>central limit
+theorem</strong>. This theorem shows that the normal distribution is, in
+a sense, <em>universal</em>. This theorem states that for (almost) every
+random variable, we can take average in the right way and obtain the
+distribution for <span class="math inline">\(Z_{0,1}\)</span>. That’s
+quite crazy, since our original distribution can be completely different
+from a normal. Its pdf can be arbitrarily weird looking. Heck, it could
+even be a discrete distribution!</p>
+<p>So what’s the correct way to take averages? Note that if I take
+averages like in the last section, <span
+class="math display">\[\begin{equation}
 \bar X_N = (X_1 +\dots + X_N)/N \rightarrow \mathbb E[X].
-\end{equation}\]</span> This is the law of large numbers. As wonderful as that theorem is, it’s not what we’re looking for. The expected value is a deterministic number, but we want to scale things so that the sum that converges to something random. The central limit theorem states for <span class="math inline">\(S_n = X_1 +\dots +X_n\)</span>, then the correct scaling is</p>
+\end{equation}\]</span> This is the law of large numbers. As wonderful
+as that theorem is, it’s not what we’re looking for. The expected value
+is a deterministic number, but we want to scale things so that the sum
+that converges to something random. The central limit theorem states for
+<span class="math inline">\(S_n = X_1 +\dots +X_n\)</span>, then the
+correct scaling is</p>
 <p><span class="math display">\[\begin{equation}
- \frac{ S_n-n \mathbb E[X]}{\sqrt{n\mathrm{Var}(X)}} \rightarrow N(0,1)
- \end{equation}\]</span></p>
-<p><em>in law</em> (meaning the histograms of the left and right side ought to look the same for large <span class="math inline">\(n\)</span>).</p>
-<div id="generating-samples-and-samples-of-samples" class="section level2" number="6.1">
-<h2 number="6.1"><span class="header-section-number">6.1</span> Generating samples and samples of samples</h2>
-<p>We’ll be assuming here that we can generate as much data as we need. The main theme in statistics is scarcity: in reality this is never the case.</p>
-<p>Here’s a run through for creating a visual which shows the central limit theorem. There’s some subtlety here: we are looking at the random variable <span class="math display">\[T = \frac{ S_n-n \mathbb E[X]}{\sqrt{n\mathrm{Var}(X)}}\]</span>. To generate a single sample sample of this, we need to generate <span class="math inline">\(n\)</span> iid samples <span class="math inline">\(X_1, X_2, \dots, X_n\)</span>. Thus, to get a <em>histogram</em>, we sample <span class="math inline">\(T_1, \dots, T_N\)</span> for some other large number <span class="math inline">\(N\)</span>.</p>
+\frac{ S_n-n \mathbb E[X]}{\sqrt{n\mathrm{Var}(X)}} \rightarrow N(0,1)
+\end{equation}\]</span></p>
+<p><em>in law</em> (meaning the histograms of the left and right side
+ought to look the same for large <span
+class="math inline">\(n\)</span>).</p>
+<div id="generating-samples-and-samples-of-samples"
+class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Generating samples
+and samples of samples</h2>
+<p>We’ll be assuming here that we can generate as much data as we need.
+The main theme in statistics is scarcity: in reality this is never the
+case.</p>
+<p>Here’s a run through for creating a visual which shows the central
+limit theorem. There’s some subtlety here: we are looking at the random
+variable <span class="math display">\[T = \frac{ S_n-n \mathbb
+E[X]}{\sqrt{n\mathrm{Var}(X)}}\]</span>. To generate a single sample
+sample of this, we need to generate <span
+class="math inline">\(n\)</span> iid samples <span
+class="math inline">\(X_1, X_2, \dots, X_n\)</span>. Thus, to get a
+<em>histogram</em>, we sample <span class="math inline">\(T_1, \dots,
+T_N\)</span> for some other large number <span
+class="math inline">\(N\)</span>.</p>
 <pre class="r"><code>experiments = 10000
 
 flips = 1000
@@ -646,94 +842,163 @@ CLT %&gt;% ggplot()+ geom_density(aes(Ber), fill = &quot;red&quot;, alpha = 0.5,
 ## Warning: Ignoring unknown parameters: bins</code></pre>
 <p><img src="newlab12_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p><span class="math display">\[\begin{equation}
-(S_n -  n \mathbb E[X_1])/(\sqrt {n}\sigma_X) \rightarrow Z_{0,1} \quad \hbox{as
+(S_n -  n \mathbb E[X_1])/(\sqrt {n}\sigma_X) \rightarrow Z_{0,1} \quad
+\hbox{as
 } n\rightarrow \infty.
 \end{equation}\]</span></p>
-<p>There’s a lot of stuff flying around here. To put it in less formal terms:</p>
+<p>To put the CLT in less formal terms:</p>
 <ol style="list-style-type: decimal">
 <li>Take any random variable <span class="math inline">\(X\)</span></li>
-<li>Sample it many, many times, and take its sum. Call it <span class="math inline">\(S_n\)</span></li>
-<li>Chop off the mean of <span class="math inline">\(S_n\)</span>, and divide by the standard deviation of <span class="math inline">\(S_n\)</span>.</li>
-<li>The variable you’re left with should be pretty close to a <span class="math inline">\(Z_{0,1}\)</span> random variable.</li>
+<li>Sample it many, many times, and take its sum. Call it <span
+class="math inline">\(S_n\)</span></li>
+<li>Chop off the mean of <span class="math inline">\(S_n\)</span>, and
+divide by the standard deviation of <span
+class="math inline">\(S_n\)</span>.</li>
+<li>The variable you’re left with should be pretty close to a <span
+class="math inline">\(Z_{0,1}\)</span> random variable.</li>
 </ol>
-<p>I mean, that’s nice and all, but what does this have to do with <em>data science</em>? Isn’t this a data science class? Well, the point is that if we want to make statements about sample means, then we might deal with things like confidence intervals that use the central limit theorem in a very important way. We’ll visit this shorty.</p>
+<p>I mean, that’s nice and all, but what does this have to do with
+<em>data science</em>? Isn’t this a data science class? Well, the point
+is that if we want to make statements about sample means, then we might
+deal with things like confidence intervals that use the central limit
+theorem in a very important way. We’ll visit this shorty.</p>
 </div>
 </div>
 <div id="the-cdf" class="section level1" number="7">
-<h1 number="7"><span class="header-section-number">7</span> The CDF</h1>
-<p>One last type of object from probability that we’ll cover is the <strong>cumulative distribution function</strong>, or <strong>CDF</strong>. Both discrete and continuous random variables have CDFs. The CDF <span class="math inline">\(F_X(x)\)</span> for a random variable <span class="math inline">\(X\)</span> is defined by <span class="math display">\[\begin{equation}
+<h1><span class="header-section-number">7</span> The CDF</h1>
+<p>One last type of object from probability that we’ll cover is the
+<strong>cumulative distribution function</strong>, or
+<strong>CDF</strong>. Both discrete and continuous random variables have
+CDFs. The CDF <span class="math inline">\(F_X(x)\)</span> for a random
+variable <span class="math inline">\(X\)</span> is defined by <span
+class="math display">\[\begin{equation}
 F_X(x) = \mathbb P(X \le x).
 \end{equation}\]</span></p>
 <blockquote>
-<p><strong>Q:</strong> From this definition, for any <span class="math inline">\(X\)</span>, what should <span class="math inline">\(F_X(x)\)</span> be as <span class="math inline">\(x \rightarrow -\infty\)</span> and <span class="math inline">\(x \rightarrow \infty\)</span>?</p>
+<p><strong>Q:</strong> From this definition, for any <span
+class="math inline">\(X\)</span>, what should <span
+class="math inline">\(F_X(x)\)</span> be as <span
+class="math inline">\(x \rightarrow -\infty\)</span> and <span
+class="math inline">\(x \rightarrow \infty\)</span>?</p>
 </blockquote>
-<p>For a dataset with values <span class="math inline">\(X_1, X_2, \dots, X_N\)</span>, there is also the <strong>empirical cumulative distribution function</strong> (eCDF), given by <span class="math display">\[\begin{equation}
+<p>For a dataset with values <span class="math inline">\(X_1, X_2,
+\dots, X_N\)</span>, there is also the <strong>empirical cumulative
+distribution function</strong> (eCDF), given by <span
+class="math display">\[\begin{equation}
 \hat F_N(x) = \#\{X_i \le  x\}/N
 \end{equation}\]</span></p>
-<p>In words, this is fraction of <span class="math inline">\(X_i\)</span> which are at most <span class="math inline">\(x\)</span>.</p>
-<div id="the-glivenko-cantelli-theorem" class="section level2" number="7.1">
-<h2 number="7.1"><span class="header-section-number">7.1</span> The Glivenko Cantelli theorem</h2>
-<p>The <strong>Glivenko Cantelli theorem</strong> shows that the eCDF approaches the CDF as the number of samples becomes large:</p>
+<p>In words, this is fraction of <span
+class="math inline">\(X_i\)</span> which are at most <span
+class="math inline">\(x\)</span>.</p>
+<div id="the-glivenko-cantelli-theorem" class="section level2"
+number="7.1">
+<h2><span class="header-section-number">7.1</span> The Glivenko Cantelli
+theorem</h2>
+<p>The <strong>Glivenko Cantelli theorem</strong> shows that the eCDF
+approaches the CDF as the number of samples becomes large:</p>
 <p><span class="math display">\[\begin{equation}
-\sup_{x} |F(x)-\hat F_N(x)| \rightarrow 0, \quad \hbox{ as } N \rightarrow \infty
+\sup_{x} |F(x)-\hat F_N(x)| \rightarrow 0, \quad \hbox{ as } N
+\rightarrow \infty
 \end{equation}\]</span></p>
-<p>Some comments are in order for this equation. It’s okay to think of the expression <span class="math inline">\(\sup\)</span> (read “supremum”) as a maximum. What are we taking a maximum of? Well, the biggest absolute difference between the two functions <span class="math inline">\(F(x)\)</span> and <span class="math inline">\(\hat F(x)\)</span>. This quantity above is called the <strong>Kolmogorov-Smirnov</strong> distance between <span class="math inline">\(F\)</span> and <span class="math inline">\(\hat F_N\)</span>.</p>
-<p>What should the CDF of the Bernoulli random variable <span class="math inline">\(B_{.5}\)</span> look like?</p>
-<p>Let’s generate 10000 samples of a Uniform(2,4) random variable. Plot the empirical CDF with the function.</p>
+<p>Some comments are in order for this equation. It’s okay to think of
+the expression <span class="math inline">\(\sup\)</span> (read
+“supremum”) as a maximum. What are we taking a maximum of? Well, the
+biggest absolute difference between the two functions <span
+class="math inline">\(F(x)\)</span> and <span class="math inline">\(\hat
+F(x)\)</span>. This quantity above is called the
+<strong>Kolmogorov-Smirnov</strong> distance between <span
+class="math inline">\(F\)</span> and <span class="math inline">\(\hat
+F_N\)</span>.</p>
+<p>What should the CDF of the Bernoulli random variable <span
+class="math inline">\(B_{.5}\)</span> look like?</p>
+<p>Let’s generate 10000 samples of a Uniform(2,4) random variable. Plot
+the empirical CDF with the function.</p>
 <pre class="r"><code>samps = runif(200, 2, 4)
 
 ourbincdf = ecdf(samps)
 
 plot(ourbincdf)</code></pre>
 <p><img src="newlab12_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<pre class="r"><code>plot(ecdf(samps), xlim = c(-.2,1.2), col = &#39;red&#39;)</code></pre>
-<p><img src="newlab12_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <pre class="r"><code>#Compare to cdf of Bernoulli (it&#39;s vectorized!)
 
 graphs = data.frame(ecdf = ourbincdf(200:400/100), cdf = punif( 200:400/100, 2,  4), xcoord = 200:400/100)
 
 #Let&#39;s just use the alpha argument
 
-graphs %&gt;% ggplot(aes(x = xcoord))+geom_line(aes(y = cdf), color = &quot;red&quot;, alpha = .5)+
-  geom_line(aes(y = ecdf),  color = &quot;blue&quot;,  alpha = .5)</code></pre>
-<p><img src="newlab12_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
-<p>This result holds in general: If I sample many times from some distribution, and take the empirical CDF, it should look very close to the theoretical CDF. This is the <strong>Glivenko Cantelli</strong> theorem.</p>
+graphs %&gt;% ggplot(aes(x = xcoord))+geom_line(aes(y = cdf), color = &quot;red&quot;, alpha = .5)+ geom_line(aes(y = ecdf),  color = &quot;blue&quot;,  alpha = .5)</code></pre>
+<p><img src="newlab12_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>This result holds in general: If I sample many times from some
+distribution, and take the empirical CDF, it should look very close to
+the theoretical CDF. This is the <strong>Glivenko Cantelli</strong>
+theorem.</p>
 <blockquote>
-<p><strong>Q:</strong> What the approximate KS distance between the cdf and ecdf here?</p>
+<p><strong>Q:</strong> What the approximate KS distance between the cdf
+and ecdf here?</p>
 </blockquote>
 </div>
 </div>
-<div id="the-cdf-and-quantiles-in-practice" class="section level1" number="8">
-<h1 number="8"><span class="header-section-number">8</span> The cdf and quantiles in practice</h1>
-<p>eCDFs can be quite practical when using actual datasets. In this example We will be using the dataset <em>baseball</em> the dataset, which gives positions and physical characteristics of different baseball players.</p>
-<p>Let’s ask the following question: What percentage of baseball players are at least 6 feet tall?</p>
-<p>Here is the eCDF of heights for different baseball players, along with a vertical line denoting the 6 foot mark:</p>
+<div id="the-cdf-and-quantiles-in-practice" class="section level1"
+number="8">
+<h1><span class="header-section-number">8</span> The cdf and quantiles
+in practice</h1>
+<p>eCDFs can be quite practical when using actual datasets. In this
+example We will be using the dataset <em>baseball</em> the dataset,
+which gives positions and physical characteristics of different baseball
+players.</p>
+<p>Let’s ask the following question: What percentage of baseball players
+are at least 6 feet tall?</p>
+<p>Here is the eCDF of heights for different baseball players, along
+with a vertical line denoting the 6 foot mark:</p>
 <pre class="r"><code>empcdfheight = ecdf(baseball$Height.inches)
 
 baseball %&gt;% ggplot(aes(Height.inches.))+ stat_ecdf()+
   geom_vline(xintercept = 72, color = &#39;red&#39;)</code></pre>
 <p><img src="newlab12_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <blockquote>
-<p><strong>Q:</strong> Is the percentage of baseball players over 6 feet more or less than 75%? Be careful! Use the definition of eCDF, or just invoke the fact that CDFs and eCDFs are cadlag (meaning continuous from the right, and having a limit from the left).</p>
+<p><strong>Q:</strong> Is the percentage of baseball players over 6 feet
+more or less than 75%? Be careful! Use the definition of eCDF, or just
+invoke the fact that CDFs and eCDFs are cadlag (meaning continuous from
+the right, and having a limit from the left).</p>
 </blockquote>
-<p>As you can see, having an eCDF enables the reader to answer the question “What percentage of players are over/under <span class="math inline">\(x\)</span> inches tall?” for any value of <span class="math inline">\(x\)</span>.</p>
-<p>You can in fact just use the <TT>ecdf</TT> function to answer this question.</p>
+<p>As you can see, having an eCDF enables the reader to answer the
+question “What percentage of players are over/under <span
+class="math inline">\(x\)</span> inches tall?” for any value of <span
+class="math inline">\(x\)</span>.</p>
+<p>You can in fact just use the <TT>ecdf</TT> function to answer this
+question.</p>
 <pre class="r"><code>empcdfheight = ecdf(baseball$Height.inches)
 
 empcdfheight(72)</code></pre>
 <pre><code>## [1] 0.3104449</code></pre>
 <blockquote>
-<p><strong>Q:</strong> What percentage of players are under 75 inches tall? What percentage are at least 70 inches tall?</p>
+<p><strong>Q:</strong> What percentage of players are under 75 inches
+tall? What percentage are at least 70 inches tall?</p>
 </blockquote>
-<p>We can further check out individual ecdfs under different positions:</p>
+<p>We can further check out individual ecdfs under different
+positions:</p>
 <pre class="r"><code>baseball %&gt;%  filter(Position %in% c(&#39; First Baseman&#39;, &#39; Outfielder&#39;)) %&gt;% 
   ggplot(aes(Height.inches., color = Position))+
   stat_ecdf()</code></pre>
 <p><img src="newlab12_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <blockquote>
-<p><strong>Q:</strong> The eCDF for Outfielders is heigher than the eCDF for First Basemen. What does this tell you about comparing heights between the two positions? In fancy probability speak, if the CDF of X is greater than the CDF of Y, we say that Y is <em>stochastically dominant</em> to X.</p>
+<p><strong>Q:</strong> The eCDF for Outfielders is heigher than the eCDF
+for First Basemen. What does this tell you about comparing heights
+between the two positions? In fancy probability speak, if the CDF of X
+is greater than the CDF of Y, we say that Y is <em>stochastically
+dominant</em> to X.</p>
 </blockquote>
-<p>We can also switch inputs and outputs and ask the question “What value of <span class="math inline">\(x\)</span> is in the <span class="math inline">\(p\)</span>th <em>percentile</em> of the dataset”. This kind of question comes up all the time in standardized testing: “What score do I need to achieve to be at least as good as 90% of all test takers?”. The answer to this question is known as the <strong>quantile</strong>. It should be seen as the inverse function of the CDF (or eCDF), although there are a few technical issues when trying to take the inverse of a function which has piecewise constant parts. The quantile is given by the R function, <TT>quantile</TT> (surprise!). The first argument takes in the data and the second corresponds to the percentile.</p>
+<p>We can also switch inputs and outputs and ask the question “What
+value of <span class="math inline">\(x\)</span> is in the <span
+class="math inline">\(p\)</span>th <em>percentile</em> of the dataset”.
+This kind of question comes up all the time in standardized testing:
+“What score do I need to achieve to be at least as good as 90% of all
+test takers?”. The answer to this question is known as the
+<strong>quantile</strong>. It should be seen as the inverse function of
+the CDF (or eCDF), although there are a few technical issues when trying
+to take the inverse of a function which has piecewise constant parts.
+The quantile is given by the R function, <TT>quantile</TT> (surprise!).
+The first argument takes in the data and the second corresponds to the
+percentile.</p>
 <pre class="r"><code>quantile(baseball$Height.inches., .1)</code></pre>
 <pre><code>## 10% 
 ##  71</code></pre>
@@ -745,23 +1010,41 @@ empcdfheight(72)</code></pre>
 <pre class="r"><code>empcdfheight(77)</code></pre>
 <pre><code>## [1] 0.950677</code></pre>
 <blockquote>
-<p><strong>Q:</strong> Hold on! Shouldn’t these values be equal? What happened? Hint: try plugging in values of the empirical cdf at 70.9 and 76.9.</p>
+<p><strong>Q:</strong> Hold on! Shouldn’t these values be equal? What
+happened? Hint: try plugging in values of the empirical cdf at 70.9 and
+76.9.</p>
 </blockquote>
 <p>#A universal random variable generator</p>
-<p>Besides their use in ranking, quantiles have an incredibly practical purpose. Given a random variable <span class="math inline">\(X\)</span> and a CDF <span class="math inline">\(F_X(x)\)</span>, we can simulate <span class="math inline">\(X\)</span> by using the quantile function <span class="math inline">\(F^{-1}(q)\)</span> and a run of the mill <span class="math inline">\(U(0,1)\)</span> random number generator. For R, this is simply given by the function <TT>runif(1)</TT>.</p>
+<p>Besides their use in ranking, quantiles have an incredibly practical
+purpose. Given a random variable <span class="math inline">\(X\)</span>
+and a CDF <span class="math inline">\(F_X(x)\)</span>, we can simulate
+<span class="math inline">\(X\)</span> by using the quantile function
+<span class="math inline">\(F^{-1}(q)\)</span> and a run of the mill
+<span class="math inline">\(U(0,1)\)</span> random number generator. For
+R, this is simply given by the function <TT>runif(1)</TT>.</p>
 <p>How does it work? Well, the theorem is</p>
-<p>This theorem states that I can just compose the quantile with a uniform random 1 variable to generate random samples of <span class="math inline">\(X\)</span>.</p>
-<p><em>Proof of claim</em>: (handwavy) We show that <span class="math inline">\(F_X^{-1}(U)\)</span> and <span class="math inline">\(X\)</span> have the same CDFs. Let <span class="math inline">\(F_Y\)</span> be the CDF of <span class="math inline">\(F_X^{-1}(U)\)</span></p>
-<p><span class="math display">\[F_Y(x) = \mathbb P(F_X^{-1}(U) \le x) =  \mathbb P(U \le F_X(x) ) = F_X(x)\]</span></p>
+<p>This theorem states that I can just compose the quantile with a
+uniform random 1 variable to generate random samples of <span
+class="math inline">\(X\)</span>.</p>
+<p><em>Proof of claim</em>: (handwavy) We show that <span
+class="math inline">\(F_X^{-1}(U)\)</span> and <span
+class="math inline">\(X\)</span> have the same CDFs. Let <span
+class="math inline">\(F_Y\)</span> be the CDF of <span
+class="math inline">\(F_X^{-1}(U)\)</span></p>
+<p><span class="math display">\[F_Y(x) = \mathbb P(F_X^{-1}(U) \le x)
+=  \mathbb P(U \le F_X(x) ) = F_X(x)\]</span></p>
 <p>…and we’re done!</p>
 <p>Let’s test this out.</p>
 <ol style="list-style-type: decimal">
-<li>Derive the quantile for the exponential distribution <span class="math inline">\(X_\lambda\)</span> where <span class="math inline">\(\lambda = 3\)</span>.</li>
+<li>Derive the quantile for the exponential distribution <span
+class="math inline">\(X_\lambda\)</span> where <span
+class="math inline">\(\lambda = 3\)</span>.</li>
 </ol>
 <p>The cdf of an exponential RV is</p>
 <p><span class="math display">\[F(x) = 1-e^{-\lambda x}.\]</span></p>
 <p>The inverse of this function is</p>
-<p><span class="math display">\[ F^{-1}(q) = -\log(1-q)/\lambda \]</span></p>
+<p><span class="math display">\[ F^{-1}(q) = -\log(1-q)/\lambda
+\]</span></p>
 <p>Let’s code this up as</p>
 <pre class="r"><code>lambda = 3
 
@@ -778,7 +1061,8 @@ U = runif(samps)
 
 quantsamps = quantexp(U)</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Simulate 10000 samples using the built in R function for exponential random variables.</li>
+<li>Simulate 10000 samples using the built in R function for exponential
+random variables.</li>
 </ol>
 <pre class="r"><code>easysamps = rexp(10000, rate = 3)</code></pre>
 <ol start="4" style="list-style-type: decimal">

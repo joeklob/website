@@ -30,7 +30,8 @@ p
 
 
 ```
-How ugly! We'd like to get x labels cleaned up
+
+How ugly! It's basically impossible to read the intervals on the x-axis. Let's see how we can clean this up.
 
 
 ```{r }
@@ -38,6 +39,7 @@ p+ theme(axis.text.x = element_text(angle = 45, vjust = .5, size = 10))+
   theme(plot.title = element_text(hjust = 0.5))+
   theme(axis.title = element_text(size = 15, color = "blue"))
 ```
+
 Much better!
 
 Now let's use the <TT>geom\_freqpoly</TT> function.  This gives three line graphs.
@@ -81,6 +83,7 @@ theme(plot.title = element_text(hjust = 0.5, size = 8, color = "forest green"))+
 #  scale_color_manual(values=c("#999999", "#E69F00", "#56B4E9"))+
   scale_color_manual(values=c("red", "green", "blue"))
 ```
+
 Just from seeing a visualization of sepal length versus width, we can already see that setosas seem to separate themselves from the other two species.  One can build a crude __classification algorithm__ from this by drawing a line between the two clusters, and guessing that an unlabeled flower is a setosa if it lies below the line, and not a setosa if it lies above the line.  In other words, we're guessing these two classifications are __linearly separable__.  We can see from our plot that versicolor and virginica are not linearly separable, at least under the two variables we are considering.  We may need to consider a different set of variables to successfully separate these two species, or appeal to a different method altogether.  In a later section, we will see that we can successfully differentiate between the two species using the $k$ __-nearest neighbors__ algorithm, a popular technique in machine learning.
 
 

@@ -13,8 +13,8 @@
 
 <title>Data Transformations</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -83,6 +84,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -308,7 +312,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -321,7 +325,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Sections
      
     <span class="caret"></span>
@@ -391,22 +395,67 @@ div.tocify {
 </div>
 
 
-<p>Data science reminds us that life is imperfect. Errors abound. There is error of measurement in a dataset, error in data entry, error in processing data to a workable file, error from the data scientist analyzing the dataset (the course of this class is to reduce this type of error as much as possible), and finally, error in the interpretation of the data analysis from the audience. Carrying a healthy skepticism when dealing with data is always a good idea, and the more you work with data, the more you see the imperfections that seem to invade from every direction. Of course, some errors are completely harmless. Having <em>Heght</em> instead of <em>Height</em> for the name of a variable is certainly a mistake, but the audience <em>knows</em> what you mean. Corrupting the value of an entry, however, is a much worse offense. For a variety of reasons, a data collector could put down something wrong. Some examples of why a bad data entry occurs include `fat fingering’ (just typing in the wrong number), using incorrect units, and lack of interest. To address the last point, imagine being a nurse in 1995 who is told to record height and weight for “the database”. You don’t know what a database is, and you have sick patients to tend to. With that in mind, should we be surprised to find medical datasets with patients having a height of <em>Thursday</em>?</p>
+<p>Data science reminds us that life is imperfect. Errors abound. There
+is error of measurement in a dataset, error in data entry, error in
+processing data to a workable file, error from the data scientist
+analyzing the dataset (the course of this class is to reduce this type
+of error as much as possible), and finally, error in the interpretation
+of the data analysis from the audience. Carrying a healthy skepticism
+when dealing with data is always a good idea, and the more you work with
+data, the more you see the imperfections that seem to invade from every
+direction. Of course, some errors are completely harmless. Having
+<em>Heght</em> instead of <em>Height</em> for the name of a variable is
+certainly a mistake, but the audience <em>knows</em> what you mean.
+Corrupting the value of an entry, however, is a much worse offense. For
+a variety of reasons, a data collector could put down something wrong.
+Some examples of why a bad data entry occurs include “fat fingering”
+(just typing in the wrong number), using incorrect units, and lack of
+interest. To address the last point, imagine being a nurse in 1995 who
+is told to record height and weight for “the database”. You don’t know
+what a database is, and you have sick patients to tend to. With that in
+mind, should we be surprised to find medical datasets with patients
+having a height of <em>Thursday</em>?</p>
 <blockquote>
-<p><strong>Q:</strong> Can you think of at least three other reasons why a datapoint may be corrupted?</p>
+<p><strong>Q:</strong> Can you think of at least three other reasons why
+a datapoint may be corrupted?</p>
 </blockquote>
-<div id="expressing-uncertainty-with-certainty" class="section level2" number="0.1">
-<h2 number="0.1"><span class="header-section-number">0.1</span> Expressing uncertainty with certainty</h2>
-<p>In science, if you are uncertain of something, it’s best to make that fact very clear. Granted, this is easier said than done. Every human wants to be recognized as being knowledgeable. The pressure for a scientist is even greater. Corrupted datasets could mean a ruined study, which could translate to a lost grant or worse. The temptation to fudge data could be very great, and there are many examples of prestigious labs caught red-handed. While we won’t get too into the weeds with ethics, it’s very easy to say the following: when it comes to incorporating false data without making it crystal clear to your audience,</p>
+<div id="expressing-uncertainty-with-certainty" class="section level2"
+number="0.1">
+<h2><span class="header-section-number">0.1</span> Expressing
+uncertainty with certainty</h2>
+<p>In science, if you are uncertain of something, it’s best to make that
+fact very clear. Granted, this is easier said than done. Every human
+wants to be recognized as being knowledgeable. The pressure for a
+scientist is even greater. Corrupted datasets could mean a ruined study,
+which could translate to a lost grant or worse. The temptation to fudge
+data could be very great, and there are many examples of prestigious
+labs caught red-handed. While we won’t get too into the weeds with
+ethics, it’s very easy to say the following: when it comes to
+incorporating false data without making it crystal clear to your
+audience,</p>
 <div style="text-align: center">
 <span style="color: red;"> <font size="15"> Don’t do it. </font> </span>
 </div>
-<p>Alright, alright, enough with the lecturing, let’s get to business. We’ll be working with the <TT>ggplot2</TT> and <TT>dplyr</TT> packages again, so make sure that they are loaded before starting this section.</p>
-<p>We’re also working again with the <TT>PimaIndiansDiabetes</TT> dataset. This time, we are interested in the dataset’s flaws. From previous labs, we learned that this dataset has been registering people with a BMI of zero.</p>
+<p>Alright, alright, enough with the lecturing, let’s get to business.
+We’ll be working with the <TT>ggplot2</TT> and <TT>dplyr</TT> packages
+again, so make sure that they are loaded before starting this
+section.</p>
+<p>We’re also working again with the <TT>PimaIndiansDiabetes</TT>
+dataset. This time, we are interested in the dataset’s flaws. From
+previous labs, we learned that this dataset has been registering people
+with a BMI of zero.</p>
 <pre class="r"><code>ggplot(PimaIndiansDiabetes,aes(x = mass)) + geom_histogram()</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <p><img src="newlab7_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>It is clear that we don’t know the actual BMI of our entries with values of 0. Let’s write a function that converts 0’s (and in general, nonpositive values) to <TT>NA</TT>. The value NA in a dataset is essentially a placeholder for “I don’t know”. Of course, in real life, “I don’t know” could mean many things: e.g. “I didn’t record the value”, “I recorded the value, but it doesn’t make sense”, “The value is censored by a company, government, etc.”, “I’d just flat out rather not tell you because it would make my dataset look bad for whatever reason”, and so on.</p>
+<p>It is clear that we don’t know the actual BMI of our entries with
+values of 0. Let’s write a function that converts 0’s (and in general,
+nonpositive values) to <TT>NA</TT>. The value NA in a dataset is
+essentially a placeholder for “I don’t know”. Of course, in real life,
+“I don’t know” could mean many things: e.g. “I didn’t record the value”,
+“I recorded the value, but it doesn’t make sense”, “The value is
+censored by a company, government, etc.”, “I’d just flat out rather not
+tell you because it would make my dataset look bad for whatever reason”,
+and so on.</p>
 <pre class="r"><code>pos = function(x){
   
   if(x &gt; 0){
@@ -417,9 +466,14 @@ div.tocify {
   }
 }</code></pre>
 </div>
-<div id="an-aside-regarding-working-with-s" class="section level2" number="0.2">
-<h2 number="0.2"><span class="header-section-number">0.2</span> An aside regarding working with ’s</h2>
-<p><TT>NA</TT>’s are like Christmas lights: if one goes out, the whole thing goes out. In other words, if I have an unknown number, I certainly won’t know what it is when it’s divided by two! Here are some examples of <TT>NA</TT>’s performing under popular functions:</p>
+<div id="an-aside-regarding-working-with-s" class="section level2"
+number="0.2">
+<h2><span class="header-section-number">0.2</span> An aside regarding
+working with ’s</h2>
+<p><TT>NA</TT>’s are like Christmas lights: if one goes out, the whole
+thing goes out. In other words, if I have an unknown number, I certainly
+won’t know what it is when it’s divided by two! Here are some examples
+of <TT>NA</TT>’s performing under popular functions:</p>
 <pre class="r"><code>NA + 7</code></pre>
 <pre><code>## [1] NA</code></pre>
 <pre class="r"><code>NA*NA</code></pre>
@@ -435,24 +489,33 @@ div.tocify {
 <pre class="r"><code>max(c(5,4,NA))</code></pre>
 <pre><code>## [1] NA</code></pre>
 <blockquote>
-<p><strong>Q:</strong> The fourth and fifth examples have answers which have generated some controversy. Why is that?</p>
+<p><strong>Q:</strong> The fourth and fifth examples have answers which
+have generated some controversy. Why is that?</p>
 </blockquote>
-<p>If we want to compute things like the mean or the max of a vector restricted to non-<TT>NA</TT> entries, we need to use <TT>na.rm</TT> as an additional argument</p>
+<p>If we want to compute things like the mean or the max of a vector
+restricted to non-<TT>NA</TT> entries, we need to use <TT>na.rm</TT> as
+an additional argument</p>
 <pre class="r"><code>mean(c(5,4,NA), na.rm = TRUE)</code></pre>
 <pre><code>## [1] 4.5</code></pre>
 <pre class="r"><code>max(c(5,4,NA), na.rm = TRUE)</code></pre>
 <pre><code>## [1] 5</code></pre>
 </div>
 <div id="back-to-our-dataset" class="section level2" number="0.3">
-<h2 number="0.3"><span class="header-section-number">0.3</span> Back to our dataset</h2>
-<p>Using our function <TT>pos</TT>, let’s apply it to every element in the <TT>mass</TT> variable</p>
+<h2><span class="header-section-number">0.3</span> Back to our
+dataset</h2>
+<p>Using our function <TT>pos</TT>, let’s apply it to every element in
+the <TT>mass</TT> variable</p>
 <pre class="r"><code>newpima = PimaIndiansDiabetes %&gt;% mutate(posmass = pos(mass))</code></pre>
 <pre><code>## Warning: Problem with `mutate()` input `posmass`.
 ## ℹ the condition has length &gt; 1 and only the first element will be used
 ## ℹ Input `posmass` is `pos(mass)`.</code></pre>
 <pre><code>## Warning in if (x &gt; 0) {: the condition has length &gt; 1 and only the first element
 ## will be used</code></pre>
-<p>We’ve been given a warning: our function has only been applied to the first element! The reason why this is the case is because our function <TT>pos</TT> isn’t <strong>vectorized</strong>, meaning that you can only insert one element into <TT>pos</TT> at a time. There are a few ways around this</p>
+<p>We’ve been given a warning: our function has only been applied to the
+first element! The reason why this is the case is because our function
+<TT>pos</TT> isn’t <strong>vectorized</strong>, meaning that you can
+only insert one element into <TT>pos</TT> at a time. There are a few
+ways around this</p>
 <pre class="r"><code>vecpos = function(x){
   
   return( sapply(x,pos))
@@ -466,10 +529,15 @@ vecpos( c(-1, 3, 0))</code></pre>
 <pre><code>## [1] NA  3 NA</code></pre>
 <p>Let’s try again</p>
 <pre class="r"><code>newpima = PimaIndiansDiabetes %&gt;% mutate(posmass = vecpos(mass))</code></pre>
-<p>Success! Let’s extend our analysis to the entire dataset. If we look at the variables in <TT>PimaIndiansDiabetes</TT>, we note that besides <TT>pregnant</TT> and <TT>diabetes</TT>, every variable should be positive. Just how corrupted is our dataset? There are many ways to specifically ask this question, but here are two extremes:</p>
+<p>Success! Let’s extend our analysis to the entire dataset. If we look
+at the variables in <TT>PimaIndiansDiabetes</TT>, we note that besides
+<TT>pregnant</TT> and <TT>diabetes</TT>, every variable should be
+positive. Just how corrupted is our dataset? There are many ways to
+specifically ask this question, but here are two extremes:</p>
 <ol style="list-style-type: decimal">
 <li>Which patients have at least one corrupted datapoint?</li>
-<li>Which patients have corrupted entries for <em>all</em> datapoints?</li>
+<li>Which patients have corrupted entries for <em>all</em>
+datapoints?</li>
 </ol>
 <p>We’ll need some vector logic to answer these questions.</p>
 <pre class="r"><code>ind1 = which(PimaIndiansDiabetes$pregnant == 0 |
@@ -486,7 +554,12 @@ PimaIndiansDiabetes$glucose == 0 &amp; PimaIndiansDiabetes$pressure ==0 &amp; Pi
 
 length(ind2)/dim(PimaIndiansDiabetes)[1]</code></pre>
 <pre><code>## [1] 0</code></pre>
-<p>Observe the types of operators that we are using. The vertical bars <TT>||</TT> means ‘or’, and ampersands <TT>&amp;&amp;</TT> means ‘and’. For vector quantities, we use single <TT>|</TT> and <TT>&amp;</TT>. Here’s a quick review of <strong>logic tables</strong>, which give values when considering binary logical operators, and an example of what happens when using vector booleans.</p>
+<p>Observe the types of operators that we are using. The vertical bars
+<TT>||</TT> means ‘or’, and ampersands <TT>&amp;&amp;</TT> means ‘and’.
+For vector quantities, we use single <TT>|</TT> and <TT>&amp;</TT>.
+Here’s a quick review of <strong>logic tables</strong>, which give
+values when considering binary logical operators, and an example of what
+happens when using vector booleans.</p>
 <pre class="r"><code>0 || 1</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>1 || 0</code></pre>
@@ -507,11 +580,27 @@ length(ind2)/dim(PimaIndiansDiabetes)[1]</code></pre>
 <pre><code>## [1] FALSE  TRUE</code></pre>
 <pre class="r"><code>c(0,1) | c(1,1)</code></pre>
 <pre><code>## [1] TRUE TRUE</code></pre>
-<p>Also observe that there’s a pretty stark difference between using ‘and’ versus ‘or’! Most patients have a corrupted entry, but there’s not a single patient that has corrupted data for every variable. If you were running a study or trying to build a model, it would be pretty expensive to throw away half of your dataset. On the other hand, it would be a very, very bad idea just to plug in entries that seem correct and then not say anything about it. A happy medium is <strong>data imputation</strong>, in which we try to estimate what type of entry should be included, and then make sure that you make this point crystal clear when explaining your model. We will look at data imputation methods more closely in future labs.</p>
+<p>Also observe that there’s a pretty stark difference between using
+‘and’ versus ‘or’! Most patients have a corrupted entry, but there’s not
+a single patient that has corrupted data for every variable. If you were
+running a study or trying to build a model, it would be pretty expensive
+to throw away half of your dataset. On the other hand, it would be a
+very, very bad idea just to plug in entries that seem correct and then
+not say anything about it. A happy medium is <strong>data
+imputation</strong>, in which we try to estimate what type of entry
+should be included, and then make sure that you make this point crystal
+clear when explaining your model. We will look at data imputation
+methods more closely in future labs.</p>
 </div>
-<div id="data-transformation-picking-flowers-with-the-iris-dataset" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Data Transformation: picking flowers with the iris dataset</h1>
-<p>Let’s take a look at the <TT>iris</TT> dataset, a built-in dataset in R commonly used as an example in <em>clustering algorithms</em>. Near the end of this course, we will revisit <TT>iris</TT> when we look at methods in machine learning. This is also an opportunity to get some practice with the pipe operator.</p>
+<div id="data-transformation-picking-flowers-with-the-iris-dataset"
+class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Data Transformation:
+picking flowers with the iris dataset</h1>
+<p>Let’s take a look at the <TT>iris</TT> dataset, a built-in dataset in
+R commonly used as an example in <em>clustering algorithms</em>. Near
+the end of this course, we will revisit <TT>iris</TT> when we look at
+methods in machine learning. This is also an opportunity to get some
+practice with the pipe operator.</p>
 <p>Here’s a peek of <TT>iris</TT></p>
 <pre class="r"><code>head(iris)</code></pre>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
@@ -521,10 +610,14 @@ length(ind2)/dim(PimaIndiansDiabetes)[1]</code></pre>
 ## 4          4.6         3.1          1.5         0.2  setosa
 ## 5          5.0         3.6          1.4         0.2  setosa
 ## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
-<p>This contains five variables: the length and width for sepal and petal lengths, and the a species classification. The major question asked for classification algorithms is this: give the first four columns of petal and sepal information, can we predict the species?</p>
+<p>This contains five variables: the length and width for sepal and
+petal lengths, and the a species classification. The major question
+asked for classification algorithms is this: give the first four columns
+of petal and sepal information, can we predict the species?</p>
 <div id="filter" class="section level2" number="1.1">
-<h2 number="1.1"><span class="header-section-number">1.1</span> Filter</h2>
-<p>Let’s use the <TT>filter</TT> function to create a subset of the <TT>iris</TT> dataset which only shows the setosa species of iris.</p>
+<h2><span class="header-section-number">1.1</span> Filter</h2>
+<p>Let’s use the <TT>filter</TT> function to create a subset of the
+<TT>iris</TT> dataset which only shows the setosa species of iris.</p>
 <pre class="r"><code>head(iris %&gt;% filter(Species == &#39;versicolor&#39;))</code></pre>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
 ## 1          7.0         3.2          4.7         1.4 versicolor
@@ -533,7 +626,9 @@ length(ind2)/dim(PimaIndiansDiabetes)[1]</code></pre>
 ## 4          5.5         2.3          4.0         1.3 versicolor
 ## 5          6.5         2.8          4.6         1.5 versicolor
 ## 6          5.7         2.8          4.5         1.3 versicolor</code></pre>
-<p>Notice that the operations that we perform these operations with dplyr do <strong>not</strong> change the original dataset. Indeed, if we type in iris again, we get</p>
+<p>Notice that the operations that we perform these operations with
+dplyr do <strong>not</strong> change the original dataset. Indeed, if we
+type in iris again, we get</p>
 <pre class="r"><code>head(iris)</code></pre>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 ## 1          5.1         3.5          1.4         0.2  setosa
@@ -542,7 +637,9 @@ length(ind2)/dim(PimaIndiansDiabetes)[1]</code></pre>
 ## 4          4.6         3.1          1.5         0.2  setosa
 ## 5          5.0         3.6          1.4         0.2  setosa
 ## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
-<p>We can demand two or more qualifications of the dataset as well. For instance, let’s demand that we have versicolors with sepal widths between 3.0 and 3.5 cm.</p>
+<p>We can demand two or more qualifications of the dataset as well. For
+instance, let’s demand that we have versicolors with sepal widths
+between 3.0 and 3.5 cm.</p>
 <pre class="r"><code>head(iris %&gt;% filter(Species == &#39;versicolor&#39; &amp; Sepal.Width &gt;= 3 &amp; Sepal.Width &lt;= 3.5))</code></pre>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
 ## 1          7.0         3.2          4.7         1.4 versicolor
@@ -552,14 +649,18 @@ length(ind2)/dim(PimaIndiansDiabetes)[1]</code></pre>
 ## 5          5.9         3.0          4.2         1.5 versicolor
 ## 6          6.7         3.1          4.4         1.4 versicolor</code></pre>
 <blockquote>
-<p><strong>Q:</strong> What would happen if we used double ampersands?</p>
+<p><strong>Q:</strong> What would happen if we used double
+ampersands?</p>
 </blockquote>
 </div>
 <div id="arrange" class="section level2" number="1.2">
-<h2 number="1.2"><span class="header-section-number">1.2</span> Arrange</h2>
-<p>The <TT>arrange</TT> function is used to sort a dataset with respect to a variable. Let’s first arrange by species.</p>
+<h2><span class="header-section-number">1.2</span> Arrange</h2>
+<p>The <TT>arrange</TT> function is used to sort a dataset with respect
+to a variable. Let’s first arrange by species.</p>
 <blockquote>
-<p><strong>Q:</strong> Use the  function to sort the  dataset by species. How is this set arranged? How can we arrange this in the opposite order?</p>
+<p><strong>Q:</strong> Use the function to sort the dataset by species.
+How is this set arranged? How can we arrange this in the opposite
+order?</p>
 </blockquote>
 <pre class="r"><code>iris %&gt;% arrange(Species ) %&gt;% head</code></pre>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
@@ -572,7 +673,8 @@ length(ind2)/dim(PimaIndiansDiabetes)[1]</code></pre>
 <blockquote>
 <p><strong>Q:</strong> How is this being sorted?</p>
 </blockquote>
-<p>We can also arrange by species and then something else, say petal width</p>
+<p>We can also arrange by species and then something else, say petal
+width</p>
 <pre class="r"><code>iris %&gt;% 
   arrange(Species, Petal.Width) %&gt;% head</code></pre>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
@@ -595,12 +697,15 @@ length(ind2)/dim(PimaIndiansDiabetes)[1]</code></pre>
 ## 6          6.3         2.9          5.6         1.8 virginica</code></pre>
 </div>
 <div id="select" class="section level2" number="1.3">
-<h2 number="1.3"><span class="header-section-number">1.3</span> Select</h2>
+<h2><span class="header-section-number">1.3</span> Select</h2>
 <ol style="list-style-type: lower-roman">
-<li>Use the <TT>select</TT> function to create a subset of the <TT>iris</TT> dataset which only contains the species and sepal widths.</li>
+<li>Use the <TT>select</TT> function to create a subset of the
+<TT>iris</TT> dataset which only contains the species and sepal
+widths.</li>
 </ol>
 <blockquote>
-<p><strong>Q:</strong> How is select different from filter? Aren’t both just paring down the dataset?</p>
+<p><strong>Q:</strong> How is select different from filter? Aren’t both
+just paring down the dataset?</p>
 </blockquote>
 <pre class="r"><code>head(iris %&gt;% select(Sepal.Width, Species))</code></pre>
 <pre><code>##   Sepal.Width Species
@@ -612,9 +717,25 @@ length(ind2)/dim(PimaIndiansDiabetes)[1]</code></pre>
 ## 6         3.9  setosa</code></pre>
 </div>
 <div id="mutate" class="section level2" number="1.4">
-<h2 number="1.4"><span class="header-section-number">1.4</span> Mutate</h2>
-<p>This one’s quite important. In fact, we’ve used it a bunch already. You’ll be needing <TT>mutate</TT> to make new variables quite often when given a dataset. Mutate allows you do add new columns based on previous column information through passing columns variables with a function.</p>
-<p>If you gave a dataset of physical quantities with dimensions to an engineer or scientist, the first order of business would be to create `<code>dimensionless variables".  These often help when trying to compare two different objects which only differ by a scaling.  For instance, we can all recognize an airplane being displayed on a television set, even if the image of the airplane being shown isn't as large as a real life airplane.  One of the simplest dimensionless variables is an</code>aspect ratio’, which divides two length variables. In our case, let’s figure out the <strong>sepal aspect ratio</strong> between the length and width of sepals. Using the <TT>muatate</TT> function, we’ll create a new variable called <strong>sepal aspect ratio</strong> and denote it as <TT>sar</TT> . For each flower, <TT>sar</TT> gives the sepal aspect ratio for each flower.</p>
+<h2><span class="header-section-number">1.4</span> Mutate</h2>
+<p>This one’s quite important. In fact, we’ve used it a bunch already.
+You’ll be needing <TT>mutate</TT> to make new variables quite often when
+given a dataset. Mutate allows you do add new columns based on previous
+column information through passing columns variables with a
+function.</p>
+<p>If you gave a dataset of physical quantities with dimensions to an
+engineer or scientist, the first order of business would be to create
+“dimensionless variables”. These often help when trying to compare two
+different objects which only differ by a scaling. For instance, we can
+all recognize an airplane being displayed on a television set, even if
+the image of the airplane being shown isn’t as large as a real life
+airplane. One of the simplest dimensionless variables is an “aspect
+ratio”, which divides two length variables. In our case, let’s figure
+out the <strong>sepal aspect ratio</strong> between the length and width
+of sepals. Using the <TT>mutate</TT> function, we’ll create a new
+variable called <strong>sepal aspect ratio</strong> and denote it as
+<TT>sar</TT> . For each flower, <TT>sar</TT> gives the sepal aspect
+ratio for each flower.</p>
 <pre class="r"><code>iris %&gt;% mutate(sar = Sepal.Length/Sepal.Width) %&gt;%  head</code></pre>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species      sar
 ## 1          5.1         3.5          1.4         0.2  setosa 1.457143
@@ -623,7 +744,8 @@ length(ind2)/dim(PimaIndiansDiabetes)[1]</code></pre>
 ## 4          4.6         3.1          1.5         0.2  setosa 1.483871
 ## 5          5.0         3.6          1.4         0.2  setosa 1.388889
 ## 6          5.4         3.9          1.7         0.4  setosa 1.384615</code></pre>
-<p>Let’s sort our dataset with respect to <TT>sar</TT>. This will take yet another pipe.</p>
+<p>Let’s sort our dataset with respect to <TT>sar</TT>. This will take
+yet another pipe.</p>
 <pre class="r"><code>iris %&gt;% mutate(sar = Sepal.Length/Sepal.Width) %&gt;% arrange(sar)  %&gt;%  head</code></pre>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species      sar
 ## 1          5.2         4.1          1.5         0.1  setosa 1.268293
@@ -632,7 +754,9 @@ length(ind2)/dim(PimaIndiansDiabetes)[1]</code></pre>
 ## 4          5.5         4.2          1.4         0.2  setosa 1.309524
 ## 5          5.1         3.8          1.5         0.3  setosa 1.342105
 ## 6          5.1         3.8          1.9         0.4  setosa 1.342105</code></pre>
-<p>Now, let’s only include <TT>sar</TT> and <TT>Species</TT>, and furthermore let’s restrict to those flowers with a sepal aspect ratio between 1.4 and 1.45.</p>
+<p>Now, let’s only include <TT>sar</TT> and <TT>Species</TT>, and
+furthermore let’s restrict to those flowers with a sepal aspect ratio
+between 1.4 and 1.45.</p>
 <pre class="r"><code>iris %&gt;% mutate(sar = Sepal.Length/Sepal.Width) %&gt;% select(sar, Species) %&gt;% 
 filter(sar&gt;= 1.4 &amp; sar &lt;= 1.45) %&gt;% 
 arrange(sar)  </code></pre>
@@ -646,25 +770,40 @@ arrange(sar)  </code></pre>
 ## 7 1.437500  setosa
 ## 8 1.450000  setosa</code></pre>
 <blockquote>
-<p><strong>Q:</strong> As an exercise in agony, try performing this action without using the pipe operator!</p>
+<p><strong>Q:</strong> As an exercise in agony, try performing this
+action without using the pipe operator!</p>
 </blockquote>
 </div>
 <div id="summarize" class="section level2" number="1.5">
-<h2 number="1.5"><span class="header-section-number">1.5</span> Summarize</h2>
-<p>The <TT>summarize</TT></p>
+<h2><span class="header-section-number">1.5</span> Summarize</h2>
+<p>The <TT>summarize</TT> function is used for compressing important
+information about a dataset into a smaller, more digestible dataframe
+called a “tibble”. For the sake of this course, a tibble should just be
+seen as a special type of data frame.</p>
 <ol style="list-style-type: lower-roman">
-<li>Use the <TT>summarize</TT> (you can also use <TT>summarise</TT>, many of the developers are from British English speaking countries) function to create a variable called <TT>skinny</TT> which returns a 1x1 <em>tibble</em> of the mean of the aspect ratios. A tibble should just be seen as a special type of data frame.</li>
+<li>Use the <TT>summarize</TT> (you can also use <TT>summarise</TT>,
+many of the developers are from British English speaking countries)
+function to create a variable called <TT>skinny</TT> which returns a 1x1
+<em>tibble</em> of the mean of the aspect ratios.</li>
 </ol>
-<p>Now let’s use <TT>summarize</TT> along with <TT>group_by</TT> to create a tibble which gives an average aspect ratio for each species.</p>
+<p>Now let’s use <TT>summarize</TT> along with <TT>group_by</TT> to
+create a tibble which gives an average aspect ratio for each
+species.</p>
 <pre class="r"><code>iris %&gt;% 
 mutate(sar = Sepal.Length/Sepal.Width) %&gt;% 
 summarize(skinny = mean(sar))</code></pre>
 <pre><code>##     skinny
 ## 1 1.953681</code></pre>
 <blockquote>
-<p><strong>Q:</strong> Big whoop! What could we have typed to get the mean of the sepal aspect ratio without so much work?</p>
+<p><strong>Q:</strong> Big whoop! What could we have typed to get the
+mean of the sepal aspect ratio without so much work?</p>
 </blockquote>
-<p>The nice thing is that we can group statistics based on different values of another variables. For instance, we can create a 3x1 tibble that gives mean sepal aspect ration for each species. This is done with the <TT>group_by</TT> function. This simply tells the data frame to separate each calculation with regards to different types of species.</p>
+<p>The nice thing is that we can group statistics based on different
+values of another variables. For instance, we can create a 3x1 tibble
+that gives mean sepal aspect ration for each species. This is done with
+the <TT>group_by</TT> function. This simply tells the data frame to
+separate each calculation with regards to different types of
+species.</p>
 <pre class="r"><code>iris %&gt;% mutate(sar = Sepal.Length/Sepal.Width)%&gt;% group_by(Species) %&gt;% 
 summarize(skinny = mean(sar))</code></pre>
 <pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
@@ -674,7 +813,10 @@ summarize(skinny = mean(sar))</code></pre>
 ## 1 setosa       1.47
 ## 2 versicolor   2.16
 ## 3 virginica    2.23</code></pre>
-<p>An important point is we didn’t create any new variables to create this list! For very large datasets, this is a great feature, since we don’t have to replicate datasets at each point in our data analysis process.</p>
+<p>An important point is we didn’t create any new variables to create
+this list! For very large datasets, this is a great feature, since we
+don’t have to replicate datasets at each point in our data analysis
+process.</p>
 </div>
 </div>
 

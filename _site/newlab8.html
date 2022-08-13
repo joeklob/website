@@ -13,8 +13,8 @@
 
 <title>A few more things regarding data manipulation and visualization</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -83,6 +84,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -308,7 +312,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -321,7 +325,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Sections
      
     <span class="caret"></span>
@@ -386,27 +390,37 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">A few more things regarding data manipulation and visualization</h1>
+<h1 class="title toc-ignore">A few more things regarding data
+manipulation and visualization</h1>
 
 </div>
 
 
 <p>Let’s continue looking at the <TT>iris</TT> dataset.</p>
-<div id="some-cleaning-up-with-label-issues" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Some cleaning up with label issues</h1>
-<p>The main point for this lab is to take a look at three different visualizations, with each trying to show how sepal aspect ratio changes with regards to each species.</p>
-<p>Let’s first look using <TT>geom_bar</TT> and using the <TT>cut_width</TT> function to bin with respect to <TT>sar</TT>.</p>
+<div id="some-cleaning-up-with-label-issues" class="section level1"
+number="1">
+<h1><span class="header-section-number">1</span> Some cleaning up with
+label issues</h1>
+<p>The main point for this lab is to take a look at three different
+visualizations, with each trying to show how sepal aspect ratio changes
+with regards to each species.</p>
+<p>Let’s first look using <TT>geom_bar</TT> and using the
+<TT>cut_width</TT> function to bin with respect to <TT>sar</TT>.</p>
 <pre class="r"><code>p= iris %&gt;% mutate( sar = Sepal.Length/Sepal.Width) %&gt;% filter(sar &gt; 2) %&gt;%
 ggplot()+ geom_bar(mapping = aes(x = cut_width(sar, .05)))+
   labs(title = &quot;SAR&quot;, x = &#39;Sepal Aspect Ratio&#39;, y = &#39;Count&#39;) 
 
 p</code></pre>
-<p><img src="newlab8_files/figure-html/unnamed-chunk-2-1.png" width="672" /> How ugly! We’d like to get x labels cleaned up</p>
+<p><img src="newlab8_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>How ugly! It’s basically impossible to read the intervals on the
+x-axis. Let’s see how we can clean this up.</p>
 <pre class="r"><code>p+ theme(axis.text.x = element_text(angle = 45, vjust = .5, size = 10))+
   theme(plot.title = element_text(hjust = 0.5))+
   theme(axis.title = element_text(size = 15, color = &quot;blue&quot;))</code></pre>
-<p><img src="newlab8_files/figure-html/unnamed-chunk-3-1.png" width="672" /> Much better!</p>
-<p>Now let’s use the <TT>geom_freqpoly</TT> function. This gives three line graphs.</p>
+<p><img src="newlab8_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Much better!</p>
+<p>Now let’s use the <TT>geom_freqpoly</TT> function. This gives three
+line graphs.</p>
 <pre class="r"><code>iris %&gt;% mutate( sar = Sepal.Length/Sepal.Width) %&gt;% ggplot()+
   geom_freqpoly(aes(x = sar,color = Species), binwidth = .1)+
   xlab(&#39;Sepal Aspect Ratio&#39;) +ylab(&#39;How many&#39;)</code></pre>
@@ -417,12 +431,15 @@ p</code></pre>
   labs(x = &#39;Species&#39;, y = &#39;SAR&#39;, title = &#39;Boxplots of SAR for Different Species&#39;)</code></pre>
 <p><img src="newlab8_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <blockquote>
-<p><strong>Q:</strong> What are the advantages and disadvantages to each of the visuals shown?</p>
+<p><strong>Q:</strong> What are the advantages and disadvantages to each
+of the visuals shown?</p>
 </blockquote>
 </div>
 <div id="a-peek-at-clustering" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> A peek at clustering</h1>
-<p>Now let’s make a scatter plot which compares sepal lengths and widths.</p>
+<h1><span class="header-section-number">2</span> A peek at
+clustering</h1>
+<p>Now let’s make a scatter plot which compares sepal lengths and
+widths.</p>
 <pre class="r"><code>iris %&gt;% ggplot()+ 
 geom_point(aes(x = Sepal.Width, y = Sepal.Length, color = Species))+
 labs(x = &#39;Sepal Width&#39;, y = &#39;Sepal Length&#39;, 
@@ -434,34 +451,78 @@ theme(plot.title = element_text(hjust = 0.5, size = 8, color = &quot;forest gree
   theme(legend.text = element_text(size = 8, color = &quot;forest green&quot;))+
 #  scale_color_manual(values=c(&quot;#999999&quot;, &quot;#E69F00&quot;, &quot;#56B4E9&quot;))+
   scale_color_manual(values=c(&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;))</code></pre>
-<p><img src="newlab8_files/figure-html/unnamed-chunk-6-1.png" width="672" /> Just from seeing a visualization of sepal length versus width, we can already see that setosas seem to separate themselves from the other two species. One can build a crude <strong>classification algorithm</strong> from this by drawing a line between the two clusters, and guessing that an unlabeled flower is a setosa if it lies below the line, and not a setosa if it lies above the line. In other words, we’re guessing these two classifications are <strong>linearly separable</strong>. We can see from our plot that versicolor and virginica are not linearly separable, at least under the two variables we are considering. We may need to consider a different set of variables to successfully separate these two species, or appeal to a different method altogether. In a later section, we will see that we can successfully differentiate between the two species using the <span class="math inline">\(k\)</span> <strong>-nearest neighbors</strong> algorithm, a popular technique in machine learning.</p>
+<p><img src="newlab8_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Just from seeing a visualization of sepal length versus width, we can
+already see that setosas seem to separate themselves from the other two
+species. One can build a crude <strong>classification algorithm</strong>
+from this by drawing a line between the two clusters, and guessing that
+an unlabeled flower is a setosa if it lies below the line, and not a
+setosa if it lies above the line. In other words, we’re guessing these
+two classifications are <strong>linearly separable</strong>. We can see
+from our plot that versicolor and virginica are not linearly separable,
+at least under the two variables we are considering. We may need to
+consider a different set of variables to successfully separate these two
+species, or appeal to a different method altogether. In a later section,
+we will see that we can successfully differentiate between the two
+species using the <span class="math inline">\(k\)</span>
+<strong>-nearest neighbors</strong> algorithm, a popular technique in
+machine learning.</p>
 </div>
 <div id="data-from-the-outside-world" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Data from the outside world</h1>
-<p>The world’s datasets aren’t all contained in R. Almost always in data science, you’ll be downloading datasets from webpages or emails sent by doctors/business executives/etc. who don’t know the first thing about data. As the data scientist, getting the data into a usable form in R will be on you. Downloading data from the web, however, is usually not so hard.</p>
-<p>Suppose you’ve been tasked with finding Old Faithful waiting times between eruptions. After a long search on the internet, you may stumble upon data from <a href="http://stat.cmu.edu/~larry/all-of-nonpar/data.html">this webpage</a>. Datasets come in a variety of forms, but two very common ones are <TT>.csv</TT> and <TT>.txt</TT> files. It would be exhausting at best to open up this page and then copy/paste each entry into R. A much better alternative is one of the following:</p>
+<h1><span class="header-section-number">3</span> Data from the outside
+world</h1>
+<p>The world’s datasets aren’t all contained in R. Almost always in data
+science, you’ll be downloading datasets from webpages or emails sent by
+doctors/business executives/etc. who don’t know the first thing about
+data. As the data scientist, getting the data into a usable form in R
+will be on you. Downloading data from the web, however, is usually not
+so hard.</p>
+<p>Suppose you’ve been tasked with finding Old Faithful waiting times
+between eruptions. After a long search on the internet, you may stumble
+upon data from <a
+href="http://stat.cmu.edu/~larry/all-of-nonpar/data.html">this
+webpage</a>. Datasets come in a variety of forms, but two very common
+ones are <TT>.csv</TT> and <TT>.txt</TT> files. It would be exhausting
+at best to open up this page and then copy/paste each entry into R. A
+much better alternative is one of the following:</p>
 <ol style="list-style-type: decimal">
-<li>Right click on the link to the data file, and click `Download Linked File’.</li>
-<li>Open the file. Type <TT>Ctrl + A</TT> to highlight every entry, copy the entire dataset, and then paste into a text editor (you could download plenty of nice text editors such as <em>Notepad++</em> or <em>Sublime</em>). Then save your file.</li>
+<li>Right click on the link to the data file, and click `Download Linked
+File’.</li>
+<li>Open the file. Type <TT>Ctrl + A</TT> to highlight every entry, copy
+the entire dataset, and then paste into a text editor (you could
+download plenty of nice text editors such as <em>Notepad++</em> or
+<em>Sublime</em>). Then save your file.</li>
 </ol>
-<p>After your file is downloaded, you can upload your data into R using the `Import Dataset’ button at the top right of RStudio. Select the “From Text (base)” option, and open your file. You may have to deal with things such as whether to include the header as a row in your data. Fortunately, RStudio gives you a preview of what your data is going to look like.</p>
-<p>Once our data is loaded, let’s take a look at a histogram of waiting times.</p>
+<p>After your file is downloaded, you can upload your data into R using
+the `Import Dataset’ button at the top right of RStudio. Select the
+“From Text (base)” option, and open your file. You may have to deal with
+things such as whether to include the header as a row in your data.
+Fortunately, RStudio gives you a preview of what your data is going to
+look like.</p>
+<p>Once our data is loaded, let’s take a look at a histogram of waiting
+times.</p>
 <pre class="r"><code>faithful.dat %&gt;% ggplot(aes(x = cut_width(waiting, 3)))+ geom_bar()+ 
   theme(axis.text.x = element_text(angle = 45, vjust = .5, size = 10))+
   theme(plot.title = element_text(hjust = 0.5))+
   theme(axis.title = element_text(size = 15, color = &quot;blue&quot;))+ 
   labs(title = &quot;Old Faithful waiting times&quot;, x = &#39;Waiting times&#39;, y = &#39;Count&#39;) </code></pre>
 <p><img src="newlab8_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>Let’s do one more example. This one, found <a href="https://people.sc.fsu.edu/~jburkardt/data/csv/csv.html">here</a> is courtesy of Prof. John Burkardt’s web page from Florida State University.</p>
+<p>Let’s do one more example. This one, found <a
+href="https://people.sc.fsu.edu/~jburkardt/data/csv/csv.html">here</a>
+is courtesy of Prof. John Burkardt’s web page from Florida State
+University.</p>
 <blockquote>
-<p><strong>Q:</strong> Download the letter frequency dataset. What letter is the most frequent? The second most frequent?</p>
+<p><strong>Q:</strong> Download the letter frequency dataset. What
+letter is the most frequent? The second most frequent?</p>
 </blockquote>
 <p>There’s two ways to show this bar plot.</p>
 <pre class="r"><code>letter_frequency %&gt;% mutate(prop = Frequency/sum(Frequency)) %&gt;% 
 ggplot(aes(x = Letter, y = prop))+geom_col()</code></pre>
 <p><img src="newlab8_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <blockquote>
-<p><strong>Q:</strong> Now it’s your turn! Take a look at either the previous webpage we used, or find one yourself. Download a data set and create a nice looking visual.</p>
+<p><strong>Q:</strong> Now it’s your turn! Take a look at either the
+previous webpage we used, or find one yourself. Download a data set and
+create a nice looking visual.</p>
 </blockquote>
 </div>
 

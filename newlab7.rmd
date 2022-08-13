@@ -6,7 +6,7 @@ title: "Data Transformations"
 
 
 
-Data science reminds us that life is imperfect.  Errors abound.  There is error of measurement in a dataset, error in data entry, error in processing data to a workable file, error from the data scientist analyzing the dataset (the course of this class is to reduce this type of error as much as possible), and finally, error in the interpretation of the data analysis from the audience.  Carrying a healthy skepticism when dealing with data is always a good idea, and the more you work with data, the more you see the imperfections that seem to invade from every direction.  Of course, some errors are completely harmless.  Having _Heght_ instead of _Height_ for the name of a variable is certainly a mistake, but the audience _knows_ what you mean.  Corrupting the value of an entry, however, is a much worse offense.  For a variety of reasons, a data collector could put down something wrong. Some examples of why a bad data entry occurs include `fat fingering' (just typing in the wrong number), using incorrect units, and lack of interest.  To address the last point, imagine being a nurse in 1995 who is told to record height and weight for "the database".  You don't know what a database is, and you have sick patients to tend to.  With that in mind, should we be surprised to find medical datasets with patients having a height of _Thursday_?
+Data science reminds us that life is imperfect.  Errors abound.  There is error of measurement in a dataset, error in data entry, error in processing data to a workable file, error from the data scientist analyzing the dataset (the course of this class is to reduce this type of error as much as possible), and finally, error in the interpretation of the data analysis from the audience.  Carrying a healthy skepticism when dealing with data is always a good idea, and the more you work with data, the more you see the imperfections that seem to invade from every direction.  Of course, some errors are completely harmless.  Having _Heght_ instead of _Height_ for the name of a variable is certainly a mistake, but the audience _knows_ what you mean.  Corrupting the value of an entry, however, is a much worse offense.  For a variety of reasons, a data collector could put down something wrong. Some examples of why a bad data entry occurs include "fat fingering" (just typing in the wrong number), using incorrect units, and lack of interest.  To address the last point, imagine being a nurse in 1995 who is told to record height and weight for "the database".  You don't know what a database is, and you have sick patients to tend to.  With that in mind, should we be surprised to find medical datasets with patients having a height of _Thursday_?
 
 > __Q:__ Can you think of at least three other reasons why a datapoint may be corrupted?
 
@@ -279,10 +279,10 @@ head(iris %>% select(Sepal.Width, Species))
 
 This one's quite important. In fact, we've used it a bunch already. You'll be needing <TT>mutate</TT>  to make new variables quite often when given a dataset. Mutate allows you do add new columns based on previous column information through passing columns variables with a function.
 
-If you gave a dataset of physical quantities with dimensions to an engineer or scientist, the first order of business would be to create ``dimensionless variables".  These often help when trying to compare two different objects which only differ by a scaling.  For instance, we can all recognize an airplane being displayed on a television set, even if the image of the airplane being shown isn't as large as a real life airplane.
- One of the simplest dimensionless variables is an `aspect ratio', which divides
+If you gave a dataset of physical quantities with dimensions to an engineer or scientist, the first order of business would be to create "dimensionless variables". These often help when trying to compare two different objects which only differ by a scaling.  For instance, we can all recognize an airplane being displayed on a television set, even if the image of the airplane being shown isn't as large as a real life airplane.
+ One of the simplest dimensionless variables is an "aspect ratio", which divides
 two length variables.  In our case, let's figure out the __sepal aspect
-ratio__ between the length and width of sepals. Using the <TT>muatate</TT>  function, we'll create a new variable called __sepal aspect ratio__ and denote it as <TT>sar</TT> . For each flower, <TT>sar</TT>  gives the sepal aspect ratio for each flower.
+ratio__ between the length and width of sepals. Using the <TT>mutate</TT>  function, we'll create a new variable called __sepal aspect ratio__ and denote it as <TT>sar</TT> . For each flower, <TT>sar</TT>  gives the sepal aspect ratio for each flower.
 
 ```{r }
 
@@ -310,10 +310,10 @@ arrange(sar)
 ## Summarize
 
 
-The <TT>summarize</TT>
+The <TT>summarize</TT> function is used for compressing important information about a dataset into a smaller, more digestible dataframe called a "tibble".  For the sake of this course, a tibble should just be seen as a special type of data frame. 
 
 (i) Use the <TT>summarize</TT> (you can also use <TT>summarise</TT>, many of the developers are from British English speaking countries) function to create a variable called <TT>skinny</TT>
-which returns a 1x1 _tibble_ of the mean of the aspect ratios.  A tibble should just be seen as a special type of data frame.  
+which returns a 1x1 _tibble_ of the mean of the aspect ratios.   
 
 Now let's  use <TT>summarize</TT> along with <TT>group\_by</TT> to create a tibble
 which gives an average aspect ratio for each species.

@@ -13,8 +13,8 @@
 
 <title>Fill in the blanks: What to do when your dataset isn’t perfect</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -83,6 +84,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -308,7 +312,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -321,7 +325,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Sections
      
     <span class="caret"></span>
@@ -386,36 +390,77 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Fill in the blanks: What to do when your dataset isn’t perfect</h1>
+<h1 class="title toc-ignore">Fill in the blanks: What to do when your
+dataset isn’t perfect</h1>
 
 </div>
 
 
-<p>Data from the real world is not perfect. As we’ve discussed before, errors can permeate a dataset. However, a good data scientist does not need a dataset to be perfect. Several methods exist for estimating what a data set <em>should</em> look like, with varying degrees of crudeness.</p>
-<p>In general, the process of preparing your data before you start making figures and models is called <strong>data cleaning</strong>. For this lab, we’ll be dealing with cleaning dataset with numeric entries. We’ve already done a bit of cleaning in previous datasets. For instance, we identified entries in patients with BMI or glucose levels of zero. Certainly, such entries are nonsense, but for all we know, there could have been more. For instance, what if we found a BMI of 500? Or a BMI simply labeled “yes”? In general, a good <em>domain knowledge</em> is very helpful in determining reasonable ranges for your variables.</p>
-<p>In other cases, it just makes sense to pare down your data and possibly throw some of it away. To the newcomer, this might seem odd. Isn’t more data always better? The answer is an emphatic no. More relevant data is better, but data which is useless can simply get in the way. A popular example of this appears in text data. If you were given a copy of <em>War and Peace</em> and asked to identify key phrases found in the book that don’t appear elsewhere, it doesn’t make sense to have to deal with words like “the” or “and”. A proper data cleaning might just snip these <strong>stop words</strong> out before getting to more serious endeavors.</p>
-<p>We’ll be working with the “Melbourne Housing” dataset, which lists information regarding housing prices and features (make sure you include the heading when downloading this dataset). You can get more information about this dataset on the associated <a href="https://www.kaggle.com/anthonypino/melbourne-housing-market">Kaggle page</a> (Kaggle is a fun website that hosts data science competitions.)</p>
-<p>Perhaps the most asked question for someone searching for a house in Melbourne is what a house goes for in the area.</p>
+<p>Data from the real world is not perfect. As we’ve discussed before,
+errors can permeate a dataset. However, a good data scientist does not
+need a dataset to be perfect. Several methods exist for estimating what
+a data set <em>should</em> look like, with varying degrees of
+crudeness.</p>
+<p>In general, the process of preparing your data before you start
+making figures and models is called <strong>data cleaning</strong>. For
+this lab, we’ll be dealing with cleaning dataset with numeric entries.
+We’ve already done a bit of cleaning in previous datasets. For instance,
+we identified entries in patients with BMI or glucose levels of zero.
+Certainly, such entries are nonsense, but for all we know, there could
+have been more. For instance, what if we found a BMI of 500? Or a BMI
+simply labeled “yes”? In general, a good <em>domain knowledge</em> is
+very helpful in determining reasonable ranges for your variables.</p>
+<p>In other cases, it just makes sense to pare down your data and
+possibly throw some of it away. To the newcomer, this might seem odd.
+Isn’t more data always better? The answer is an emphatic no. More
+relevant data is better, but data which is useless can simply get in the
+way. A popular example of this appears in text data. If you were given a
+copy of <em>War and Peace</em> and asked to identify key phrases found
+in the book that don’t appear elsewhere, it doesn’t make sense to have
+to deal with words like “the” or “and”. A proper data cleaning might
+just snip these <strong>stop words</strong> out before getting to more
+serious endeavors.</p>
+<p>We’ll be working with the “Melbourne Housing” dataset, which lists
+information regarding housing prices and features (make sure you include
+the heading when downloading this dataset). You can get more information
+about this dataset on the associated <a
+href="https://www.kaggle.com/anthonypino/melbourne-housing-market">Kaggle
+page</a> (Kaggle is a fun website that hosts data science
+competitions.)</p>
+<p>Perhaps the most asked question for someone searching for a house in
+Melbourne is what a house goes for in the area.</p>
 <pre class="r"><code>mean(Melbourne_housing_FULL$Price)</code></pre>
 <pre><code>## [1] NA</code></pre>
-<p>It looks like we have an incomplete dataset (surprise, surprise). The answer of <TT>NA</TT> is technically correct, since even a single <TT>NA</TT> means that we don’t actually know the average house price. We need to include the <TT>na.rm</TT> argument to calculate the average house price for housing that have a known value. Let’s find some other statistics as well:</p>
+<p>It looks like we have an incomplete dataset (surprise, surprise). The
+answer of <TT>NA</TT> is technically correct, since even a single
+<TT>NA</TT> means that we don’t actually know the average house price.
+We need to include the <TT>na.rm</TT> argument to calculate the average
+house price for housing that have a known value. Let’s find some other
+statistics as well:</p>
 <pre class="r"><code>mean(Melbourne_housing_FULL$Price, na.rm = TRUE)</code></pre>
 <pre><code>## [1] 1050173</code></pre>
 <pre class="r"><code>median(Melbourne_housing_FULL$Price, na.rm = TRUE)</code></pre>
 <pre><code>## [1] 870000</code></pre>
 <pre class="r"><code>range(Melbourne_housing_FULL$Price, na.rm = TRUE)</code></pre>
 <pre><code>## [1]    85000 11200000</code></pre>
-<p>Note that prices are given in Australian dollars, so things look a little more expensive to an American than they actually are.</p>
+<p>Note that prices are given in Australian dollars, so things look a
+little more expensive to an American than they actually are.</p>
 <blockquote>
-<p><strong>Q:</strong> What’s the difference between mean and median? What can be the cause for the median to be significantly less than the mean?</p>
+<p><strong>Q:</strong> What’s the difference between mean and median?
+What can be the cause for the median to be significantly less than the
+mean?</p>
 </blockquote>
 <p>How many houses don’t have prices?</p>
 <pre class="r"><code>sum(is.na(Melbourne_housing_FULL$Price))/length(Melbourne_housing_FULL$Price)</code></pre>
 <pre><code>## [1] 0.2183206</code></pre>
-<p>About 22% of houses don’t have prices. There are several options of what to do with these entries.</p>
+<p>About 22% of houses don’t have prices. There are several options of
+what to do with these entries.</p>
 <div id="method-1-trash" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Method 1: Trash</h1>
-<p>If exact house prices are absolutely crucial, then we should just throw away those rows containing an <TT>NA</TT>. Using <TT>dplyr</TT> should come in handy here. Also, let’s further restrict our data to just include the Suburb and price:</p>
+<h1><span class="header-section-number">1</span> Method 1: Trash</h1>
+<p>If exact house prices are absolutely crucial, then we should just
+throw away those rows containing an <TT>NA</TT>. Using <TT>dplyr</TT>
+should come in handy here. Also, let’s further restrict our data to just
+include the Suburb and price:</p>
 <pre class="r"><code>Melbourne_housing_FULL %&gt;% select(Suburb, Price) %&gt;% filter(!is.na(Price)) %&gt;% head</code></pre>
 <pre><code>##       Suburb   Price
 ## 1 Abbotsford 1480000
@@ -425,17 +470,27 @@ div.tocify {
 ## 5 Abbotsford 1600000
 ## 6 Abbotsford  941000</code></pre>
 <blockquote>
-<p><strong>Q:</strong> What’s the point of the exclamation point? Also, why can’t we just type in Price != NA?</p>
+<p><strong>Q:</strong> What’s the point of the exclamation point? Also,
+why can’t we just type in Price != NA?</p>
 </blockquote>
-<p>Let’s check the mean price of our new dataset. We shouldn’t need to include any <TT>na.rm</TT> argument.</p>
+<p>Let’s check the mean price of our new dataset. We shouldn’t need to
+include any <TT>na.rm</TT> argument.</p>
 <pre class="r"><code>newmel = Melbourne_housing_FULL %&gt;% select(Suburb, Price) %&gt;% filter(!is.na(Price)) 
 
 mean(newmel$Price)</code></pre>
 <pre><code>## [1] 1050173</code></pre>
 </div>
 <div id="imputation-by-single-value" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Imputation by single value</h1>
-<p>If we would like to plug in values, a quick fix is to simply plug in the mean or median value. This is often done with modeling. We may, for instance, like to estimate what suburb a house is located in given all of our other variables as input. The fifth of the dataset not containing prices contains other information that could be worthwhile for building the model, so it might be better to put in a shoddy guess for price rather than throwing the entire row away. Let’s create a new dataset containing such a column:</p>
+<h1><span class="header-section-number">2</span> Imputation by single
+value</h1>
+<p>If we would like to plug in values, a quick fix is to simply plug in
+the mean or median value. This is often done with modeling. We may, for
+instance, like to estimate what suburb a house is located in given all
+of our other variables as input. The fifth of the dataset not containing
+prices contains other information that could be worthwhile for building
+the model, so it might be better to put in a shoddy guess for price
+rather than throwing the entire row away. Let’s create a new dataset
+containing such a column:</p>
 <pre class="r"><code>#Let&#39;s copy the original dataset in preparation for making
 #a new one
 
@@ -467,15 +522,19 @@ mean(Melbourne_housing_FULL$Price, na.rm = TRUE)</code></pre>
 <pre class="r"><code>mean(newermel$impprice)</code></pre>
 <pre><code>## [1] 1050173</code></pre>
 <blockquote>
-<p><strong>Q:</strong> Can you convince yourself that the means should be the same?</p>
+<p><strong>Q:</strong> Can you convince yourself that the means should
+be the same?</p>
 </blockquote>
-<p>This is a nice feature about imputing with the mean for every value. However, things look a bit quirky when looking at the new distribution of housing prices.</p>
+<p>This is a nice feature about imputing with the mean for every value.
+However, things look a bit quirky when looking at the new distribution
+of housing prices.</p>
 <pre class="r"><code>Melbourne_housing_FULL %&gt;%  ggplot()+ geom_histogram(aes(Price), bins = 100)</code></pre>
 <pre><code>## Warning: Removed 7610 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="newlab9_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <pre class="r"><code>newermel %&gt;% ggplot()+ geom_histogram(aes(impprice), bins = 100) </code></pre>
 <p><img src="newlab9_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
-<p>Maybe now’s a good time to talk about getting better x labels. Clearly, we need fewer ticks</p>
+<p>Maybe now’s a good time to talk about getting better x labels.
+Clearly, we need fewer ticks</p>
 <pre class="r"><code>Melbourne_housing_FULL %&gt;%  ggplot()+ geom_histogram(aes(Price), bins = 100)+xlim(0, 10^7)</code></pre>
 <pre><code>## Warning: Removed 7611 rows containing non-finite values (stat_bin).</code></pre>
 <pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
@@ -486,18 +545,26 @@ mean(Melbourne_housing_FULL$Price, na.rm = TRUE)</code></pre>
 ## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
 <p><img src="newlab9_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
 <blockquote>
-<p><strong>Q:</strong> What happens when you adjust the number of bins? Any guesses on what type of quantity would capture what happens when data clumps together?</p>
+<p><strong>Q:</strong> What happens when you adjust the number of bins?
+Any guesses on what type of quantity would capture what happens when
+data clumps together?</p>
 </blockquote>
-<p>The clumping we see could be explained by the <strong>variance</strong>, or its cousin, the <strong>standard deviation</strong>, which is simply the square root of the variance.</p>
+<p>The clumping we see could be explained by the
+<strong>variance</strong>, or its cousin, the <strong>standard
+deviation</strong>, which is simply the square root of the variance.</p>
 <pre class="r"><code>sqrt(var(Melbourne_housing_FULL$Price, na.rm = TRUE))</code></pre>
 <pre><code>## [1] 641467.1</code></pre>
 <pre class="r"><code>sqrt(var(newermel$impprice))</code></pre>
 <pre><code>## [1] 567135.7</code></pre>
-<p>The main rule of thumb: the larger the variance, the more spread out the data. Plugging in a single value over and over again at the mean is going to make values more scrunched up on average.</p>
+<p>The main rule of thumb: the larger the variance, the more spread out
+the data. Plugging in a single value over and over again at the mean is
+going to make values more scrunched up on average.</p>
 </div>
 <div id="imputing-with-sampling" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Imputing with sampling</h1>
-<p>One way to get around producing the unsightly point mass in the last example is to randomly sample your data.</p>
+<h1><span class="header-section-number">3</span> Imputing with
+sampling</h1>
+<p>One way to get around producing the unsightly point mass in the last
+example is to randomly sample your data.</p>
 <pre class="r"><code>newestmel = Melbourne_housing_FULL
 
 sampprice = rep(0, dim(newestmel)[1])
@@ -522,20 +589,27 @@ newestmel$sampprice = sampprice
 
 
 mean(newestmel$sampprice)</code></pre>
-<pre><code>## [1] 1049747</code></pre>
+<pre><code>## [1] 1050080</code></pre>
 <pre class="r"><code>mean(Melbourne_housing_FULL$Price, na.rm = TRUE)</code></pre>
 <pre><code>## [1] 1050173</code></pre>
 <pre class="r"><code>sqrt(var(newestmel$sampprice))</code></pre>
-<pre><code>## [1] 641288.3</code></pre>
+<pre><code>## [1] 640556.5</code></pre>
 <pre class="r"><code>sqrt(var(Melbourne_housing_FULL$Price, na.rm = TRUE))</code></pre>
 <pre><code>## [1] 641467.1</code></pre>
-<p>There’s minor bad news and substantial good news. The bad news is that sampling is going to result in a slightly different mean than what we originally have. It’s possible to prove that the difference approaches zero as the size of the dataset gets larger and larger. Our dataset is pretty large (about 35,000 rows), so our average is pretty small, on the order of a couple of thousands. The good news is quite nice. The variances between the two datasets are also quite small. We can also take a look at the histograms to get a better picture:</p>
+<p>There’s minor bad news and substantial good news. The bad news is
+that sampling is going to result in a slightly different mean than what
+we originally have. It’s possible to prove that the difference
+approaches zero as the size of the dataset gets larger and larger. Our
+dataset is pretty large (about 35,000 rows), so our average is pretty
+small, on the order of a couple of thousands. The good news is quite
+nice. The variances between the two datasets are also quite small. We
+can also take a look at the histograms to get a better picture:</p>
 <pre class="r"><code>Melbourne_housing_FULL %&gt;%  ggplot()+ geom_histogram(aes(Price), bins = 100)+xlim(0, 10^7)</code></pre>
 <pre><code>## Warning: Removed 7611 rows containing non-finite values (stat_bin).</code></pre>
 <pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
 <p><img src="newlab9_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <pre class="r"><code>newestmel %&gt;% ggplot()+ geom_histogram(aes(sampprice), bins = 100) +xlim(0, 10^7)</code></pre>
-<pre><code>## Warning: Removed 2 rows containing non-finite values (stat_bin).
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_bin).
 
 ## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
 <p><img src="newlab9_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>

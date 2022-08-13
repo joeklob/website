@@ -152,7 +152,7 @@ $$ \mathbb E[G_p] = (1-p)/p$$.
 # Continuous random variables
 
 Let's turn our attention to __continuous random variables__ whose state space consists of intervals
-(e.g. $[0,1], (-\infty, 5), (-\infty, \infty)$.  In contrast with discrete random variables, it no longer makes sense to assign probabilities of a random variable taking exact values.  Instead, the main tool we will use is the  be  __probability density function__
+(e.g. $[0,1], (-\infty, 5), (-\infty, \infty)$).  In contrast with discrete random variables, it no longer makes sense to assign probabilities of a random variable taking exact values.  Instead, the main tool we will use is the  be  __probability density function__
 (pdf) $f_X(x)$.  The main point of having a probability density function is that it provides a formula for computing the probability that a random variable is contained in $[a,b]$.  This is given by
 
 \begin{equation}
@@ -307,11 +307,7 @@ Whatever this is, it's certainly not uniform! This is often the case with summin
 > __Q:__ Can you think of a handwavy reason why we might expect the sum of two uniforms to peak in the middle? Hint: it's the same reasoning for why throwing a 7 is more common than throwing a 12 when rolling two dice.
 
 
-(i) Is it the case the two sum of two independent normals is normal?  Test
-with $X \sim N(1,4)$ and $Y \sim N(2, 1)$.
-
-(ii) Is the sum of two independent uniforms also uniform?  Test with $X \sim
-Unif(0,1)$, $Y \sim Unif(0,1)$.    
+ 
 
 
 

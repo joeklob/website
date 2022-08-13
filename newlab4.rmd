@@ -36,7 +36,7 @@ head(mtcars)
 Sometimes we will need to define new variables which are combinations of existing variables.  For instance, one might be interested in creating a new variable called __horsepower efficiency__ (Note: the author is a mathematician, not an auto mechanic.  I have no clue if this is a real thing...).  We can define it by 
 
 $$ \hbox{ HPE} = \mathrm{MPG}/\mathrm{HP}.$$
-Here $MPG$ is the miles per gallon of a car, and $HP$ is its horsepower. In R, we can create calculate the HPE by 
+Here $MPG$ is the miles per gallon of a car, and $HP$ is its horsepower. In R, we can calculate the HPE by 
 
 ```{r}
 
